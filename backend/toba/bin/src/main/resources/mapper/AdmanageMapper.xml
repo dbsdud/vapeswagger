@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poly.toba.mapper.AdmanageMapper">
+	<!-- 광고 단일조회 -->
+	<select id="getAdDetail" parameterType="AdmanageDTO" resultType="AdmanageDTO">
+		SELECT
+		*
+		FROM
+		advertisement
+		WHERE
+		adNo = #{adNo};
+	</select>
+	
+	<!-- 광고 조회수 -->
+	<update id="adUpdateCount" parameterType="AdmanageDTO">
+		UPDATE
+		advertisement
+		SET
+		adClick = adClick+1
+		WHERE
+		adNo = #{adNo}
+	</update>
+	
+	<!-- 광고 총개수 -->
+	<select id="adTotalCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM
+		advertisement
+	</select>
+	<!-- 광고 리스트 -->
+	<select id="getAdList" parameterType="map" resultType="AdmanageDTO">
+		SELECT
+		adNo,adTitle,adImg,adRegdate,adActive
+		FROM
+		advertisement
+		ORDER BY adNo desc
+		limit #{startlist},#{listsize}
+	</select>
+	<!-- 노출 광고 리스트 -->
+	<select id="getAdEnableList" parameterType="map" resultType="AdmanageDTO">
+		SELECT
+		adNo,adTitle,adImg,adRegdate,adActive
+		FROM
+		advertisement
+		WHERE adActive = '1'
+		ORDER BY adNo desc
+		limit #{startlist},#{listsize}
+	</select>
+	<!-- 노출 광고 개수 -->
+	<select id="adEnableCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM
+		advertisement
+		WHERE adActive = '1'
+	</select>
+	<!-- 비활성 광고 리스트 -->
+	<select id="getAdDisableList" parameterType="map" resultType="AdmanageDTO">
+		SELECT
+		adNo,adTitle,adImg,adRegdate,adActive
+		FROM
+		advertisement
+		WHERE adActive = '0'
+		ORDER BY adNo desc
+		limit #{startlist},#{listsize}
+	</select>
+	<!-- 비활성 광고 개수 -->
+	<select id="adDisableCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM
+		advertisement
+		WHERE adActive = '0'
+	</select>
+	<!-- 광고등록 -->
+	<insert id="insertAd" parameterType="AdmanageDTO">
+		INSERT INTO advertisement (
+			adTitle,
+			adEnable,
+			adClick,
+			adImg,
+			adLink,
+			adClientName,
+			adClientNumber,
+			adActive,
+			adRegdate,
+			adChgdate
+		) VALUES (
+			#{adTitle},
+			#{adEnable},
+			'0',
+			#{adImg},
+			#{adLink},
+			#{adClientName},
+			#{adClientNumber},
+			'1',
+			now(),
+			now()
+		)
+	</insert>
+	<!-- 광고수정 -->
+	<update id="updateAd" parameterType="AdmanageDTO">
+		UPDATE advertisement SET
+			adTitle = #{adTitle},
+			adEnable = #{adEnable},
+			adImg = #{adImg},
+			adLink = #{adLink},
+			adClientName = #{adClientName},
+			adClientNumber = #{adClientNumber},
+			adActive = #{adActive},
+			adChgdate = now()
+		WHERE adNo = #{adNo}
+	</update>
+	<!-- 광고 비활성 -->
+	<update id="adEnDisable" parameterType="String">
+		UPDATE advertisement SET
+			adActive = #{able},
+			adChgdate = now()
+		WHERE adNo = #{adNo}
+	</update>
+	<!-- 광고 검색 -->
+	<select id="getAdSearchList" parameterType="map" resultType="AdmanageDTO">
+		SELECT
+		adNo,adTitle,adImg,adRegdate,adActive
+		FROM
+		advertisement
+		WHERE adTitle LIKE CONCAT('%',#{adSearch},'%') and adActive LIKE CONCAT('%',#{adActive},'%')
+		ORDER BY adNo desc
+		limit #{startlist}, #{listsize}
+	</select>
+	<!-- 광고 검색 개수 -->
+	<select id="adSearchCount" parameterType="string" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM
+		advertisement
+		WHERE adTitle LIKE CONCAT('%',#{adSearch},'%')
+	</select>
+	<!-- 광고노출 총 -->
+	<select id="getAdExposeList" parameterType="string" resultType="AdmanageDTO">
+	SELECT 
+		*
+	FROM
+		advertisement
+	WHERE
+		adActive = #{adActive}
+	</select>
+	<!-- 메인 광고 1개노출 카운트  -->
+	<update id="updateMainAdExposeCountUp" parameterType="string">
+	UPDATE
+		advertisement 
+	SET 
+		adEnable = adEnable-1
+	WHERE 
+		adNo = #{adNo}
+	</update>
+	
+</mapper>

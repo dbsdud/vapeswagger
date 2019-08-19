@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poly.toba.mapper.NoticeMapper">
+	<select id="getNoticeList" parameterType="map"
+		resultType="NoticeDTO">
+		SELECT
+		noticeNo,noticeContent,noticeTitle,noticeRegdate,noticeWriter,noticeReadcount
+		FROM notice
+		WHERE noticeStatus = 1
+		ORDER BY noticeNo desc
+		limit #{pagenum},#{contentnum}
+	</select>
+	<select id="noticeTotalCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM notice
+	</select>
+	<select id="getNoticeDetail" parameterType="NoticeDTO"
+		resultType="NoticeDTO">
+		SELECT
+		*,
+		(SELECT noticeNo FROM notice WHERE <![CDATA[noticeNo < #{noticeNo}]]>
+		 AND noticeStatus =1 ORDER BY noticeNo DESC LIMIT 1) AS noticePrev,
+		(SELECT noticeNo FROM notice WHERE <![CDATA[noticeNo > #{noticeNo}]]>
+		 AND noticeStatus =1 ORDER BY noticeNo LIMIT 1) AS noticeNext
+		FROM
+		notice
+		WHERE
+		noticeNo = #{noticeNo}
+	</select>
+	<!-- 조회수 -->
+	<update id="noticeUpdateCount" parameterType="NoticeDTO">
+		UPDATE
+		notice
+		SET
+		noticeReadcount = noticeReadcount+1
+		WHERE
+		noticeNo = #{noticeNo}
+	</update>
+
+	<!-- 검색 게시물 개수 -->
+	<select id="noticeSearchTitleTotalCount" parameterType="map"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM notice WHERE
+		<if test="searchCategory.equals('title')">
+			noticeTitle LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('content')">
+			noticeContent LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('writer')">
+			noticeWriter LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		AND noticeStatus = 1
+	</select>
+	<!-- 검색 리스트 -->
+	<select id="getNoticeSearchTitleList" parameterType="map"
+		resultType="NoticeDTO">
+		SELECT
+		noticeNo,noticeContent,noticeTitle,noticeRegdate,noticeWriter,noticeReadcount
+		FROM notice where
+		<if test="searchCategory.equals('title')">
+			noticeTitle LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('content')">
+			noticeContent LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('writer')">
+			noticeWriter LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		AND noticeStatus = 1
+		ORDER BY noticeNo desc
+		limit #{pagenum},#{contentnum}
+	</select>
+	<insert id="noticeReg" parameterType="NoticeDTO">
+      INSERT INTO notice (
+      noticeTitle,
+      noticeRegdate,
+      noticeWriter,
+      noticeReadcount
+      ) VALUES (
+      #{noticeTitle},
+      NOW(),
+      #{noticeWriter},
+      0
+      )
+      <selectKey  resultType="string" keyProperty="noticeNo" order="AFTER" >
+      SELECT last_insert_id() FROM DUAL;
+      </selectKey> 
+   </insert>
+	<!-- 좋아요 기능 -->
+	<select id="noticeLikeCheck" resultType="int">
+		SELECT COUNT(*)
+		FROM noticelike
+		WHERE noticeNo=#{noticeNo} AND userNo=#{userNo}
+	</select>
+	<insert id="noticeLike" parameterType="BoardLikeDTO">
+		INSERT INTO noticelike (
+		noticeNo,
+		userNo
+		) VALUES (
+		#{noticeNo},
+		#{userNo}
+		)
+	</insert>
+	<delete id="noticeLikeDelete" parameterType="BoardLikeDTO">
+		DELETE FROM noticelike
+		WHERE noticeNo=#{noticeNo} AND userNo=#{userNo}
+	</delete>
+	<select id="noticeLikeTotalCount" resultType="int">
+		SELECT COUNT(*)
+		FROM noticelike
+		WHERE noticeNo=#{noticeNo}
+	</select>
+	<!-- 메인 리스트 뿌리기 -->
+	<select id="getMainNoticeList" resultType="NoticeDTO">
+		SELECT
+		noticeNo, noticeTitle, noticeRegdate, noticeWriter
+		FROM notice
+		WHERE noticeStatus = 1
+		ORDER BY noticeNo desc limit 5
+	</select>
+	<!-- noticeList comment 개수, 좋아요 개수 -->
+	<select id="noticePagingLikeCnt" parameterType="map"
+		resultType="NoticeDTO">
+		SELECT noticeNo,likeno FROM(
+		SELECT n.noticeNo,COUNT(1) likeno
+		FROM notice n
+		inner join noticelike nl
+		on n.noticeNo = nl.noticeNo
+		GROUP BY nl.noticeNo
+		having nl.noticeNo IN
+		<foreach collection="nLikeList" item="item" index="index"
+			open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		) v
+	</select>
+
+	<select id="commentCountList" resultType="int">
+		select count(*) from comment where noticeNo=#{noticeNo}
+	</select>
+	<select id="likeCountList" resultType="int">
+		select count(*) from noticelike where noticeNo=#{noticeNo}
+	</select>
+	<select id="getCommentCount" resultType="int">
+		select count(*) from comment where noticeNo=#{noticeNo}
+	</select>
+	<select id="getSearchCommentCount" parameterType="map"
+		resultType="int">
+		select count(*) from comment c inner join notice n on
+		c.noticeNo=n.noticeNo where n.noticeNo=#{noticeNo} and
+		<if test="searchCategory.equals('title')">
+			n.noticeTitle LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('content')">
+			n.noticeContent LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('writer')">
+			n.noticeWriter LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+	</select>
+	<select id="getSearchLikeCount" parameterType="map" resultType="int">
+		select count(*) from noticelike nl inner join notice n on
+		nl.noticeNo=n.noticeNo where n.noticeNo=#{noticeNo} and
+		<if test="searchCategory.equals('title')">
+			n.noticeTitle LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('content')">
+			n.noticeContent LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('writer')">
+			n.noticeWriter LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+	</select>
+	<update id="deleteNotice" parameterType="string">
+		update notice
+		set noticeStatus = 0
+		where noticeNo = #{noticeNo}
+	</update>
+	<update id="updateThumbnail" parameterType="NoticeDTO">
+		update notice
+		set 
+			noticeContent = #{noticeContent}
+		where noticeNo = #{noticeNo}
+	</update>
+</mapper>

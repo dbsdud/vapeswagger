@@ -1,0 +1,1259 @@
+@charset "UTF-8";
+#root {
+    font-size: 16px;
+}
+#root a{
+    text-decoration: none;
+}
+.padTop124 {
+    padding-top:124px;
+}
+
+#header-top a {
+    color: #FFFFFF;
+    font-size: 16px;
+}
+.pageNum {
+    margin-right: 7px;
+    font-size: 15px;
+    border: 1px #254F6E solid;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+.pageNum:after {
+    margin-right:7px;
+    font-size: 15px;
+    border: 1px #254F6E solid;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #254F6E;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+.pageNum:hover {
+    margin-right: 7px;
+    font-size: 15px;
+    border: 1px #254F6E solid;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #254F6E;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+.pageActive {
+    margin-right: 7px;
+    font-size: 15px;
+    border: 1px #254F6E solid;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: #254F6E;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+.searchMain {
+    padding-left: 20px;
+    height: 40px;
+    width: 100%
+}
+.padTop124 .ipCenterBanner {
+    height: 60px;
+    text-align: center;
+}
+
+.padTop124 .sponserBanner {
+    display: flex;
+    padding-left: 10px;
+    padding-right: 10px
+}
+
+.padTop124 .sponDiv {
+    width: 100%;
+}
+.padTop124 .sponDiv img {
+    width: 100%;
+}
+
+.padTop124 .sponserBanner .sponDiv1 {
+    width: 50%
+}
+
+.padTop124 .sponserBanner .sponBan1 {
+    width: 100%;
+    height: 75px;
+}
+
+.padLR {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.padTop124 .padLR .noticeTable {
+    color: rgb(37 79 110);
+    margin-bottom: 20px;
+}
+
+.padTop124 .padLR .noticeTable .noticeTableTopFlex {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: 1px solid rgb(228 228 228);
+    margin-top: 10px;
+}
+.padTop124 .padLR .noticeTable .noticeTableTopFlex .noticeTableTopFlexReg{
+    display:flex;
+    justify-content:center;
+}
+.padTop124 .padLR .noticeTable .noticeTableTopFlex .noticeTableTopFlexReg .noticeTableTopFlexRegCount {
+    padding-top: 4px;
+    color: #A1A1A1;
+    font-size: 12px;
+}
+.padTop124 .padLR .noticeTable .noticeTableTopFlex .noticeTableTopFlexReg .noticeTableTopFlexRegIn{
+    cursor:pointer;
+    background-color: rgb(35 79 110);
+    color:white;
+    padding-right:10px;
+    padding-left:10px;
+    border-radius:20px;
+    margin-right: 10px;
+}
+.padTop124 .padLR .noticeTable .noticeTableTopFlexList {
+    display: flex;
+    justify-content: space-between;
+    /* padding-top:10px; */
+    /* padding-bottom:10px; */
+}
+.padTop124 .padLR .noticeTable hr {
+    margin: 10px 0;
+}
+.padTop124 .padLR .noticeTable .noticeTableTopFlexList .noticeTableTopFlexListIn {
+    display: flex;
+    /* margin-bottom: 10px; */
+}
+
+.padTop124 .padLR .noticeTable .noticeTableTopFlexList .noticeTableTopFlexListIn .noticeTableTopFlexListIn1{
+    /* margin-bottom:20px */
+}
+.padTop124 .padLR .noticeTable .noticeTableTopFlexList .noticeTableTopFlexListIn .noticeTableTopFlexListIn2{
+    width: 25vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.padTop124 .padLR .noticeTable .noticeTableTopFlexList .noticeTableTopFlexListIn .noticeTableTopFlexListIn3{
+    padding-left: 5px;
+}
+.padTop124 .padLR .noticeTable .noticeTableTopFlexList .noticeTableTopFlexListIn .noticeTableTopFlexListIn4{
+    padding-left: 5px;
+}
+
+.padTop124 .padLR .noticeTable .noticeTableTopFlexList .noticeTableTopFlexListIn div:nth-child(1) {
+    width: 15vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.padTop124 .padLR .noticeTable .noticeTableTopFlexList .noticeTableTopFlexListIn div:nth-child(2) {
+    padding-left: 5px;
+}
+
+.padTop124 .padLR .noticeTable .noticeTableTopFlexList .noticeTableTopFlexListIn div:nth-child(3) {
+    padding-left: 5px;
+}
+
+.padTop124 .padLR .noticeTable .noticeTableContent {
+    display: flex;
+    color: black;
+}
+.extraBtn {
+    width: 20px;
+}
+.likeButton {
+    text-align: center;
+    margin: 4px;
+}
+.likeButton .likeBtn {
+    width: 50px;
+}
+.likeText {
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    color: rgb(37 79 110);
+}
+
+.backList {
+    border: solid rgb(37 79 110) 1px;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    color: rgb(37 79 110);
+}
+
+.padTop124 .padLR .commentTable {
+    color: rgb(37 79 110);
+}
+.padTop124 .padLR .commentTable .commentTableTop {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: 1px solid rgb(228 228 228);
+    border-bottom: 1px solid rgb(228 228 228);
+    margin-top: 10px;
+}
+
+.padTop124 .padLR .commentTable .commentTableContentTop {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between;
+} 
+
+.padTop124 .padLR .commentTable .commentTableContentTop .commentWriterProfile {
+    background-color: #a1a1a1;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+}
+.padTop124 .padLR .commentTable .commentTableContentTop div:nth-child(1) {
+    font-size: 14px;
+}
+
+.padTop124 .padLR .commentTable .commentTableContentTop div:nth-child(2) {
+    font-size: 12px;
+}
+
+.padTop124 .padLR .commentTable .commentTableReg {
+    border: solid black 1px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.padTop124 .padLR .commentTable .commentTableReg .commentTableRegBox {
+    width: 100%;
+    border-style: none;
+    resize: none;
+}
+.padTop124 .padLR .commentTable .commentTableReg .commentTableRegButton {
+    text-align: right;
+    margin-bottom: 10px;
+}
+.padTop124 .padLR .commentTable .commentTableReg .commentTableRegButton span {
+    background-color: rgb(35 79 110);
+    color: white;
+    padding: 10px;
+}
+
+.padTop124 .padLR .commentTable .commentTableMovePrev {
+    display: flex;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: 1px solid rgb(228 228 228);
+    border-bottom: 1px solid rgb(228 228 228);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.padTop124 .padLR .commentTable .commentTableMovePrev .prev {
+    text-align: left;
+    width: 21vw;
+}
+.padTop124 .padLR .commentTable .commentTableMovePrev .prevTitle {
+    width: 57vw;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.padTop124 .padLR .commentTable .commentTableMovePrev .prevCommentCount {
+    width: 16vw;
+    color: #ff5e00;
+    font-weight: normal;
+    text-align: right;
+}
+.padTop124 .padLR .commentTable .commentTableMoveNext {
+    display: flex;
+    width: 100%;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgb(228 228 228);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.padTop124 .padLR .commentTable .commentTableMoveNext .next {
+    text-align: left;
+    width: 21vw;
+}
+.padTop124 .padLR .commentTable .commentTableMoveNext .nextTitle {
+    width: 57vw;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.padTop124 .padLR .commentTable .commentTableMoveNext .nextCommentCount {
+    width: 16vw;
+    color: #ff5e00;
+    font-weight: normal;
+    text-align: right;
+}
+
+/* .padTop124 .padLR .commentTable .commentTableMoveNext div:nth-child(1) {
+    flex: 1;
+    margin-right: 10px;
+    font-size: 12px;
+    padding-top: 2px;
+    float: left;
+}
+.padTop124 .padLR .commentTable .commentTableMoveNext div:nth-child(2) {
+    flex: 6;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.padTop124 .padLR .commentTable .commentTableMoveNext div:nth-child(3) {
+    flex: 1;
+    margin-left: 10px;
+    text-align: right;
+} */
+/* .padTop124 .padLR .boardTable {
+    height: 150px;
+} */
+
+/* extraWin */
+.extraWin {
+    border: 1px solid #a1a1a1;
+    padding: 16px;
+    background-color: #254F6E;
+    color: #FFFFFF;
+}
+.extraWinRecom {
+    border: 1px solid #a1a1a1;
+    padding: 16px;
+    background-color: #254F6E;
+    color: #FFFFFF;
+}
+.padLR .noticeTable .noticeTableTitle #noticeExtraWin {
+    border: 1px solid #a1a1a1;
+    padding: 16px;
+    background-color: #254F6E;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+/*TOP*/
+/* new */
+#mainSidebar .sidebarX {
+    position: absolute;
+    left: 95%;
+}
+#mainSidebar .sideBarTop {
+    /* display: flex; */
+}
+#mainSidebar .sideBarTop .sideBarTopTitle {
+    width: 100%;
+    background: #254F6E;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+#mainSidebar .sideBarTop .sideBarTopBody {
+    display: flex;
+}
+#mainSidebar .sideBarTop .sideBarTopBody .sideBarTopLogin {
+    width: 50%;
+    background: #A9DBEA;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: bold;
+}
+#mainSidebar .sideBarTop .sideBarTopBody .sideBarTopJoin {
+    width: 50%;
+    background: #EABCA9;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: bold;
+}
+#mainSidebar .sideBarBody {
+    height: auto;
+}
+#mainSidebar .sideBarBody .sideBarMenu {
+    height: auto;
+    padding: 20px;
+}
+#mainSidebar .sideBarBody .sideBarMenu .sideBarMenuTitle {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid rgb(228 228 228);
+    border-bottom: 2px dotted rgb(228 228 228);
+    border-color: #254F6E;
+    padding: 8px;
+    color: #254F6E;
+    font-weight: bold;
+}
+#mainSidebar .sideBarBody .sideBarMenu .sideBarMenuTitle font {
+    font-weight: normal;
+    font-size: 12px;
+    margin: 2px;
+}
+#mainSidebar .sideBarBody .sideBarMenu .divBoxGroup {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+#mainSidebar .sideBarBody .sideBarMenu .divBoxGroup .divBox {
+    border: 1px solid #254F6E;
+    margin: 10px auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    width: 80%;
+    font-weight: bold;
+}
+
+/* noticeList */
+
+
+/*footer*/
+
+.mainFooter {
+    width: 100%;
+    background-color: #f1f1f1!important;
+    position: sticky;
+    padding-top:  30px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    background-color: rgb(37 79 110)!important;
+    margin-top: 20px;
+}
+
+.mainFooter .mainFooterTop {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    color: #C4C4C4;
+}
+
+.mainFooter .mainFooterBottom {
+    color: white;
+    text-align: center;
+}
+
+/* Login */
+.padTop124 .padLR .loginBody {
+    width: 100%;
+    height: auto;
+}
+.padTop124 .padLR .loginBody .loginBodyForm {
+    display: flex;
+    height: auto;
+}
+.padTop124 .padLR .loginBody .loginBodyForm .infoInput {
+    height: auto;
+    width: 100%;
+}
+.padTop124 .padLR .loginBody .loginBodyForm .infoInput .idInput {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 10px;
+    color: #A1A1A1;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    padding-left: 20px;
+}
+.padTop124 .padLR .loginBody .loginBodyForm .infoInput .pwInput {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 18px;
+    color: #A1A1A1;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    padding-left: 20px;
+}
+.padTop124 .padLR .loginBody .loginBodyForm .infoInput .loginButton {
+    height: 40px;
+    background: #254F6E;
+    text-align: center;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+}
+.padTop124 .padLR .loginBody hr {
+    display: flex;
+    width: 100%;
+    border: 1px solid #C4C4C4;
+    margin-bottom: 4px;
+}
+.padTop124 .padLR .loginBody .loginFooter {
+    display: flex;
+    justify-content: space-around;
+    font-size: 12px;
+    color: #3D3D3D;
+    margin-bottom: 50px;
+}
+.sponBanner {
+    width: 100%;
+    height: 90px;
+    background: #F2C1C1;
+    margin-bottom: 50px;
+}
+
+/* findId */
+.padTop124 .padLR .findIdBody {
+    width: 100%;
+    height: auto;
+}
+.padTop124 .padLR .findIdBody .findIdBodyTop {
+    width: 100%;
+}
+.padTop124 .padLR .findIdBody .findIdBodyTop h5 {
+    color: #254F6E;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.padTop124 .padLR .findIdBody .findIdBodyTop .findIdBodyTopContent {
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    background: #DFE8EF;
+    font-size: 12px;
+}
+.padTop124 .padLR .findIdBody .findIdBodyTop .findIdBodyTopContent font {
+    color: #254F6E;
+    font-weight: bold;
+}
+.padTop124 .padLR .findIdBody .findIdBodyForm {
+    display: flex;
+    height: auto;
+}
+.padTop124 .padLR .findIdBody .findIdBodyForm .infoInput {
+    height: auto;
+    width: 100%;
+}
+.padTop124 .padLR .findIdBody .findIdBodyForm .infoInput .nameInput {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 10px;
+    color: #A1A1A1;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    padding-left: 20px;
+}
+.padTop124 .padLR .findIdBody .findIdBodyForm .infoInput .emailInput {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 18px;
+    color: #A1A1A1;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    padding-left: 20px;
+}
+.padTop124 .padLR .findIdBody .findIdBodyForm .infoInput .confirmButton {
+    height: 40px;
+    background: #FFFFFF;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 100px;
+    color: #254F6E;
+    font-weight: bold;
+    border: 1px solid #254F6E;
+    box-sizing: border-box;
+}
+/* findPw */
+.padTop124 .padLR .findPwBody {
+    width: 100%;
+    height: auto;
+}
+.padTop124 .padLR .findPwBody .findPwBodyTop {
+    width: 100%;
+}
+.padTop124 .padLR .findPwBody .findPwBodyTop h5 {
+    color: #254F6E;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.padTop124 .padLR .findPwBody .findPwBodyTop .findPwBodyTopContent {
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 20px;
+    background: #DFE8EF;
+    font-size: 12px;
+}
+.padTop124 .padLR .findPwBody .findPwBodyTop .findPwBodyTopContent font:nth-child(1) {
+    color: #254F6E;
+    font-weight: bold;
+}
+.padTop124 .padLR .findPwBody .findPwBodyTop .findPwBodyTopContent font:nth-child(2) {
+    color: #FF0000;
+    font-weight: bold;
+}
+.padTop124 .padLR .findPwBody .findPwBodyForm {
+    display: flex;
+    height: auto;
+}
+.padTop124 .padLR .findPwBody .findPwBodyForm .infoInput {
+    height: auto;
+    width: 100%;
+}
+.padTop124 .padLR .findPwBody .findPwBodyForm .infoInput .idInput {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 10px;
+    color: #A1A1A1;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    padding-left: 20px;
+}
+.padTop124 .padLR .findPwBody .findPwBodyForm .infoInput .nameInput {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 10px;
+    color: #A1A1A1;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    padding-left: 20px;
+}
+.padTop124 .padLR .findPwBody .findPwBodyForm .infoInput .emailInput {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 18px;
+    color: #A1A1A1;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    padding-left: 20px;
+}
+.padTop124 .padLR .findPwBody .findPwBodyForm .infoInput .confirmButton {
+    height: 40px;
+    background: #FFFFFF;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 100px;
+    color: #254F6E;
+    font-weight: bold;
+    border: 1px solid #254F6E;
+    box-sizing: border-box;
+}
+/* join */
+.padTop124 .padLR .joinBody {
+    height: auto;
+}
+.padTop124 .padLR .joinBody .joinBodyTitle {
+    font-weight: bold;
+    color: #254F6E;
+}
+.padTop124 .padLR .joinBody .joinBodyContent {
+    height: auto;
+}
+.padTop124 .padLR .joinBody .joinFooter {
+    height: 40px;
+    background: #FFFFFF;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 100px;
+    color: red;
+    font-weight: bold;
+    border: 1px solid red;
+    box-sizing: border-box;
+}
+
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentDiv .joinIdConfirm {
+    display: flex;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentDiv .joinIdConfirm .joinIdConfirmButoon {
+    width: 100%;
+    text-align: center;
+    height: 40px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #254F6E;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentDiv .joinConfirmStatus {
+    display: flex;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentDiv .joinConfirmStatus #joinIdConfirmDeniedButton {
+    width: 100%;
+    text-align: center;
+    height: 40px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #FFFFFF;
+    color: red;
+    border: 1px solid red;
+    font-weight: bold;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentDiv .joinConfirmStatus #joinIdConfirmSuccessButton {
+    width: 100%;
+    text-align: center;
+    height: 40px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #FFFFFF;
+    color: green;
+    border: 1px solid green;
+    font-weight: bold;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentDiv .joinConfirmStatus #joinNickConfirmDeniedButton {
+    width: 100%;
+    text-align: center;
+    height: 40px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #FFFFFF;
+    color: red;
+    border: 1px solid red;
+    font-weight: bold;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentDiv .joinConfirmStatus #joinNickConfirmSuccessButton {
+    width: 100%;
+    text-align: center;
+    height: 40px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #FFFFFF;
+    color: green;
+    border: 1px solid green;
+    font-weight: bold;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentGroup {
+    height: auto;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentGroup .joinBodyContentGroupBox {
+    height: auto;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentGroup .joinBodyContentGroupBox .joinBodyContentGroupBoxDiv {
+    padding: 10px;
+    background-color: #DFE8EF;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentGroup .joinBodyContentGroupBox .joinBodyContentGroupBoxDiv font:nth-child(1) {
+    font-weight: bold;
+    font-size: 12px;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentGroup .joinBodyContentGroupBox .joinBodyContentGroupBoxDiv font:nth-child(2) {
+    font-size: 10px;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentGroup .joinBodyContentGroupBox .joinBodyContentGroupBoxChk {
+    padding: 10px;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentGroup .joinBodyContentGroupBox .joinBodyContentGroupBoxChk font {
+    font-weight: bold;
+    font-size: 12px;
+    padding-left: 4px;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentGroup .joinBodyContentGroupBox .joinBodyContentGroupBoxChk input {
+    color: #A1A1A1;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    padding-left: 20px;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentDiv {
+    height: auto;
+    margin-bottom: 10px;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentDiv input {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    color: #A1A1A1;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    padding-left: 20px;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentDiv font {
+    font-size: 10px;
+}
+.joinDenied {
+    color: red;
+}
+.joinSuccess {
+    color: green;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentInfo {
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    background-color: #DFE8EF;
+    font-size: 10px;
+}
+.padTop124 .padLR .joinBody .joinBodyContent .joinBodyContentAuth .auth {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    color: #A1A1A1;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+.confirmButton {
+    height: 40px;
+    background: #FFFFFF;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 60px;
+    color: #254F6E;
+    font-weight: bold;
+    border: 1px solid #254F6E;
+    box-sizing: border-box;
+}
+.deniedButton {
+    height: 40px;
+    background: #FFFFFF;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 40px;
+    color: red;
+    font-weight: bold;
+    border: 1px solid red;
+    box-sizing: border-box;
+}
+.successButton {
+    height: 40px;
+    background: #FFFFFF;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 40px;
+    color: green;
+    font-weight: bold;
+    border: 1px solid green;
+    box-sizing: border-box;
+}
+/* 마이페이지 */
+.padTop124 .padLR .profileImageDiv {
+    text-align: center;
+    vertical-align: middle;
+    margin: auto;
+    margin-top: 14px;
+    margin-bottom: 14px;
+}
+.padTop124 .padLR .profileImageDiv .profileImage {
+    background-color: #A1A1A1;
+    border-radius: 100%;
+    width: 70px;
+    height: 70px;
+}
+.padTop124 .padLR .profileImageDiv .profileImageOrin {
+    background-color: #A1A1A1;
+    border-radius: 100%;
+    width: 70px;
+    height: 70px;
+    display: inline;
+}
+.padTop124 .padLR .profileImageDiv .profileImageNew {
+    background-color: #A1A1A1;
+    border-radius: 100%;
+    width: 70px;
+    height: 70px;
+    display: none;
+}
+.padTop124 .padLR .profileUpload {
+    text-align: center;
+    margin-bottom: 16px;
+}
+.padTop124 .padLR .profileUpload label{
+    display: inline-block;
+    padding: .5em .75em;
+    color: #fff;
+    font-size: inherit;
+    line-height: normal;
+    vertical-align: middle;
+    background-color: #5cb85c;
+    cursor: pointer;
+    border: 1px solid #4cae4c;
+    border-radius: .25em;
+    -webkit-transition: background-color 0.2s;
+    transition: background-color 0.2s;
+}
+.padTop124 .padLR .profileUpload label:hover{
+    background-color: #6ed36e;
+}
+.padTop124 .padLR .profileUpload label:active{
+    background-color: #367c36;
+}
+.padTop124 .padLR .profileUpload input[type="file"]{
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+.padTop124 .padLR .profileUpload .chgDefault {
+    display: inline-block;
+    padding: .5em .75em;
+    color: #5cb85c;
+    font-size: inherit;
+    font-weight: bold;
+    line-height: normal;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid #4cae4c;
+    border-radius: .25em;
+    margin-bottom: 5px;
+}
+.padTop124 .padLR .profileName {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.padTop124 .padLR .myPageContent {
+    height: auto;
+    margin-bottom: 20px;
+}
+.padTop124 .padLR .myPageContent .myPageContentTitle {
+    font-weight: bold;
+    color: #254F6E;
+}
+.padTop124 .padLR .myPageContent input {
+    display: flex;
+    width: 100%;
+    height: 40px;
+    color: #A1A1A1;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    padding-left: 20px;
+    margin-bottom: 12px;
+}
+.padTop124 .padLR .myPageContent #joinNickConfirmSuccessButton {
+    width: 100%;
+    text-align: center;
+    height: 40px;
+    padding: 10px;
+    margin-bottom: 12px;
+    background-color: #FFFFFF;
+    color: green;
+    border: 1px solid green;
+    font-weight: bold;
+}
+.padTop124 .padLR .myPageContent #joinNickConfirmDeniedButton {
+    width: 100%;
+    text-align: center;
+    height: 40px;
+    padding: 10px;
+    margin-bottom: 12px;
+    background-color: #FFFFFF;
+    color: red;
+    border: 1px solid red;
+    font-weight: bold;
+}
+.padTop124 .padLR .myPageContent #joinNickNotChangeButton {
+    width: 100%;
+    text-align: center;
+    height: 40px;
+    padding: 10px;
+    margin-bottom: 12px;
+    background-color: #FFFFFF;
+    color: red;
+    border: 1px solid red;
+    font-weight: bold;
+}
+.padTop124 .padLR .myPageContent .confirmButton {
+    height: 40px;
+    background: #254F6E;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 12px;
+    color: #ffffff;
+    font-weight: bold;
+    border: 1px solid #254F6E;
+    box-sizing: border-box;
+}
+.padTop124 .padLR .myPageMenu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.padTop124 .padLR .myPageMenu .myPageMenuBox {
+    border: 1px solid #254F6E;
+    margin: 10px auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    width: 80%;
+    font-weight: bold;   
+}
+
+/* board */
+.titleDiv {
+    font-weight: bold;
+    color: #254F6E;
+    margin-bottom: 20px;
+}
+.padTop124 .padLR .boardRegDiv {
+    height: auto;
+    margin-bottom: 10px;
+}
+.padTop124 .padLR .boardRegDiv input {
+    width: 100%;
+    height: 40px;
+    color: #000000;
+    border: none;
+    border-bottom: 1px solid #A1A1A1;
+    box-sizing: border-box;
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+.padTop124 .padLR .boardRegDiv .editorDiv {
+    margin-bottom: 20px;
+}
+
+/*검색 css*/
+.padLR .noticeTable .noticeSearchDiv{
+    display: flex
+}
+.padLR .noticeTable .noticeSearchDiv .searchItem{
+    border-radius: 20px;
+    background-color: #e4eaec;
+    padding-top:9px;
+    padding-bottom: 9px;
+    padding-left: 12px;
+    padding-right: 12px;
+    width:100%;
+    border:none;
+    opacity: 0.45;
+}
+.padLR .noticeTable .noticeSearchDiv .searchItem::placeholder{
+    background-image: url('/reactfe/src/images/notice/searchLenz.png');
+    background-repeat: no-repeat;
+    background-position: 15px;
+    font-size: 14px;
+    line-height: 19px;
+    letter-spacing:-0.7px;
+    color:#939393;
+    text-align: left;
+    padding-top: 3px;
+}
+.padLR .noticeTable .noticeSearchDiv .fa-search {
+    font-size: 20px;
+    padding-top: 9px;
+    margin-left: 10px;
+}
+/*답글 css*/
+.padTop124 .padLR .commentTable .recommentTableReg {
+    border: solid black 1px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+.padTop124 .padLR .commentTable .recommentTableReg .commentTableRegBox {
+    width: 100%;
+    border-style: none;
+    resize: none;
+}
+.padTop124 .padLR .commentTable .recommentTableReg .commentTableRegButton {
+    text-align: right;
+    margin-bottom: 10px;
+}
+.padTop124 .padLR .commentTable .recommentTableReg .commentTableRegButton span {
+    background-color: rgb(35 79 110);
+    color: white;
+    padding: 10px;
+}
+
+/* editor */
+.padTop124 .padLR .noticeTable .noticeTableContent .quill {
+    width: 100%;
+}
+.padTop124 .padLR .boardRegDiv .editorDiv .quill .ql-snow .ql-editor {
+    min-height: 30vh;
+}
+.padTop124 .padLR .commentTable .commentTableReg .quill .ql-container .ql-editor {
+    min-height: 100px;
+}
+.padTop124 .padLR .commentTable .commentTableContentBody .quill .ql-container .ql-editor{
+    min-height: 50px;
+    padding-top: 0px;
+}
+.padTop124 .padLR .commentTable .recommentListClass {
+    width: 100%;
+    height: auto;
+}
+.padTop124 .padLR .commentTable .recommentListClass .quill .ql-container .ql-editor{
+    min-height: 50px;
+    padding-top: 0px;
+    margin-top: 10px;
+}
+/* main */
+.noticeTable .mainNoticeList {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #F8F8F8;
+}
+.noticeTable .mainNoticeList .mainNoticeListTitle {
+    display: flex;
+    width: 80%;
+}
+.noticeTable .mainNoticeList .mainNoticeListTitle .mainNoticeListTitleText {
+    width: auto;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 2px 0px 2px;
+}
+.noticeTable .mainNoticeList .mainNoticeListTitle .mainNoticeListEtc {
+    display: flex;
+    width: 25%;
+}
+.noticeTable .mainNoticeList .mainNoticeListTitle .mainNoticeListEtc .mainNoticeListCommentCount {
+    color: #ff5e00;
+    font-weight: normal;
+    width: 18vw;
+}
+.noticeTable .mainNoticeList .mainNoticeListRegdate {
+    width: 13vw;
+    text-align: right;
+}
+.padTop124 .padLR .noticeTable .noticeTableTopFlex .boardTitle {
+    color: #000000;
+    font-weight: bolder;
+    font-size: 18px;
+}
+.padTop124 .padLR .noticeTable .noticeTableTopFlex .moreButton {
+    color: #A1A1A1;
+    font-size: 14px;
+}
+/* notice */
+.noticeTable .titleArea {
+    display: flex;
+    width: 100%;
+    font-size: 16px;
+}
+.noticeTable .titleArea img {
+    height: 11px;
+    margin-top: 6px;
+    vertical-align: middle;
+}
+.noticeTable .titleArea .titleAreaText {
+    width: 90vw;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.noticeTable .titleArea .titleAreaCommentCount {
+    color: #ff5e00;
+    font-weight: normal;
+    justify-content: flex-start;
+}
+.noticeTable .infoArea {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #A1A1A1;
+    font-size: 11px;
+    font-weight: lighter;
+}
+.noticeTable .infoArea span {
+    margin-right: 14px;
+}
+.noticeTable .noticeTableTitle {
+    display: flex;
+    color: #000000;
+    font-size: 16px;
+    font-weight: bold;
+    border-top: 1px solid #f1f1f1;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    justify-content: space-between;
+}
+.noticeSearchDiv .selectCategory {
+    height: 36px;
+    border: none;
+    background-color: transparent;
+    font-size: 14px;
+    padding-top: 9px;
+}
+/**/
+.gridList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+.imageBoardScroll{
+    width:100%;
+    overflow-x:scroll;
+    white-space:nowrap;
+    margin:0 auto;
+    display:flex
+}
+.imageBoardScroll div .imageBoardArrayListIn{
+    width:25vw;
+    height:25vw;
+    margin-right:20px
+}
+.imageBoardScroll div .imageBoardArrayDetail{
+    width:25vw;
+    font-size:12px
+}
+.imageBoardScroll div .imageBoardArrayDetail .imageBoardTitle{
+    width: 25vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.imgInstaUserImg{
+    background-color: #a1a1a1;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+}
+/*이미지 리스트 안에있는 픽셀지정*/
+.MuiGridListTile-tile a img{
+    width:100%;
+    height: 100%;
+} 
+/*375 px 이하*/
+
+@media(max-width:375px) {
+    .mainFooter .mainFooterTop {
+        font-size: 11px
+    }
+    .mainFooter .mainFooterBottom {
+        font-size: 11px
+    }
+}
+
+@media(min-width:376px) and (max-width:767px) {
+    .mainFooter .mainFooterTop {
+        font-size: 13px
+    }
+    .mainFooter .mainFooterBottom {
+        font-size: 13px
+    }
+}
+/*이미지 게시판 폰트 크기 추가*/
+@media(min-width:768px){
+    .imageBoardScroll div .imageBoardArrayDetail{
+        font-size:14px
+    }
+    .imageGalWidth{
+        width:80%;
+        margin:0 auto
+    }
+}
+@media(min-width:1024px){
+    .imageBoardScroll div .imageBoardArrayDetail{
+        font-size:18px
+    }
+}

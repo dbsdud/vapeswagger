@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poly.toba.mapper.CommentMapper">
+	<select id="getCommentList" parameterType="map"
+		resultType="CommentDTO">
+		SELECT *
+		FROM comment c INNER JOIN user u
+		ON c.commentWriter=u.userNickName
+		WHERE noticeNo = #{noticeNo}
+		ORDER BY commentNo desc
+		limit #{pagenum},#{contentnum}
+	</select>
+	<select id="commentListTotalCount" parameterType="CommentDTO"
+		resultType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM
+		comment
+		WHERE
+		noticeNo = #{noticeNo}
+	</select>
+	<insert id="insertComment" parameterType="CommentDTO">
+		INSERT INTO
+		comment
+		(
+		commentContent,
+		commentRegdate,
+		noticeNo,
+		userNo,
+		commentWriter
+		)
+		VALUES
+		(
+		#{commentContent},
+		now(),
+		#{noticeNo},
+		#{userNo},
+		#{commentWriter}
+		)
+	</insert>
+	<select id="recommentListTotalCount" parameterType="map"
+		resultType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM
+		recomment
+		WHERE
+		noticeNo = #{noticeNo} AND commentNo = #{commentNo}
+	</select>
+	<select id="getRecommentList" parameterType="map"
+		resultType="RecommentDTO">
+		SELECT *
+		FROM recomment re INNER JOIN user u
+		ON re.recommentWriter=u.userNickName
+		WHERE noticeNo = #{noticeNo} and commentNo = #{commentno}
+		ORDER BY recommentNo desc
+		limit #{pagenum},#{contentnum}
+	</select>
+	<insert id="insertRecomment" parameterType="RecommentDTO">
+		INSERT INTO
+		recomment
+		(
+		recommentContent,
+		recommentRegdate,
+		noticeNo,
+		userNo,
+		recommentWriter,
+		commentNo
+		)
+		VALUES
+		(
+		#{recommentContent},
+		now(),
+		#{noticeNo},
+		#{userNo},
+		#{recommentWriter},
+		#{commentNo}
+		)
+	</insert>
+	<delete id="deleteComment" parameterType="string">
+		DELETE
+		FROM comment
+		WHERE commentNo = #{commentNo}
+	</delete>
+	<delete id="deleteRecomment" parameterType="string">
+		DELETE
+		FROM recomment
+		WHERE commentNo = #{commentNo}
+	</delete>
+	<delete id="deleteRecommentSel" parameterType="string">
+		DELETE
+		FROM recomment
+		WHERE recommentNo = #{recommentNo}
+	</delete>
+	<select id="likeCheck" parameterType="LikeDTO"
+		resultType="LikeDTO">
+		SELECT *
+		FROM likeup
+		WHERE commentNo = #{commentNo} AND userNo = #{userNo} AND noticeNo =
+		#{noticeNo} AND likeCheck= #{likeCheck}
+	</select>
+	<insert id="likeUp" parameterType="LikeDTO">
+		INSERT
+		INTO likeup
+		(
+		userNo,
+		noticeNo,
+		commentNo,
+		likeCheck
+		)
+		VALUES
+		(
+		#{userNo},
+		#{noticeNo},
+		#{commentNo},
+		#{likeCheck}
+		)
+	</insert>
+	<delete id="likeDown" parameterType="LikeDTO">
+		DELETE
+		FROM likeup
+		WHERE userNo = #{userNo} AND commentNo=#{commentNo} AND noticeNo =
+		#{noticeNo}
+	</delete>
+	<select id="likeCommentCount" parameterType="LikeDTO"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM likeup
+		WHERE commentNo = #{commentNo} AND noticeNo = #{noticeNo} AND likeCheck=
+		#{likeCheck}
+	</select>
+	<!-- 페이징별 좋아요 개수 -->
+	<select id="pagingLikeCnt" parameterType="map"
+		resultType="CommentDTO">
+		SELECT commentNo,likeUpCnt,userNo
+		FROM(
+		SELECT commentNo,COUNT(1) likeUpCnt,userNo
+		FROM likeup
+		GROUP BY commentNo
+		having commentNo IN
+		<foreach collection="cLikeList" item="item" index="index"
+			open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		) v
+	</select>
+	<!-- 댓글 개수 -->
+	<select id="commentCount" resultType="int">
+		select count(*) from comment where noticeNo=#{noticeNo};
+	</select>
+	<select id="getContent" resultType="string"> 
+		select commentContent 
+		from comment 
+		where noticeNo=#{noticeNo} and commentNo=#{commentNo} 
+	</select>
+	<select id="getRecomContent" resultType="string">
+		select recommentContent 
+		from recomment
+		where noticeNo=#{noticeNo} and commentNo=#{commentNo} and recommentNo=#{recommentNo}
+	</select>
+	<!-- 프사 가져오기 -->
+	<select id="getProfileImg" resultType="string">
+		select userProfilePath from user where userNickName=#{commentWriter}; 
+	</select>
+	<update id="commentUpd" parameterType="CommentDTO">
+		update comment
+		set commentContent=#{commentContent}
+		where noticeNo=#{noticeNo} and commentNo=#{commentNo}
+	</update>
+	<update id="recommentUpd" parameterType="RecommentDTO">
+		update recomment
+		set recommentContent=#{recommentContent}
+		where noticeNo=#{noticeNo} and commentNo=#{commentNo} and recommentNo=#{recommentNo}
+	</update>
+</mapper>

@@ -1,0 +1,337 @@
+@charset "UTF-8";
+body {
+    margin: 0;
+}
+.adminJumbotron {
+    min-height: calc(78vh - 18px);
+    padding: 12% 0;
+    margin: 3px;
+    background-color: #fff;
+}
+
+.adminBody-footer {
+    min-height: calc(78vh - 18px);
+}
+
+
+a:focus, a:hover {
+    color: #254F6E;
+    font-weight: bold;
+    background-color: unset !important;
+}
+
+.adminBtn {
+    margin-right: 10px;
+}
+
+.adminShadow-custom {
+    padding-bottom: 20px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.adminMenu {
+    text-align: center;
+}
+
+.adminMain-menu {
+    text-align: center;
+    min-height: 380px;
+}
+
+.adminLnb {
+    background-color: #254F6E;
+}
+
+.adminLnb-sub {
+    padding: 10px 0px;
+    background-color: #fff;
+    border-bottom: 1px solid #254F6E;
+}
+
+.adminLnb-sub a {
+    border-right: 1px solid #000;
+    padding-right: 10px;
+    padding-left: 10px;
+    color: #000 !important;
+}
+
+.adminLnb-sub .adminActive {
+    color: #254F6E !important;
+    font-weight: bold;
+}
+.adminMenu .adminActive {
+    color: #fff;
+    font-weight: bold;
+}
+.adminMenu h4 {
+    color:#cccccca2;
+}
+
+.adminSelect {
+    width: 12%;
+}
+
+.adminNavbar {
+    background-color: #254F6E !important;
+    color: #fff;
+    margin-bottom: 0px;
+    border-radius: 0px;
+}
+
+.adminNavbar a {
+    color: #fff;
+}
+
+.adminNavbar .adminRow {
+    background-color: #fff;
+}
+
+.adminDisplay-addr {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 0px;
+    top: 0px;
+}
+
+.adminTbody>img {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.adminControl-label {
+    text-align: center !important;
+}
+
+.adminContainer-fluid {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.adminNavbar-left {
+    width:50px;
+    height:50px
+}
+
+.adminThead {
+    background-color: #254F6E11;
+}
+.adminThead:before {
+    display: inline-block;
+    width: 1px; 
+    height: 100%;
+    margin-right: 0; 
+    vertical-align: middle;
+}
+
+.adminFooter {
+    width: 100%;
+    height: 7vh;
+    padding-top: 20px;
+    background-color: #254F6E;
+    color: #fff;
+}
+
+.adminFooter > .adminContainer {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+/* toggle */
+ .adminReact-label {
+    padding-left: 0px !important;
+    display: inline-flex;
+    margin-bottom: 0px;
+}
+.adminReact-toggle {
+    touch-action: pan-x;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.adminReact-toggle-screenreader-only {
+border: 0;
+clip: rect(0 0 0 0);
+height: 1px;
+margin: -1px;
+overflow: hidden;
+padding: 0;
+position: absolute;
+width: 1px;
+}
+
+.adminReact-toggle--disabled {
+cursor: not-allowed;
+opacity: 0.5;
+-webkit-transition: opacity 0.25s;
+transition: opacity 0.25s;
+}
+
+.adminReact-toggle-track {
+width: 50px;
+height: 24px;
+padding: 0;
+border-radius: 30px;
+background-color: #4D4D4D;
+-webkit-transition: all 0.2s ease;
+-moz-transition: all 0.2s ease;
+transition: all 0.2s ease;
+}
+
+.adminReact-toggle:hover:not(.adminReact-toggle--disabled) .adminReact-toggle-track {
+background-color: #000000;
+}
+
+.adminReact-toggle--checked .adminReact-toggle-track {
+background-color: #19AB27;
+}
+
+.adminReact-toggle--checked:hover:not(.adminReact-toggle--disabled) .adminReact-toggle-track {
+background-color: #128D15;
+}
+
+.adminReact-toggle-track-check {
+position: absolute;
+width: 14px;
+height: 10px;
+top: 0px;
+bottom: 0px;
+margin-top: auto;
+margin-bottom: auto;
+line-height: 0;
+left: 8px;
+opacity: 0;
+-webkit-transition: opacity 0.25s ease;
+-moz-transition: opacity 0.25s ease;
+transition: opacity 0.25s ease;
+}
+
+.adminReact-toggle--checked .adminReact-toggle-track-check {
+opacity: 1;
+-webkit-transition: opacity 0.25s ease;
+-moz-transition: opacity 0.25s ease;
+transition: opacity 0.25s ease;
+}
+
+.adminReact-toggle-track-x {
+position: absolute;
+width: 10px;
+height: 10px;
+top: 0px;
+bottom: 0px;
+margin-top: auto;
+margin-bottom: auto;
+line-height: 0;
+right: 10px;
+opacity: 1;
+-webkit-transition: opacity 0.25s ease;
+-moz-transition: opacity 0.25s ease;
+transition: opacity 0.25s ease;
+}
+
+.adminReact-toggle--checked .adminReact-toggle-track-x {
+opacity: 0;
+}
+
+.adminReact-toggle-thumb {
+transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+position: absolute;
+top: 1px;
+left: 1px;
+width: 22px;
+height: 22px;
+border: 1px solid #4D4D4D;
+border-radius: 50%;
+background-color: #FAFAFA;
+
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+
+-webkit-transition: all 0.25s ease;
+-moz-transition: all 0.25s ease;
+transition: all 0.25s ease;
+}
+
+.adminReact-toggle--checked .adminReact-toggle-thumb {
+left: 27px;
+border-color: #19AB27;
+}
+
+.adminImgPreview {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.adminAlertDanger {
+    height: 52px;
+    margin-bottom: 20px;
+}
+
+.adminMargin-left {
+    margin-left: 16.66666667%;
+}
+
+input[type="checkbox"] + label {
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    margin: 0px;
+    border: 2px solid #254F6E;
+    cursor: pointer;
+}
+input[type="checkbox"]:checked + label {
+    background-color: #254F6E;
+}
+input[type="checkbox"] {
+    display: none;
+}
+.adminEnable {
+    display: inline-block;
+    position:absolute;
+    left:0px;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: #254F6E;
+    border-radius: 10px;
+}
+.adminDisable {
+    display: inline-block;
+    position:absolute;
+    left:0px;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: #777;
+    border-radius: 10px;
+}

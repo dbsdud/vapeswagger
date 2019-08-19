@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poly.toba.mapper.VisitorMapper">
+  <select id="getVisitorCheck" parameterType="VisitorDTO" resultType="java.lang.Integer">
+  	SELECT COUNT(*)
+  	FROM visitor
+  	WHERE visitorStaticIp = #{visitorStaticIp} 
+  	AND visitorIpaddr = #{visitorIpaddr}  
+  	AND 
+  	  <![CDATA[
+       visitorTime >= #{todayDate} AND visitorTime < DATE_ADD(#{todayDate}, INTERVAL 1 DAY)
+     ]]>
+  </select>
+  <insert id="insertVisitor" parameterType="VisitorDTO">
+  	INSERT INTO
+  	visitor
+  	(
+  		visitorStaticIp,
+  		visitorIpaddr,
+  		visitorTime
+  	)
+  	VALUES 
+  	(
+  		#{visitorStaticIp},
+  		#{visitorIpaddr},
+  		now()
+  	)
+  	
+  </insert>
+  <select id="getTotalVisitor" parameterType="VisitorDTO" resultType="java.lang.Integer">
+    SELECT COUNT(*)
+  	FROM visitor
+  	WHERE 
+  	  <![CDATA[
+       visitorTime >= #{todayDate} AND visitorTime < DATE_ADD(#{todayDate}, INTERVAL 1 DAY)
+     ]]>
+  </select>
+</mapper>
