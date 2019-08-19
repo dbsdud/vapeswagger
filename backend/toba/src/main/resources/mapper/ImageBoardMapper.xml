@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poly.toba.mapper.ImageBoardMapper">
+	<!-- 메인 리스트 뿌리기 -->
+	<select id="getMainImgBoardList" resultType="ImageBoardDTO">
+		SELECT 
+		imageBoardNo, imageBoardTitle,imageBoardContent,imageBoardRegdate, imageBoardWriter,imageBoardReadcount
+		FROM imageboard
+		WHERE imageBoardStatus = 1
+		ORDER BY imageBoardNo desc limit 5
+	</select>
+	<select id="imageBoardTotalCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM imageboard
+	</select>
+	<select id="getImageBoardList" parameterType="map"
+		resultType="ImageBoardDTO">
+		SELECT
+		imageBoardNo, imageBoardTitle,imageBoardContent,imageBoardRegdate, imageBoardWriter,imageBoardReadcount
+		FROM imageboard
+		WHERE imageBoardStatus = 1
+		ORDER BY imageBoardNo desc
+		limit #{pagenum},#{contentnum}
+	</select>
+	<select id="imageBoardCommentCountList" parameterType="int" resultType="int">
+		select count(*) from imageboardcomment where imageBoardNo=#{imageBoardNo}
+	</select>
+	<select id="likeCountList" parameterType="int" resultType="int">
+		select count(*) from imageBoardLike where imageBoardNo=#{imageBoardNo}
+	</select>
+	<!-- 검색 리스트 -->
+	<select id="getImageBoardSearchTitleList" parameterType="map"
+		resultType="ImageBoardDTO">
+		SELECT
+		imageBoardNo, imageBoardTitle,imageBoardContent,imageBoardRegdate, imageBoardWriter,imageBoardReadcount
+		FROM imageboard where
+		<if test="searchCategory.equals('title')">
+			imageBoardTitle LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('content')">
+			imageBoardContent LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('writer')">
+			imageBoardWriter LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		AND imageBoardStatus = 1
+		ORDER BY imageBoardNo desc
+		limit #{pagenum},#{contentnum}
+	</select>
+	<!-- 검색 게시물 개수 -->
+	<select id="imageBoardSearchTitleTotalCount" parameterType="map"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM imageboard WHERE
+		<if test="searchCategory.equals('title')">
+			imageBoardTitle LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('content')">
+			imageBoardContent LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('writer')">
+			imageBoardWriter LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		AND imageBoardStatus = 1
+	</select>
+	<select id="getImageBoardSearchCommentCount" parameterType="map" resultType="int">
+		select count(*) from imageboardcomment c inner join imageboard n on
+		c.imageBoardNo=n.imageBoardNo where n.imageBoardNo=#{noticeNo} and
+		<if test="searchCategory.equals('title')">
+			n.imageBoardTitle LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('content')">
+			n.imageBoardContent LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('writer')">
+			n.imageBoardWriter LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+	</select>
+	<select id="getImageBoardSearchLikeCount" parameterType="map" resultType="int">
+		select count(*) from imageboardlike nl inner join imageboard n on
+		nl.imageBoardNo=n.imageBoardNo where n.imageBoardNo=#{imageBoardNo} and
+		<if test="searchCategory.equals('title')">
+			n.imageBoardTitle LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('content')">
+			n.imageBoardContent LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+		<if test="searchCategory.equals('writer')">
+			n.imageBoardWriter LIKE CONCAT('%',#{searchWord},'%')
+		</if>
+	</select>
+	<select id="getImageBoardDetail" parameterType="ImageBoardDTO"
+		resultType="ImageBoardDTO">
+		SELECT
+		*,
+		(SELECT imageBoardNo FROM imageboard WHERE <![CDATA[imageBoardNo < #{imageBoardNo}]]>
+		 AND imageBoardStatus =1 ORDER BY imageBoardNo DESC LIMIT 1) AS imageBoardPrev,
+		(SELECT imageBoardNo FROM imageboard WHERE <![CDATA[imageBoardNo > #{imageBoardNo}]]>
+		 AND imageBoardStatus =1 ORDER BY imageBoardNo LIMIT 1) AS imageBoardNext
+		FROM
+		imageboard
+		WHERE
+		imageBoardNo = #{imageBoardNo}
+	</select>
+	<!-- 조회수 -->
+	<update id="imageBoardUpdateCount" parameterType="NoticeDTO">
+		UPDATE
+		imageboard
+		SET
+		imageBoardReadcount = imageBoardReadcount+1
+		WHERE
+		imageBoardNo = #{imageBoardNo}
+	</update>
+	<select id="imageBoardLikeTotalCount" resultType="int">
+		SELECT COUNT(*)
+		FROM imageboardlike
+		WHERE imageBoardNo=#{imageBoardNo}
+	</select>
+	<select id="getImageBoardCommentCount" resultType="int">
+		select count(*) from imageboardcomment where imageBoardNo=#{imageBoardNo}
+	</select>	
+	<!-- <select id="getNoticeList" parameterType="map"
+		resultType="NoticeDTO">
+		SELECT
+		noticeNo,noticeContent,noticeTitle,noticeRegdate,noticeWriter,noticeReadcount
+		FROM notice
+		WHERE noticeStatus = 1
+		ORDER BY noticeNo desc
+		limit #{pagenum},#{contentnum}
+	</select>
+	<select id="noticeTotalCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM notice
+	</select>
+	
+	
+	
+	
+	<insert id="noticeReg" parameterType="NoticeDTO">
+      INSERT INTO notice (
+      noticeTitle,
+      noticeRegdate,
+      noticeWriter,
+      noticeReadcount
+      ) VALUES (
+      #{noticeTitle},
+      NOW(),
+      #{noticeWriter},
+      0
+      )
+      <selectKey  resultType="string" keyProperty="noticeNo" order="AFTER" >
+      SELECT last_insert_id() FROM DUAL;
+      </selectKey> 
+   </insert>
+	좋아요 기능
+	<select id="noticeLikeCheck" resultType="int">
+		SELECT COUNT(*)
+		FROM noticelike
+		WHERE noticeNo=#{noticeNo} AND userNo=#{userNo}
+	</select>
+	<insert id="noticeLike" parameterType="BoardLikeDTO">
+		INSERT INTO noticelike (
+		noticeNo,
+		userNo
+		) VALUES (
+		#{noticeNo},
+		#{userNo}
+		)
+	</insert>
+	<delete id="noticeLikeDelete" parameterType="BoardLikeDTO">
+		DELETE FROM noticelike
+		WHERE noticeNo=#{noticeNo} AND userNo=#{userNo}
+	</delete>
+
+	
+	noticeList comment 개수, 좋아요 개수
+	<select id="noticePagingLikeCnt" parameterType="map"
+		resultType="NoticeDTO">
+		SELECT noticeNo,likeno FROM(
+		SELECT n.noticeNo,COUNT(1) likeno
+		FROM notice n
+		inner join noticelike nl
+		on n.noticeNo = nl.noticeNo
+		GROUP BY nl.noticeNo
+		having nl.noticeNo IN
+		<foreach collection="nLikeList" item="item" index="index"
+			open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		) v
+	</select>
+
+
+	<select id="likeCountList" resultType="int">
+		select count(*) from noticelike where noticeNo=#{noticeNo}
+	</select>
+
+	
+	
+	<update id="deleteNotice" parameterType="string">
+		update notice
+		set noticeStatus = 0
+		where noticeNo = #{noticeNo}
+	</update>
+	<update id="updateThumbnail" parameterType="NoticeDTO">
+		update notice
+		set 
+			noticeContent = #{noticeContent}
+		where noticeNo = #{noticeNo}
+	</update> -->
+</mapper>

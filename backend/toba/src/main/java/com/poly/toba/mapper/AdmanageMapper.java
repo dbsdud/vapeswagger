@@ -46,4 +46,7 @@ public interface AdmanageMapper {
 	
 	//메인 광고 1개 노출 카운트
 	public int updateMainAdExposeCountUp(String adNo) throws Exception;
+
+	//광고 클릭
+	public void updateAdClick(String adNo) throws Exception;
 }

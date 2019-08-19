@@ -22,21 +22,20 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poly.toba.model.CommentDTO;
 import com.poly.toba.model.LikeDTO;
 import com.poly.toba.model.PagingDTO;
-import com.poly.toba.model.RecommentDTO;
 import com.poly.toba.service.impl.ICommentService;
+import com.poly.toba.service.impl.IImageBoardCommentService;
 
 @SpringBootApplication
 @RestController
 @MapperScan(basePackages = "com.poly.toba")
-@RequestMapping("/comments")
-public class CommentController {
+@RequestMapping("/imageBoardComments")
+public class ImageBoardCommentController {
 	@Autowired
-	private ICommentService commentService;
+	private IImageBoardCommentService imageBoardCommentService;
 
-	@GetMapping("/list/{noticeNo}/{pageno}")
-	public ResponseEntity<HashMap<String, Object>> getCommentList(@PathVariable String noticeNo,
+	@GetMapping("/list/{imageBoardNo}/{pageno}")
+	public ResponseEntity<HashMap<String, Object>> getCommentList(@PathVariable String imageBoardNo,
 			@PathVariable String pageno) throws Exception {
-		System.out.println("aucqua:" + pageno);
 		// 페이징
 		PagingDTO paging = new PagingDTO();
 		int pagenum = Integer.parseInt(pageno);
@@ -45,9 +44,9 @@ public class CommentController {
 		CommentDTO cDTO = new CommentDTO();
 		List<CommentDTO> cList = new ArrayList<>();
 		HashMap<String, Object> hMap = new HashMap<>();
-		cDTO.setNoticeNo(noticeNo);
+		cDTO.setImageBoardNo(imageBoardNo);
 
-		totalcount = commentService.commentListTotalCount(cDTO);
+		totalcount = imageBoardCommentService.commentListTotalCount(cDTO);
 		paging.setTotalcount(totalcount);// 전체 게시글 지정
 		paging.setPagenum(pagenum - 1);// 현재페이지를 페이지 객체에 지정한다 -1 해야 쿼리에서 사용가능
 		paging.setContentnum(contentnum);// 한 페이지에 몇개 씩 게시글을 보여줄지 지정
@@ -60,9 +59,8 @@ public class CommentController {
 		int j = paging.getContentnum();
 		hMap.put("pagenum", i);
 		hMap.put("contentnum", j);
-		hMap.put("noticeNo", cDTO.getNoticeNo());
-		cList = commentService.getCommentList(hMap);
-		System.out.println(cList);
+		hMap.put("imageBoardNo", cDTO.getImageBoardNo());
+		cList = imageBoardCommentService.getCommentList(hMap);
 		
 		// 좋아요 개수
 		List<String> cLikeList = new ArrayList<>();
@@ -81,15 +79,15 @@ public class CommentController {
 				cLikeList.add(cList.get(k).getCommentNo());
 			}
 			hMap.put("cLikeList", cLikeList);
-			cLikeCountList = commentService.pagingLikeCnt(hMap);
+			cLikeCountList = imageBoardCommentService.pagingLikeCnt(hMap);
 			hMap.put("cLikeCountList", cLikeCountList);
 		}
 		return new ResponseEntity<HashMap<String, Object>>(hMap, HttpStatus.OK);
 	}
-
+	
 	@PostMapping("/register")
 	public ResponseEntity<String> insertComment(@RequestBody CommentDTO cDTO) throws Exception {
-		int result = commentService.insertComment(cDTO);
+		int result = imageBoardCommentService.insertComment(cDTO);
 
 		if (result == 1) {
 			return new ResponseEntity<String>("success", HttpStatus.OK);
@@ -102,7 +100,7 @@ public class CommentController {
 	@DeleteMapping("/delete/{commentNo}")
 	public ResponseEntity<String> deleteComment(@PathVariable String commentNo) throws Exception {
 		System.out.println("삭제" + commentNo);
-		int result = commentService.deleteComment(commentNo);
+		int result = imageBoardCommentService.deleteComment(commentNo);
 
 		if (result == 1) {
 			return new ResponseEntity<String>("success", HttpStatus.OK);
@@ -110,42 +108,13 @@ public class CommentController {
 			return new ResponseEntity<String>("failed", HttpStatus.BAD_REQUEST);
 		}
 	}
-
-	@PostMapping("/likeUp")
-	public ResponseEntity<HashMap<String, Object>> likeUp(@RequestBody LikeDTO likeDTO) throws Exception {
-
-		LikeDTO result = new LikeDTO();
-		int result2 = 0;
-		int likeCommentCount = 0;
-		boolean check = false;
-		HashMap<String, Object> hMap = new HashMap<>();
-		result = commentService.likeCheck(likeDTO);
-		if (result == null) {
-			result2 = commentService.likeUp(likeDTO);
-			result = commentService.likeCheck(likeDTO);
-			likeCommentCount = commentService.likeCommentCount(likeDTO);
-			hMap.put("result", result);
-			hMap.put("likeCommentCount", likeCommentCount);
-		} else {
-			result2 = commentService.likeDown(likeDTO);
-			if (result2 == 1) {
-
-				likeCommentCount = commentService.likeCommentCount(likeDTO);
-				result.setLikeCheck("n");
-				hMap.put("result", result);
-				hMap.put("likeCommentCount", likeCommentCount);
-			}
-		}
-		return new ResponseEntity<HashMap<String, Object>>(hMap, HttpStatus.OK);
-	}
-
-	@GetMapping("/detail/{noticeNo}/{commentNo}") 
-	   public ResponseEntity<String> getCommentDetail(@PathVariable String noticeNo, @PathVariable String commentNo) throws Exception { 
+	@GetMapping("/detail/{imageBoardNo}/{commentNo}") 
+	   public ResponseEntity<String> getCommentDetail(@PathVariable String imageBoardNo, @PathVariable String commentNo) throws Exception { 
 	      System.out.println("댓글 가져와"); 
 	      CommentDTO cDTO = new CommentDTO(); 
-	      cDTO.setNoticeNo(noticeNo); 
+	      cDTO.setImageBoardNo(imageBoardNo); 
 	      cDTO.setCommentNo(commentNo);
-	      String content =(commentService.getContent(cDTO)).toString();
+	      String content =(imageBoardCommentService.getContent(cDTO)).toString();
 	      System.out.println(content); 
 	      return new ResponseEntity<String>(content, HttpStatus.OK); 
 	   }
@@ -153,8 +122,38 @@ public class CommentController {
 	@CrossOrigin(origins = "*")
 	@PutMapping("/update")
 	public ResponseEntity<String> updateComment(@RequestBody CommentDTO cDTO) throws Exception {
-		commentService.commentUpd(cDTO);
+		imageBoardCommentService.commentUpd(cDTO);
 		String content = cDTO.getCommentContent();
 		return new ResponseEntity<String>(content, HttpStatus.OK);
 	}
+//
+//	@PostMapping("/likeUp")
+//	public ResponseEntity<HashMap<String, Object>> likeUp(@RequestBody LikeDTO likeDTO) throws Exception {
+//
+//		LikeDTO result = new LikeDTO();
+//		int result2 = 0;
+//		int likeCommentCount = 0;
+//		boolean check = false;
+//		HashMap<String, Object> hMap = new HashMap<>();
+//		result = commentService.likeCheck(likeDTO);
+//		if (result == null) {
+//			result2 = commentService.likeUp(likeDTO);
+//			result = commentService.likeCheck(likeDTO);
+//			likeCommentCount = commentService.likeCommentCount(likeDTO);
+//			hMap.put("result", result);
+//			hMap.put("likeCommentCount", likeCommentCount);
+//		} else {
+//			result2 = commentService.likeDown(likeDTO);
+//			if (result2 == 1) {
+//
+//				likeCommentCount = commentService.likeCommentCount(likeDTO);
+//				result.setLikeCheck("n");
+//				hMap.put("result", result);
+//				hMap.put("likeCommentCount", likeCommentCount);
+//			}
+//		}
+//		return new ResponseEntity<HashMap<String, Object>>(hMap, HttpStatus.OK);
+//	}
+//
+
 }

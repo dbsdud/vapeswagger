@@ -148,16 +148,7 @@
 	<select id="commentCount" resultType="int">
 		select count(*) from comment where noticeNo=#{noticeNo};
 	</select>
-	<select id="getContent" resultType="string"> 
-		select commentContent 
-		from comment 
-		where noticeNo=#{noticeNo} and commentNo=#{commentNo} 
-	</select>
-	<select id="getRecomContent" resultType="string">
-		select recommentContent 
-		from recomment
-		where noticeNo=#{noticeNo} and commentNo=#{commentNo} and recommentNo=#{recommentNo}
-	</select>
+
 	<!-- 프사 가져오기 -->
 	<select id="getProfileImg" resultType="string">
 		select userProfilePath from user where userNickName=#{commentWriter}; 
@@ -172,4 +163,14 @@
 		set recommentContent=#{recommentContent}
 		where noticeNo=#{noticeNo} and commentNo=#{commentNo} and recommentNo=#{recommentNo}
 	</update>
+	<select id="getContent" resultType="string"> 
+      select commentContent 
+      from comment 
+      where noticeNo=#{noticeNo} and commentNo=#{commentNo} 
+   </select>
+   <select id="getRecomContent" resultType="string">
+      select recommentContent 
+      from recomment
+      where noticeNo=#{noticeNo} and commentNo=#{commentNo} and recommentNo=#{recommentNo}
+   </select>
 </mapper>

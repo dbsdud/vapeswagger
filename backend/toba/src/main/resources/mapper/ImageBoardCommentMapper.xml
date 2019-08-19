@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poly.toba.mapper.ImageBoardCommentMapper">
+	<select id="commentCount" resultType="int">
+		select count(*) from imageboardcomment where imageBoardNo=#{imageBoardNo};
+	</select>
+	<select id="getCommentList" parameterType="map"
+		resultType="CommentDTO">
+		SELECT *
+		FROM imageboardcomment c INNER JOIN user u
+		ON c.commentWriter=u.userNickName
+		WHERE imageBoardNo = #{imageBoardNo}
+		ORDER BY commentNo desc
+		limit #{pagenum},#{contentnum}
+	</select>
+	<!-- 페이징별 좋아요 개수 -->
+	<select id="pagingLikeCnt" parameterType="map"
+		resultType="CommentDTO">
+		SELECT commentNo,likeUpCnt,userNo
+		FROM(
+		SELECT commentNo,COUNT(1) likeUpCnt,userNo
+		FROM imageboardlikeup
+		GROUP BY commentNo
+		having commentNo IN
+		<foreach collection="cLikeList" item="item" index="index"
+			open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		) v
+	</select>
+	<select id="commentListTotalCount" parameterType="CommentDTO" resultType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM
+		imageboardcomment
+		WHERE
+		imageBoardNo = #{imageBoardNo}
+	</select>
+	<insert id="insertComment" parameterType="CommentDTO">
+		INSERT INTO
+		imageboardcomment
+		(
+		commentContent,
+		commentRegdate,
+		imageBoardNo,
+		userNo,
+		commentWriter
+		)
+		VALUES
+		(
+		#{commentContent},
+		now(),
+		#{imageBoardNo},
+		#{userNo},
+		#{commentWriter}
+		)
+	</insert>
+	<delete id="deleteComment" parameterType="string">
+		DELETE
+		FROM comment
+		WHERE commentNo = #{commentNo}
+	</delete>
+	 <select id="getContent" resultType="string"> 
+	 select commentContent 
+		from imageboardcomment where imageBoardNo=#{imageBoardNo} and commentNo=#{commentNo}
+	 </select>
+	 	<update id="commentUpd" parameterType="CommentDTO">
+		update imageboardcomment
+		set commentContent=#{commentContent}
+		where imageBoardNo=#{imageBoardNo} and commentNo=#{commentNo}
+	</update>
+	<select id="recommentListTotalCount" parameterType="map"
+		resultType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM
+		 imageboardrecomment
+		WHERE
+		imageBoardNo = #{imageBoardNo} AND commentNo = #{commentNo}
+	</select>
+	<select id="getRecommentList" parameterType="map" resultType="RecommentDTO">
+		SELECT *
+		FROM imageboardrecomment re INNER JOIN user u
+		ON re.recommentWriter=u.userNickName
+		WHERE imageBoardNo = #{imageBoardNo} and commentNo = #{commentno}
+		ORDER BY recommentNo desc
+		limit #{pagenum},#{contentnum}
+	</select>
+	<insert id="insertRecomment" parameterType="RecommentDTO">
+		INSERT INTO
+		imageboardrecomment
+		(
+		recommentContent,
+		recommentRegdate,
+		imageBoardNo,
+		userNo,
+		recommentWriter,
+		commentNo
+		)
+		VALUES
+		(
+		#{recommentContent},
+		now(),
+		#{imageBoardNo},
+		#{userNo},
+		#{recommentWriter},
+		#{commentNo}
+		)
+	</insert>
+	<delete id="deleteRecommentSel" parameterType="string">
+		DELETE
+		FROM imageboardrecomment
+		WHERE recommentNo = #{recommentNo}
+	</delete>
+	<update id="recommentUpd" parameterType="RecommentDTO">
+		update imageboardrecomment
+		set recommentContent=#{recommentContent}
+		where imageBoardNo=#{imageBoardNo} and commentNo=#{commentNo} and recommentNo=#{recommentNo}
+	</update>
+	
+	<delete id="deleteRecomment" parameterType="string">
+		DELETE
+		FROM imageboardrecomment
+		WHERE commentNo = #{commentNo}
+	</delete>
+	<select id="getRecomContent" resultType="string">
+      select recommentContent 
+      from imageboardrecomment
+      where imageBoardNo=#{imageBoardNo} and commentNo=#{commentNo} and recommentNo=#{recommentNo}
+   </select>
+<!-- 	
+	
+	<select id="likeCheck" parameterType="LikeDTO"
+		resultType="LikeDTO">
+		SELECT *
+		FROM likeup
+		WHERE commentNo = #{commentNo} AND userNo = #{userNo} AND noticeNo =
+		#{noticeNo} AND likeCheck= #{likeCheck}
+	</select>
+	<insert id="likeUp" parameterType="LikeDTO">
+		INSERT
+		INTO likeup
+		(
+		userNo,
+		noticeNo,
+		commentNo,
+		likeCheck
+		)
+		VALUES
+		(
+		#{userNo},
+		#{noticeNo},
+		#{commentNo},
+		#{likeCheck}
+		)
+	</insert>
+	<delete id="likeDown" parameterType="LikeDTO">
+		DELETE
+		FROM likeup
+		WHERE userNo = #{userNo} AND commentNo=#{commentNo} AND noticeNo =
+		#{noticeNo}
+	</delete>
+	<select id="likeCommentCount" parameterType="LikeDTO"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM likeup
+		WHERE commentNo = #{commentNo} AND noticeNo = #{noticeNo} AND likeCheck=
+		#{likeCheck}
+	</select>
+	
+	
+
+	프사 가져오기
+	<select id="getProfileImg" resultType="string">
+		select userProfilePath from user where userNickName=#{commentWriter}; 
+	</select>
+
+	 -->
+</mapper>

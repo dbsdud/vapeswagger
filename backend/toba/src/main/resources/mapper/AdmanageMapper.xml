@@ -147,5 +147,13 @@
 	WHERE 
 		adNo = #{adNo}
 	</update>
-	
+	<update id="updateAdClick" parameterType="string">
+	UPDATE
+		advertisement 
+	SET 
+		adEnable = adEnable-1,
+		adClick = adClick+1
+	WHERE 
+		adNo = #{adNo}
+	</update>
 </mapper>

@@ -272,5 +272,11 @@ public class AdmanageController {
 			hMap.put("aDTO", aDTO);
 			return new ResponseEntity<HashMap<String,Object>>(hMap,HttpStatus.OK);
 		}
-		
+		//광고 클릭 
+		@CrossOrigin(origins = "*")
+		@PutMapping("/adClickUpdate/{adNo}")
+		public ResponseEntity<String> updateAdClick(@PathVariable String adNo) throws Exception{
+			admanageService.updateAdClick(adNo);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
 }

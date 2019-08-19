@@ -514,12 +514,11 @@ class NoticeDetail extends Component{
     }
     // 댓글 수정 창
     async comModifyWin(noticeNo, commentNo){
+        document.querySelector(`.extraWin${noticeNo+'-'+commentNo}`).style.display='none';
         const result = await axios.get(`http://15.164.160.236:8080/comments/detail/${noticeNo}/${commentNo}`)
-        console.table(result.data)
         this.setState({
             commentUpd: result.data
         })
-        document.querySelector(`.extraWin${noticeNo+'-'+commentNo}`).style.display='none';
         const contentWin = document.querySelector(`.comContentWin${noticeNo+'-'+commentNo}`)
         const modifyWin = document.querySelector(`.comModifyWin${noticeNo+'-'+commentNo}`)
         contentWin.style.display='none';

@@ -14,12 +14,6 @@ public class PagingDTO {
 //	 //검색하기 위한 변수
 	 private String searchWord;
 	 private String searchCategory;
-//	 
-//	 //1대1문의 검색 변수
-//	 private String classfication;
-//	 
-	 
-	 
 	
 	public void prevnext(int pagenum) {
 		if(pagenum>0 && pagenum<11) {

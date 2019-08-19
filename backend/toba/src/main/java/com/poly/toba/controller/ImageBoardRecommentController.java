@@ -25,16 +25,17 @@ import com.poly.toba.model.PagingDTO;
 import com.poly.toba.model.RecomPagingDTO;
 import com.poly.toba.model.RecommentDTO;
 import com.poly.toba.service.impl.ICommentService;
+import com.poly.toba.service.impl.IImageBoardCommentService;
 @SpringBootApplication
 @RestController
 @MapperScan(basePackages = "com.poly.toba")
-@RequestMapping("/recomments")
-public class RecommentController {
+@RequestMapping("/imageBoardRecomments")
+public class ImageBoardRecommentController {
 	@Autowired
-	private ICommentService commentService;
-	
-	@GetMapping("/list/{noticeNo}/{commentno}/{pageno}")
-	public ResponseEntity<HashMap<String,Object>> getCommentList(@PathVariable String noticeNo,@PathVariable String commentno,@PathVariable String pageno) throws Exception{
+	private IImageBoardCommentService imageBoardCommentService;
+
+	@GetMapping("/list/{imageBoardNo}/{commentno}/{pageno}")
+	public ResponseEntity<HashMap<String,Object>> getCommentList(@PathVariable String imageBoardNo,@PathVariable String commentno,@PathVariable String pageno) throws Exception{
 		System.out.println("aucqua:"+pageno);
 		System.out.println("aucquaas:"+commentno);
 		//페이징
@@ -45,14 +46,14 @@ public class RecommentController {
 		RecommentDTO recDTO = new RecommentDTO();
 		List<RecommentDTO> cList = new ArrayList<>();
 		HashMap<String,Object> hMap = new HashMap<>();
-		recDTO.setNoticeNo(noticeNo);
+		recDTO.setImageBoardNo(imageBoardNo);
 		recDTO.setCommentNo(commentno);
 		
 		/*
 		 * if(cList==null) { hMap.put("commentTotalCount", 0); }else { hMap.put("cList",
 		 * cList); hMap.put("commentTotalCount", cList.size()); }
 		 */
-		totalcount=commentService.recommentListTotalCount(recDTO);
+		totalcount=imageBoardCommentService.recommentListTotalCount(recDTO);
 		paging.setTotalcount(totalcount);//전체 게시글 지정
  		paging.setPagenum(pagenum-1);// 현재페이지를 페이지 객체에 지정한다 -1 해야 쿼리에서 사용가능
  		paging.setContentnum(contentnum);// 한 페이지에 몇개 씩 게시글을 보여줄지 지정
@@ -65,9 +66,9 @@ public class RecommentController {
 		int j = paging.getContentnum();
 		hMap.put("pagenum",i);
 		hMap.put("contentnum", j);
-		hMap.put("noticeNo", recDTO.getNoticeNo());
+		hMap.put("imageBoardNo", recDTO.getImageBoardNo());
 		hMap.put("commentno", recDTO.getCommentNo());
-		cList = commentService.getRecommentList(hMap);
+		cList = imageBoardCommentService.getRecommentList(hMap);
 		if(cList==null) {
 			hMap.put("recommentTotalCount", 0);
 		}else {
@@ -79,7 +80,7 @@ public class RecommentController {
 	}
 	@PostMapping("/register")
 	public ResponseEntity<String> insertComment(@RequestBody RecommentDTO recDTO) throws Exception{
-		int result = commentService.insertRecomment(recDTO);
+		int result = imageBoardCommentService.insertRecomment(recDTO);
 		
 		if(result == 1) {
 			return new ResponseEntity<String>("success",HttpStatus.OK);
@@ -91,7 +92,7 @@ public class RecommentController {
 	@CrossOrigin(origins = "*")
 	@DeleteMapping("/delete/{recommentNo}")
 	public ResponseEntity<String> deleteComment(@PathVariable String recommentNo) throws Exception{
-		int result = commentService.deleteRecommentSel(recommentNo);
+		int result = imageBoardCommentService.deleteRecommentSel(recommentNo);
 		
 		if(result == 1) {
 			return new ResponseEntity<String>("success",HttpStatus.OK);
@@ -102,18 +103,18 @@ public class RecommentController {
 	@CrossOrigin(origins = "*")
 	@PutMapping("/update")
 	public ResponseEntity<String> updateRecomment(@RequestBody RecommentDTO rDTO) throws Exception{
-		commentService.remmentUpd(rDTO);
+		imageBoardCommentService.recommentUpd(rDTO);
 		String content = rDTO.getRecommentContent();
 		return new ResponseEntity<String>(content, HttpStatus.OK);
 	}
-	@GetMapping("/detail/{noticeNo}/{commentNo}/{recommentNo}")
-	   public ResponseEntity<String> getRecomContent(@PathVariable String noticeNo, @PathVariable String commentNo, @PathVariable String recommentNo) throws Exception {
+	@GetMapping("/detail/{imageBoardNo}/{commentNo}/{recommentNo}")
+	   public ResponseEntity<String> getRecomContent(@PathVariable String imageBoardNo, @PathVariable String commentNo, @PathVariable String recommentNo) throws Exception {
 	      System.out.println("대댓글 가져와");
 	      RecommentDTO reDTO = new RecommentDTO();
-	      reDTO.setNoticeNo(noticeNo);
+	      reDTO.setImageBoardNo(imageBoardNo);
 	      reDTO.setCommentNo(commentNo);
 	      reDTO.setRecommentNo(recommentNo);
-	      String content = (commentService.getRecomContent(reDTO)).toString();
+	      String content = (imageBoardCommentService.getRecomContent(reDTO)).toString();
 	      return new ResponseEntity<String>(content, HttpStatus.OK);
 	   }
 }

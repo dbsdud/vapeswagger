@@ -120,13 +120,12 @@ public class CommentService implements ICommentService{
 	}
 
 	@Override
-	public String getContent(CommentDTO cDTO) throws Exception {
-		return commentMapper.getContent(cDTO);
-	}
-
+	   public String getContent(CommentDTO cDTO) throws Exception {
+	      return commentMapper.getContent(cDTO);
+   }
 	@Override
-	public String getRecomContent(RecommentDTO reDTO) throws Exception {
-		return commentMapper.getRecomContent(reDTO);
-	}
-
+	   public String getRecomContent(RecommentDTO reDTO) throws Exception {
+	      return commentMapper.getRecomContent(reDTO);
+	   }
+  
 }

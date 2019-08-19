@@ -57,7 +57,6 @@ public class NoticeController {
    // 전체조회
    @GetMapping("/list/{pageno}")
    public ResponseEntity<HashMap<String, Object>> getNoticeAllList(@PathVariable String pageno) throws Exception {
-      System.out.println("확인");
       HashMap<String, Object> resultMap = new HashMap<>();
       // 페이징
       PagingDTO paging = new PagingDTO();

@@ -43,4 +43,7 @@ public interface IAdmanageService<T> {
 	//메인 광고 1개 노출 카운트 
 	public int updateMainAdExposeCountUp(String adNo) throws Exception;
 
+	//클릭시 1개씩증가 
+	public void updateAdClick(String adNo) throws Exception;
+
 }
