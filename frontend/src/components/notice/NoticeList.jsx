@@ -118,7 +118,7 @@ class NoticeList extends Component{
             likeCountList: response.data.likeCountList,
             uDTO:JSON.parse(sessionStorage.getItem('uDTO')),
             adExposeList:exposeAd.data.adExposeList,
-            aDTO:exposeAd.data.adExposeList
+            aDTO:exposeAd.data.aDTO
          })
          let pagingRend=[]
          let startPage = this.state.paging.startPage;
@@ -143,7 +143,7 @@ class NoticeList extends Component{
             likeCountList: response.data.likeCountList,
             uDTO:JSON.parse(sessionStorage.getItem('uDTO')),
             adExposeList:exposeAd.data.adExposeList,
-            aDTO:exposeAd.data.adExposeList
+            aDTO:exposeAd.data.aDTO
          })
          let pagingRend=[]
          let startPage = this.state.paging.startPage;

@@ -4,8 +4,6 @@ import ReactQuill from 'react-quill';
 import NoticeList from './NoticeList';
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
-
-
 // import BluePlus from '../../images/notice/BluePlus'
 
 class NoticeReg extends Component{
@@ -40,6 +38,7 @@ class NoticeReg extends Component{
             handlers: {
                 image: this.imageHandler
             },
+            imageResize: true
         }
     }
     formats = [

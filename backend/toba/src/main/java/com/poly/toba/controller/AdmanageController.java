@@ -79,7 +79,6 @@ public class AdmanageController {
 			int j = paging.getListSize();
 			hMap.put("startlist", i);
 			hMap.put("listsize", j);
-			
 			List<AdmanageDTO> adEnableList = admanageService.getAdEnableList(hMap);
 			
 			HashMap<String, Object> resultMap = new HashMap<>();

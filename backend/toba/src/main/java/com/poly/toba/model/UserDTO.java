@@ -18,4 +18,5 @@ public class UserDTO {
 	private String userProfileNameOrin;
 	private String enabled;
 	private String userAuthKey;
+	
 }
