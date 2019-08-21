@@ -8,6 +8,13 @@ import UserAdExpose from '../mainPage/UserAdExpose';
 import "react-quill/dist/quill.bubble.css";
 import defaultUser from '../../images/default-user.png';
 import NoticeList from './NoticeList';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ExtraWin from './win/extraWin';
+import ComExWin from './win/comExtraWin';
+import RecomExWin from './win/recomExtraWin';
+
 class NoticeDetail extends Component{
     state={
         noticeTotalCount:"",
@@ -125,8 +132,15 @@ class NoticeDetail extends Component{
             adClick:'',
             adImg:'',
             adLink:'',
-        }
-    }    //초기 나오는 화면
+        },
+        shown: true
+    }    
+    toggle() {
+        this.setState({
+            shown: !this.state.shown
+        });
+    }
+    //초기 나오는 화면
     async componentDidMount(noticeNo){
         const response = await axios.get(`http://15.164.160.236:8080/notices/detail/${this.state.ntDetailResponse[0].noticeNo}`)
         const response2 = await axios.get(`http://15.164.160.236:8080/comments/list/${this.state.ntDetailResponse[0].noticeNo}/1`)
@@ -183,11 +197,11 @@ class NoticeDetail extends Component{
             adExposeList: exposeAd.data.adExposeList,
             aDTO:exposeAd.data.aDTO
         }) 
-        document.getElementById('noticeExtraWin').style.display='none';
-        let extraWinCount = document.getElementsByClassName('extraWin')
-        for(let i = 0; i < extraWinCount.length; i++){
-            document.getElementsByClassName('extraWin')[i].style.display='none';
-        }
+        //document.getElementById('noticeExtraWin').style.display='none';
+        //let extraWinCount = document.getElementsByClassName('extraWin')
+        //for(let i = 0; i < extraWinCount.length; i++){
+        //    document.getElementsByClassName('extraWin')[i].style.display='none';
+        //}
         window.scrollTo(0,0)
     }
     //댓글 더보기 클릭시
@@ -259,7 +273,6 @@ class NoticeDetail extends Component{
     }
     // 댓글 대댓글 textarea 입력
     commentUpd(e){
-        console.log(e)
         this.setState({
             commentUpd: e
         })
@@ -304,17 +317,17 @@ class NoticeDetail extends Component{
         const response = await axios.get(`http://15.164.160.236:8080/recomments/list/${this.state.ntDetailResponse.noticeNo}/${this.state.commentNoThis}/${parseInt(this.state.addRecommentPagenum)+1}`)
         if(response.data.cList!==null){
             this.setState({
+                noticeNo:this.state.ntDetailResponse.noticeNo,
+                commentNo:this.state.commentNoThis,
                 recommentListResponse:this.state.recommentListResponse.concat(response.data.cList),
                 recommentTotalCount:response.data.recommentTotalCount,
                 recommentPaging:response.data.paging,
                 addRecommentPagenum:this.state.addRecommentPagenum+1
             }) 
         }
-
     }
     //답글 보여주기 가리기 리스트
     async toggleShHi(commentno){
-        console.log(commentno)
         const response = await axios.get(`http://15.164.160.236:8080/recomments/list/${this.state.ntDetailResponse.noticeNo}/${commentno}/1`)
         this.setState({
             recommentPaging:response.data.paging,
@@ -335,17 +348,22 @@ class NoticeDetail extends Component{
                 recommentListClass[i].style.display="none";
             }
         }
-        
+        const exContentWin = document.querySelectorAll(`div[class^="recomContentWin"]:not(.recomContentWin${this.state.noticeNo+'-'+this.state.commentNo+'-'+this.state.recommentListResponse.recommentNo})`)
+        const exModifyWin = document.querySelectorAll(`div[class^="recomModifyWin"]:not(.recomModifyWin${this.state.noticeNo+'-'+this.state.commentNo+'-'+this.state.recommentListResponse.recommentNo})`)
+        for(var i=0; i<exContentWin.length; i++){
+            exModifyWin[i].style.display='none'
+            exContentWin[i].style.display='block'
+        }
     }
     //댓글더보기 extra
     addMoreSel(noticeNo, commentNo){
-        const extra = document.querySelector(`.extraWin${noticeNo+'-'+commentNo}`) 
+        const extra = document.querySelector(`.extraWin${noticeNo+'-'+commentNo}`)
         if(extra.style.display==="none"){
             extra.style.display="block";
             extra.style.position="absolute";
             extra.style.left="70vw";
             extra.style.marginTop="-2vh"
-        }else if((extra.style.display!=="none")){
+        } else { // 닫기
             extra.style.display="none";
         }
     }
@@ -367,19 +385,29 @@ class NoticeDetail extends Component{
             }
         }
     }
-
+   
     // 공지사항 extra
     noticeExtra(){
         const extra = document.getElementById('noticeExtraWin')
-        if(extra.style.display==="none"){
+        extra.classList.add('activeWin')
+        if(extra.style.display==="none") {
             extra.style.display="block";
             extra.style.position="absolute";
             extra.style.left="70vw";
-            extra.style.marginTop="3vh"
-        } else if(extra.style.display!=='none'){
+            extra.style.marginTop="3vh";
+        } else {
+            extra.classList.remove('activeWin')
             extra.style.display='none'
         }
     }
+    close_win(){
+        const first = document.getElementById('noticeExtraWin')
+        console.log(first.classList)
+        if(first.classList !== null || first.classList !== ''){
+            first.classList.remove('activeWin')
+        }
+    }
+    
     //댓글 삭제
     async commentDelete(noticeNo,commentNo){
         let result = window.confirm("댓글을 삭제하시겠습니까? <댓글 및 관련 답글이 삭제됩니다.>");
@@ -515,15 +543,23 @@ class NoticeDetail extends Component{
     // 댓글 수정 창
     async comModifyWin(noticeNo, commentNo){
         const result = await axios.get(`http://15.164.160.236:8080/comments/detail/${noticeNo}/${commentNo}`)
-        console.table(result.data)
         this.setState({
             commentUpd: result.data
         })
-        document.querySelector(`.extraWin${noticeNo+'-'+commentNo}`).style.display='none';
+        // 수정하려고하는 댓글의 원본
         const contentWin = document.querySelector(`.comContentWin${noticeNo+'-'+commentNo}`)
+        // 수정하려고하는 댓글을 제외한 원본
+        const exContentWin = document.querySelectorAll(`div[class^="comContentWin"]:not(.comContentWin${noticeNo+'-'+commentNo})`)
+        // 수정하려고하는 댓글의 수정
         const modifyWin = document.querySelector(`.comModifyWin${noticeNo+'-'+commentNo}`)
+        // 수정하려고하는 댓글을 제외한 수정
+        const exModifyWin = document.querySelectorAll(`div[class^="comModifyWin"]:not(.comModifyWin${noticeNo+'-'+commentNo})`)
         contentWin.style.display='none';
         modifyWin.style.display='block';
+        for(var i=0; i<exContentWin.length; i++){
+            exContentWin[i].style.display='block'
+            exModifyWin[i].style.display='none'
+        }
     }
     
     // 댓글 수정 취소
@@ -593,23 +629,27 @@ class NoticeDetail extends Component{
     }
     // 대댓글 수정
     async recomModifyWin(noticeNo,commentNo,recommentNo) {
-        console.log(noticeNo, commentNo, recommentNo)
         const result = await axios.get(`http://15.164.160.236:8080/recomments/detail/${noticeNo}/${commentNo}/${recommentNo}`)
         this.setState({
             recommentUpd: result.data
         })
         const extraWin = document.getElementsByClassName(`extraWinRecom${noticeNo+'-'+commentNo+'-'+recommentNo}`)
+        // 수정하려고하는 대댓글의 원본
         const contentWin = document.getElementsByClassName(`recomContentWin${noticeNo+'-'+commentNo+'-'+recommentNo}`)
+        console.log(contentWin)
+        // 수정하려고하는 대댓글을 제외한 원본
+        const exContentWin = document.querySelectorAll(`div[class^="recomContentWin"]:not(.recomContentWin${noticeNo+'-'+commentNo+'-'+recommentNo})`)
+        // 수정하려고하는 대댓글의 수정
         const modifyWin = document.getElementsByClassName(`recomModifyWin${noticeNo+'-'+commentNo+'-'+recommentNo}`)
-        for(var i=0; i<extraWin.length; i++){
-            extraWin[i].style.display = 'none';
-            if(recommentNo===extraWin[i].getAttribute('value')){
-                contentWin[i].style.display='none';
-                modifyWin[i].style.display='block';
-            } else {
-                contentWin[i].style.display='block';
-                modifyWin[i].style.display='none';
-            }
+        // 수정하려고하는 대댓글을 제외한 수정
+        const exModifyWin = document.querySelectorAll(`div[class^="recomModifyWin"]:not(.recomModifyWin${noticeNo+'-'+commentNo+'-'+recommentNo})`)
+        for(var i=0; i<contentWin.length; i++){
+            contentWin[i].style.display='none';
+            modifyWin[i].style.display='block';
+        }
+        for(var i=0; i<exContentWin.length; i++){
+            exContentWin[i].style.display='block'
+            exModifyWin[i].style.display='none'
         }
     }
     // 대댓글 수정 취소
@@ -627,77 +667,58 @@ class NoticeDetail extends Component{
             }
         }
     }
-    async noticeDel(noticeNo) {
-        const noticeDel = await axios.put(`http://15.164.160.236:8080/notices/delete/${noticeNo}`)
+    noticeDel(noticeNo) {
+        const noticeDel = axios.put(`http://15.164.160.236:8080/notices/delete/${noticeNo}`)
         if(noticeDel.status !== 200) {
             alert("게시물을 삭제하였습니다")
             this.props.history.push('/noticeList')
+            axios.get('http://15.164.160.236:8080/notices/list/1')
             return <Fragment><NoticeList/></Fragment>
         }
     }
     render(){
-        const { ntDetailResponse,noticeTotalCount,ntDetailPrev,ntDetailNext,commentListResponse,commentTotalCount,recommentListResponse,recommentTotalCount,noticeLikeCount,prevCommentCount,nextCommentCount,adExposeList,aDTO } = this.state;
+        const { ntDetailResponse,noticeTotalCount,ntDetailPrev,ntDetailNext,commentListResponse,commentTotalCount,recommentListResponse,recommentTotalCount,noticeLikeCount,prevCommentCount,nextCommentCount,adExposeList,aDTO,uDTO } = this.state;
         //댓글 리스트 
         let commentListRender = null;
         //대댓글리스트
         let recommentListRender = null;
         // 수정, 삭제 버튼 만들기
         let infoButton = null;
-        if(this.state.uDTO === null) {
-        infoButton =
+        if(this.state.uDTO === null || this.state.uDTO === '') {
+            infoButton =
             <Fragment>
-                <div onClick={ this.noticeReport.bind(this) }><i className="fa fa-exclamation-circle"></i> 신고</div>
-            </Fragment>   
+                <ExtraWin ntDetailResponse={ ntDetailResponse } />
+            </Fragment>
         } else {
             if(this.state.uDTO.userNickName === ntDetailResponse.noticeWriter){
                 infoButton =
                 <Fragment>
-                    <Link to={`/noticeModify/${ ntDetailResponse.noticeNo }`}><div style={{paddingBottom:'12px',color:'#FFFFFF'}}><i className="fa fa-edit"></i> 수정</div></Link>
-                    <div onClick={ this.noticeDel.bind(this, ntDetailResponse.noticeNo) }><i className="fa fa-trash"></i> 삭제</div>
+                    <ExtraWin ntDetailResponse={ ntDetailResponse } noticeDel={ this.noticeDel.bind(this, ntDetailResponse.noticeNo) }/>
                 </Fragment>
             } else {
                 infoButton = 
                 <Fragment>
-                    <div onClick={ this.noticeReport.bind(this) }><i className="fa fa-exclamation-circle"></i> 신고</div>
+                    <ExtraWin ntDetailResponse={ ntDetailResponse } noticeReport={ this.noticeReport.bind(this, ntDetailResponse.noticeNo) }/>
                 </Fragment>
             }
         }
-        let redelDecRender = null
         recommentListRender = recommentListResponse.map(function(recomRow,index){
-            if(this.state.uDTO === null) {
-                redelDecRender =
-                <Fragment>
-                    <div onClick={ this.recommentReport.bind(this, recomRow.recommentNo) }><i className="fa fa-exclamation-circle"></i> 신고</div>
-                </Fragment>
-            } else {
-                if(this.state.uDTO.userNickName === recomRow.recommentWriter){
-                    redelDecRender =
-                    <Fragment>
-                        <div onClick={ this.recomModifyWin.bind(this,recomRow.noticeNo,recomRow.commentNo,recomRow.recommentNo) } style={{paddingBottom:'12px',color:'#FFFFFF'}}><i className="fa fa-edit"></i> 수정</div>
-                        <div onClick={ this.recommentDelete.bind(this,recomRow.noticeNo,recomRow.commentNo,recomRow.recommentNo) }><i className="fa fa-trash"></i> 삭제</div>
-                    </Fragment>
-                } else {
-                    redelDecRender =
-                    <Fragment>
-                        <div onClick={ this.recommentReport.bind(this, recomRow.recommentNo) }><i className="fa fa-exclamation-circle"></i> 신고</div>
-                    </Fragment>
-                }
-            }
             return (
                 <Fragment key={index}>
                     <div style={{border:0 , marginTop:20, paddingBottom:20, borderBottom:"1px solid #eee"}}>
                         <div className="commentTableContentTop" style={{display:"flex",justifyContent:"space-between"}}>
                             <div style={{paddingLeft:15,paddingRight:15}}><img src={recomRow.userProfilePath} className="commentWriterProfile" />&nbsp;{recomRow.recommentWriter} | {recomRow.recommentRegdate}</div>
-                            <div><img src={extra} alt='더보기' onClick={this.addMoreReSel.bind(this,recomRow.noticeNo,recomRow.commentNo,recomRow.recommentNo)} className='extraBtn' /></div>
+                            {/* <div><img src={extra} alt='더보기' onClick={this.addMoreReSel.bind(this,recomRow.noticeNo,recomRow.commentNo,recomRow.recommentNo)} className='extraBtn' /></div> */}
+                            <RecomExWin noticeNo={recomRow.noticeNo}
+                                        commentNo={recomRow.commentNo}
+                                        recommentNo={recomRow.recommentNo}
+                                        recommentWriter={recomRow.recommentWriter}
+                                        recomModifyWin={this.recomModifyWin.bind(this, recomRow.noticeNo,recomRow.commentNo,recomRow.recommentNo)}
+                                        recommentDelete={this.recommentDelete.bind(this, recomRow.noticeNo,recomRow.commentNo,recomRow.recommentNo)} />
                         </div>
                         <div className="commentTableContentBody" style={{display:"flex",justifyContent:"space-between"}}>
                             <div style={{display:"flex",justifyContent:"space-between"}} className={`recomContentWin${recomRow.noticeNo+'-'+recomRow.commentNo+'-'+recomRow.recommentNo}`} style={{width:'100%'}}>
                                 <ReactQuill theme="bubble" value={ recomRow.recommentContent } readOnly />
-                            </div>
-                            <div className={`extraWinRecom${recomRow.noticeNo+'-'+recomRow.commentNo+'-'+recomRow.recommentNo}`} value={recomRow.recommentNo} style={{display:'none'}}>
-                                <div className="extraWinRecom">
-                                    { redelDecRender }
-                                </div>
                             </div>
                             <div className={`recomModifyWin${recomRow.noticeNo+'-'+recomRow.commentNo+'-'+recomRow.recommentNo}`} style={{display:'none',width:'100%'}}>
                                 <div className="commentTableReg">
@@ -760,42 +781,22 @@ class NoticeDetail extends Component{
                 </Fragment>
         }
         
-        let delDecRender = null
         commentListRender = commentListResponse.map(function(comment,index){
-            if(this.state.uDTO!==null){
-                if(comment.userNo===this.state.uDTO.userNo){
-                    delDecRender=
-                        <Fragment>
-                            <div onClick={ this.comModifyWin.bind(this,comment.noticeNo,comment.commentNo)} style={{paddingBottom:'12px',color:'#FFFFFF'}}><i className="fa fa-edit"></i> 수정</div>
-                            <div onClick={this.commentDelete.bind(this,comment.noticeNo,comment.commentNo)}><i className="fa fa-trash"></i> 삭제</div>
-                        </Fragment>
-                }else{
-                    delDecRender=
-                    <Fragment>
-                        <div><i className="fa fa-exclamation-circle"></i> 신고</div>
-                    </Fragment>
-                }
-            }else{
-                delDecRender=
-                    <Fragment>
-                        <div><i className="fa fa-exclamation-circle"></i> 신고</div>
-                    </Fragment>
-            }
             return(
                 <Fragment key={index}>
                     <div style={{border:0 , marginTop:20, paddingBottom:20, borderBottom:"1px solid #eee"}}>
                         <div className="commentTableContentTop">
                             <div><img src={ comment.userProfilePath } className="commentWriterProfile" />&nbsp;{comment.commentWriter} | {comment.commentRegdate.split(" ")[0]}</div>
-                            <div><img src={extra} alt='더보기' onClick={this.addMoreSel.bind(this,comment.noticeNo,comment.commentNo)} className='extraBtn' /></div>
+                            {/* <div><img src={extra} alt='더보기' onClick={this.addMoreSel.bind(this,comment.noticeNo,comment.commentNo)} className='extraBtn' /></div> */}
+                            <ComExWin noticeNo={ comment.noticeNo } 
+                                        commentNo={ comment.commentNo }
+                                        commentWriter={ comment.commentWriter }
+                                        comModifyWin={ this.comModifyWin.bind(this, comment.noticeNo, comment.commentNo) }
+                                        commentDelete={ this.commentDelete.bind(this,comment.noticeNo,comment.commentNo) }/>
                         </div>
                         <div className="commentTableContentBody" style={{display:"flex",justifyContent:"space-between"}}>
                             <div style={{display:"flex",justifyContent:"space-between"}} className={`comContentWin${comment.noticeNo+'-'+comment.commentNo}`} style={{width:'100%'}}>
                                 <ReactQuill theme="bubble" value={ comment.commentContent } style={{minWidth:'100%'}} readOnly />
-                            </div>
-                            <div className={`extraWin${comment.noticeNo+'-'+comment.commentNo}`} style={{display:'none'}} >
-                                <div className="extraWin">
-                                    {delDecRender}
-                                </div>
                             </div>
                             <div className={`comModifyWin${comment.noticeNo+'-'+comment.commentNo}`} style={{display:'none',width:'100%'}}>
                                 <div className="commentTableReg">
@@ -910,7 +911,7 @@ class NoticeDetail extends Component{
         return(
             <Fragment>
                 <div className="padTop124 padLR">
-                <div className="sponserBanner">
+                    <div className="sponserBanner">
                         <div className="sponDiv">
                             <img src={ aDTO.adImg } />
                         </div>
@@ -923,10 +924,7 @@ class NoticeDetail extends Component{
                             </div>
                             <div className="noticeTableTitle">
                                 {ntDetailResponse.noticeTitle}
-                                <div onClick={ this.noticeExtra.bind(this) } style={{fontSize:'12px',color:'#A1A1A1'}}><img src={ extra } className="extraBtn" /></div>
-                                <div id="noticeExtraWin" style={{display:'none'}}>
-                                    { infoButton }
-                                </div>
+                                { infoButton }
                             </div>
                             <div>작성자 : {ntDetailResponse.noticeWriter}</div>
                             <div>작성일 : {ntDetailResponse.noticeRegdate}</div>
