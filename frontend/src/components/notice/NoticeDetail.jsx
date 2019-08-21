@@ -142,9 +142,9 @@ class NoticeDetail extends Component{
     }
     //초기 나오는 화면
     async componentDidMount(noticeNo){
-        const response = await axios.get(`http://localhost:8080/notices/detail/${this.state.ntDetailResponse[0].noticeNo}`)
-        const response2 = await axios.get(`http://localhost:8080/comments/list/${this.state.ntDetailResponse[0].noticeNo}/1`)
-        const exposeAd = await axios.get('http://localhost:8080/admanage/exposeAd')
+        const response = await axios.get(`http://15.164.160.236:8080/notices/detail/${this.state.ntDetailResponse[0].noticeNo}`)
+        const response2 = await axios.get(`http://15.164.160.236:8080/comments/list/${this.state.ntDetailResponse[0].noticeNo}/1`)
+        const exposeAd = await axios.get('http://15.164.160.236:8080/admanage/exposeAd')
         this.setState({
             ntDetailResponse:response.data.nDTO,
             noticeTotalCount:response.data.noticeTotalCount,
@@ -180,9 +180,9 @@ class NoticeDetail extends Component{
     }
     //페이지 이동 클릭시
     async pageMove(noticeNo){
-        const response = await axios.get(`http://localhost:8080/notices/detail/${noticeNo}`)
-        const response2 = await axios.get(`http://localhost:8080/comments/list/${noticeNo}/1`)
-        const exposeAd = await axios.get('http://localhost:8080/admanage/exposeAd')
+        const response = await axios.get(`http://15.164.160.236:8080/notices/detail/${noticeNo}`)
+        const response2 = await axios.get(`http://15.164.160.236:8080/comments/list/${noticeNo}/1`)
+        const exposeAd = await axios.get('http://15.164.160.236:8080/admanage/exposeAd')
         this.setState({
             ntDetailResponse:response.data.nDTO,
             noticeTotalCount:response.data.noticeTotalCount,
@@ -206,7 +206,7 @@ class NoticeDetail extends Component{
     }
     //댓글 더보기 클릭시
     async addCommentList(){
-        const response = await axios.get(`http://localhost:8080/comments/list/${this.state.ntDetailResponse.noticeNo}/${this.state.addCommentPagenum+1}`)
+        const response = await axios.get(`http://15.164.160.236:8080/comments/list/${this.state.ntDetailResponse.noticeNo}/${this.state.addCommentPagenum+1}`)
         if(response.data.cList!==null){
             this.setState({
                 commentListResponse:this.state.commentListResponse.concat(response.data.cList),
@@ -239,15 +239,15 @@ class NoticeDetail extends Component{
             alert('댓글은 최대 100자 이내입니다.');
             return false;
         }else{
-            const response = await axios.post(`http://localhost:8080/comments/register/`,
+            const response = await axios.post(`http://15.164.160.236:8080/comments/register/`,
             {
                 noticeNo:this.state.ntDetailResponse.noticeNo,
                 userNo:this.state.uDTO.userNo,
                 commentWriter:this.state.uDTO.userName,
                 commentContent:this.state.commentTitleInsert
             })
-            const response2 = await axios.get(`http://localhost:8080/comments/list/${noticeNo}/1`)
-            const exposeAd = await axios.get('http://localhost:8080/admanage/exposeAd')
+            const response2 = await axios.get(`http://15.164.160.236:8080/comments/list/${noticeNo}/1`)
+            const exposeAd = await axios.get('http://15.164.160.236:8080/admanage/exposeAd')
             this.setState({
                 commentListResponse:response2.data.cList,
                 commentTotalCount:response2.data.commentTotalCount,
@@ -291,7 +291,7 @@ class NoticeDetail extends Component{
             alert('답글은 최대 30자 이내입니다.');
             return false;
         }else{
-            const response = await axios.post(`http://localhost:8080/recomments/register/`,
+            const response = await axios.post(`http://15.164.160.236:8080/recomments/register/`,
             {
                 noticeNo:this.state.ntDetailResponse.noticeNo,
                 userNo:this.state.uDTO.userNo,
@@ -299,8 +299,8 @@ class NoticeDetail extends Component{
                 recommentWriter:this.state.uDTO.userName,
                 recommentContent:this.state.recommentTitleInsert
             })
-            const response2 = await axios.get(`http://localhost:8080/recomments/list/${noticeNo}/${this.state.commentNoThis}/1`)
-            const exposeAd = await axios.get('http://localhost:8080/admanage/exposeAd')
+            const response2 = await axios.get(`http://15.164.160.236:8080/recomments/list/${noticeNo}/${this.state.commentNoThis}/1`)
+            const exposeAd = await axios.get('http://15.164.160.236:8080/admanage/exposeAd')
             this.setState({
                 recommentListResponse:response2.data.cList,
                 recommentTotalCount:response2.data.recommentTotalCount,
@@ -314,7 +314,7 @@ class NoticeDetail extends Component{
     }
     //대댓글(답글) 더보기 클릭시
     async addRecommentList(){                
-        const response = await axios.get(`http://localhost:8080/recomments/list/${this.state.ntDetailResponse.noticeNo}/${this.state.commentNoThis}/${parseInt(this.state.addRecommentPagenum)+1}`)
+        const response = await axios.get(`http://15.164.160.236:8080/recomments/list/${this.state.ntDetailResponse.noticeNo}/${this.state.commentNoThis}/${parseInt(this.state.addRecommentPagenum)+1}`)
         if(response.data.cList!==null){
             this.setState({
                 noticeNo:this.state.ntDetailResponse.noticeNo,
@@ -328,7 +328,7 @@ class NoticeDetail extends Component{
     }
     //답글 보여주기 가리기 리스트
     async toggleShHi(commentno){
-        const response = await axios.get(`http://localhost:8080/recomments/list/${this.state.ntDetailResponse.noticeNo}/${commentno}/1`)
+        const response = await axios.get(`http://15.164.160.236:8080/recomments/list/${this.state.ntDetailResponse.noticeNo}/${commentno}/1`)
         this.setState({
             recommentPaging:response.data.paging,
             recommentListResponse:response.data.cList,
@@ -412,10 +412,10 @@ class NoticeDetail extends Component{
     async commentDelete(noticeNo,commentNo){
         let result = window.confirm("댓글을 삭제하시겠습니까? <댓글 및 관련 답글이 삭제됩니다.>");
         if(result){
-            const response = await axios.put(`http://localhost:8080/comments/delete/${noticeNo}/${commentNo}`)
+            const response = await axios.put(`http://15.164.160.236:8080/comments/delete/${noticeNo}/${commentNo}`)
             if(response.status===200){
-                const response = await axios.get(`http://localhost:8080/comments/list/${noticeNo}/1`)
-                const exposeAd = await axios.get('http://localhost:8080/admanage/exposeAd')
+                const response = await axios.get(`http://15.164.160.236:8080/comments/list/${noticeNo}/1`)
+                const exposeAd = await axios.get('http://15.164.160.236:8080/admanage/exposeAd')
                 this.setState({
                     commentListResponse:response.data.cList,
                     commentTotalCount:response.data.commentTotalCount,
@@ -452,10 +452,10 @@ class NoticeDetail extends Component{
     async recommentDelete(noticeNo,commentNo,recommentNo){
         let result = window.confirm("답글을 삭제하시겠습니까? <답글이 삭제됩니다.>");
         if(result){
-            const response = await axios.put(`http://localhost:8080/recomments/delete/${noticeNo}/${commentNo}/${recommentNo}`)
+            const response = await axios.put(`http://15.164.160.236:8080/recomments/delete/${noticeNo}/${commentNo}/${recommentNo}`)
             if(response.status===200){
-                const response = await axios.get(`http://localhost:8080/recomments/list/${this.state.ntDetailResponse.noticeNo}/${this.state.commentNoThis}/1`)
-                const exposeAd = await axios.get('http://localhost:8080/admanage/exposeAd')
+                const response = await axios.get(`http://15.164.160.236:8080/recomments/list/${this.state.ntDetailResponse.noticeNo}/${this.state.commentNoThis}/1`)
+                const exposeAd = await axios.get('http://15.164.160.236:8080/admanage/exposeAd')
                 this.setState({
                     recommentListResponse:response.data.cList,
                     recommentTotalCount:response.data.recommentTotalCount,
@@ -478,7 +478,7 @@ class NoticeDetail extends Component{
         alert('로그인 이후에 이용가능합니다.')
         return false;
        }else{
-            const response = await axios.post("http://localhost:8080/comments/likeUp",{
+            const response = await axios.post("http://15.164.160.236:8080/comments/likeUp",{
                 userNo:this.state.uDTO.userNo,
                 commentNo:commentNo,
                 likeCheck:likeCheck,
@@ -511,7 +511,7 @@ class NoticeDetail extends Component{
             alert("로그인 후 이용이 가능합니다")
             return false;
         } else {
-            const noticeLike = await axios.post("http://localhost:8080/notices/noticeLike", {
+            const noticeLike = await axios.post("http://15.164.160.236:8080/notices/noticeLike", {
                 userNo: this.state.uDTO.userNo,
                 noticeNo: this.state.ntDetailResponse.noticeNo
             })
@@ -542,7 +542,7 @@ class NoticeDetail extends Component{
     }
     // 댓글 수정 창
     async comModifyWin(noticeNo, commentNo){
-        const result = await axios.get(`http://localhost:8080/comments/detail/${noticeNo}/${commentNo}`)
+        const result = await axios.get(`http://15.164.160.236:8080/comments/detail/${noticeNo}/${commentNo}`)
         this.setState({
             commentUpd: result.data
         })
@@ -581,7 +581,7 @@ class NoticeDetail extends Component{
             alert('내용을 입력하세요');
             return false;
         }
-        const updSubmit = await axios.put(`http://localhost:8080/comments/update`,{
+        const updSubmit = await axios.put(`http://15.164.160.236:8080/comments/update`,{
             noticeNo: noticeNo,
             commentNo: commentNo,
             commentContent: this.state.commentUpd
@@ -591,8 +591,8 @@ class NoticeDetail extends Component{
             const contentWin = document.querySelector(`.comContentWin${noticeNo+'-'+commentNo}`)
             const modifyWin = document.querySelector(`.comModifyWin${noticeNo+'-'+commentNo}`)
             //window.location.reload(); // 새로고침하지말고 concat 으로 더해주셈
-            const response2 = await axios.get(`http://localhost:8080/comments/list/${noticeNo}/1`)
-            const exposeAd = await axios.get('http://localhost:8080/admanage/exposeAd')
+            const response2 = await axios.get(`http://15.164.160.236:8080/comments/list/${noticeNo}/1`)
+            const exposeAd = await axios.get('http://15.164.160.236:8080/admanage/exposeAd')
             this.setState({
                 commentListResponse:response2.data.cList,
                 commentTotalCount:response2.data.commentTotalCount,
@@ -614,7 +614,7 @@ class NoticeDetail extends Component{
             alert('내용을 입력하세요');
             return false;
         }
-        const updSubmit = await axios.put(`http://localhost:8080/recomments/update`,{
+        const updSubmit = await axios.put(`http://15.164.160.236:8080/recomments/update`,{
             noticeNo: noticeNo,
             commentNo: commentNo,
             recommentNo: recomNo,
@@ -629,7 +629,7 @@ class NoticeDetail extends Component{
     }
     // 대댓글 수정
     async recomModifyWin(noticeNo,commentNo,recommentNo) {
-        const result = await axios.get(`http://localhost:8080/recomments/detail/${noticeNo}/${commentNo}/${recommentNo}`)
+        const result = await axios.get(`http://15.164.160.236:8080/recomments/detail/${noticeNo}/${commentNo}/${recommentNo}`)
         this.setState({
             recommentUpd: result.data
         })
@@ -668,11 +668,11 @@ class NoticeDetail extends Component{
         }
     }
     noticeDel(noticeNo) {
-        const noticeDel = axios.put(`http://localhost:8080/notices/delete/${noticeNo}`)
+        const noticeDel = axios.put(`http://15.164.160.236:8080/notices/delete/${noticeNo}`)
         if(noticeDel.status !== 200) {
             alert("게시물을 삭제하였습니다")
             this.props.history.push('/noticeList')
-            axios.get('http://localhost:8080/notices/list/1')
+            axios.get('http://15.164.160.236:8080/notices/list/1')
             return <Fragment><NoticeList/></Fragment>
         }
     }
