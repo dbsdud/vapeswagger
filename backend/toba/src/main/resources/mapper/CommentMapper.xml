@@ -6,7 +6,7 @@
 		SELECT *
 		FROM comment c INNER JOIN user u
 		ON c.commentWriter=u.userNickName
-		WHERE noticeNo = #{noticeNo}
+		WHERE noticeNo = #{noticeNo} AND commentStatus = 1
 		ORDER BY commentNo desc
 		limit #{pagenum},#{contentnum}
 	</select>
@@ -52,7 +52,7 @@
 		SELECT *
 		FROM recomment re INNER JOIN user u
 		ON re.recommentWriter=u.userNickName
-		WHERE noticeNo = #{noticeNo} and commentNo = #{commentno}
+		WHERE noticeNo = #{noticeNo} and commentNo = #{commentno} and recommentStatus = 1
 		ORDER BY recommentNo desc
 		limit #{pagenum},#{contentnum}
 	</select>
@@ -77,21 +77,25 @@
 		#{commentNo}
 		)
 	</insert>
-	<delete id="deleteComment" parameterType="string">
-		DELETE
-		FROM comment
-		WHERE commentNo = #{commentNo}
-	</delete>
-	<delete id="deleteRecomment" parameterType="string">
-		DELETE
-		FROM recomment
-		WHERE commentNo = #{commentNo}
-	</delete>
-	<delete id="deleteRecommentSel" parameterType="string">
-		DELETE
-		FROM recomment
-		WHERE recommentNo = #{recommentNo}
-	</delete>
+	<update id="deleteComment" parameterType="CommentDTO">
+		UPDATE comment
+		SET commentStatus = 0
+		WHERE noticeNo = #{noticeNo} and
+				commentNo = #{commentNo}
+	</update>
+	<update id="deleteRecomment" parameterType="CommentDTO">
+		UPDATE recomment
+		SET recommentStatus = 0
+		WHERE noticeNo = #{noticeNo} and
+				commentNo = #{commentNo}
+	</update>
+	<update id="deleteRecommentSel" parameterType="RecommentDTO">
+		UPDATE recomment
+		SET recommentStatus = 0
+		WHERE noticeNo = #{noticeNo} AND 
+				commentNo = #{commentNo} AND
+				recommentNo = #{recommentNo}
+	</update>
 	<select id="likeCheck" parameterType="LikeDTO"
 		resultType="LikeDTO">
 		SELECT *

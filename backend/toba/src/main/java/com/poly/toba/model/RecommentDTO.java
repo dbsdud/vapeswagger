@@ -14,6 +14,7 @@ public class RecommentDTO {
 	private String noticeNo;
 	private String commentNo;
 	private String userNo;
+	private String recommentStatus;
 	private String userProfilePath;
 	
 	//이미지 변수

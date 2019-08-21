@@ -89,10 +89,15 @@ public class RecommentController {
 	
 	}
 	@CrossOrigin(origins = "*")
-	@DeleteMapping("/delete/{recommentNo}")
-	public ResponseEntity<String> deleteComment(@PathVariable String recommentNo) throws Exception{
-		int result = commentService.deleteRecommentSel(recommentNo);
-		
+	@PutMapping("/delete/{noticeNo}/{commentNo}/{recommentNo}")
+	public ResponseEntity<String> deleteComment(@PathVariable String noticeNo,
+												@PathVariable String commentNo,
+												@PathVariable String recommentNo) throws Exception{
+		RecommentDTO reDTO = new RecommentDTO();
+		reDTO.setNoticeNo(noticeNo);											
+		reDTO.setCommentNo(commentNo);
+		reDTO.setRecommentNo(recommentNo);
+		int result = commentService.deleteRecommentSel(reDTO);
 		if(result == 1) {
 			return new ResponseEntity<String>("success",HttpStatus.OK);
 		}else {

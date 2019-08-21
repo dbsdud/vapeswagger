@@ -99,10 +99,14 @@ public class CommentController {
 	}
 
 	@CrossOrigin(origins = "*")
-	@DeleteMapping("/delete/{commentNo}")
-	public ResponseEntity<String> deleteComment(@PathVariable String commentNo) throws Exception {
-		System.out.println("삭제" + commentNo);
-		int result = commentService.deleteComment(commentNo);
+	@PutMapping("/delete/{noticeNo}/{commentNo}")
+	public ResponseEntity<String> deleteComment(@PathVariable String noticeNo,
+												@PathVariable String commentNo) throws Exception {
+		CommentDTO cDTO = new CommentDTO();
+		cDTO.setNoticeNo(noticeNo);
+		cDTO.setCommentNo(commentNo);
+
+		int result = commentService.deleteComment(cDTO);
 
 		if (result == 1) {
 			return new ResponseEntity<String>("success", HttpStatus.OK);

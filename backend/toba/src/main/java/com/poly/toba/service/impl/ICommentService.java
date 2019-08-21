@@ -22,9 +22,9 @@ public interface ICommentService {
 
 	public int insertRecomment(RecommentDTO recDTO) throws Exception;
 
-	public int deleteComment(String commentNo) throws Exception;
+	public int deleteComment(CommentDTO cDTO) throws Exception;
 
-	public int deleteRecommentSel(String recommentNo) throws Exception;
+	public int deleteRecommentSel(RecommentDTO reDTO) throws Exception;
 
 	public LikeDTO likeCheck(LikeDTO likeDTO) throws Exception;
 

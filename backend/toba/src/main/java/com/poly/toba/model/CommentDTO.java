@@ -15,6 +15,7 @@ public class CommentDTO {
 	private String userNo;
 	private String likeUpCnt;
 	private String userProfilePath;
+	private String commentStatus;
 	
 	//테이블 변수
 	private String imageBoardNo;

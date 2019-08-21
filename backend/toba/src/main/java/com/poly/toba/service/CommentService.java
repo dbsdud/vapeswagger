@@ -57,16 +57,16 @@ public class CommentService implements ICommentService{
 	}
 
 	@Override
-	public int deleteComment(String commentNo) throws Exception {
+	public int deleteComment(CommentDTO cDTO) throws Exception {
 		// TODO Auto-generated method stub
-		commentMapper.deleteRecomment(commentNo);
-		return commentMapper.deleteComment(commentNo);
+		commentMapper.deleteRecomment(cDTO);
+		return commentMapper.deleteComment(cDTO);
 	}
 
 	@Override
-	public int deleteRecommentSel(String recommentNo) throws Exception {
+	public int deleteRecommentSel(RecommentDTO reDTO) throws Exception {
 		// TODO Auto-generated method stub
-		return commentMapper.deleteRecommentSel(recommentNo);
+		return commentMapper.deleteRecommentSel(reDTO);
 	}
 
 	@Override
