@@ -1,13 +1,14 @@
 import React from 'react';
-import { Component,Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Component,Fragment } from 'react'
+import { Link } from 'react-router-dom'
 import Toggle from 'react-toggle'
-import axios from 'axios';
-class TotalMemberManage extends Component{
+import axios from 'axios'
+class DisableMemberManage extends Component{
 
     // 전체 회원관리 : TotalMemberManage
+    // 활동 회원관리 : EnableMemberManage
     // 정지 회원관리 : DisableMemberManage
-    // 스탭 관리 : StepManage 
+    // 스탭 관리 : StepManage
 
     constructor(props){
         super(props);
@@ -17,6 +18,20 @@ class TotalMemberManage extends Component{
             pagingResponse:{},
             enabled:false
         }
+    }
+
+    async componentWillMount(){
+        var index = [
+            'enable',
+            '1',
+            '',
+            'all'
+        ]
+        const response = await axios.get(`http://15.164.160.236:8080/users/membermanage/${index}`)
+        this.setState({
+            userListResponse:response.data.userList,
+            pagingResponse:response.data.paging
+        })
     }
     // 상태값 변경
     async handleChange(thisState,userRow,index) {
@@ -52,19 +67,6 @@ class TotalMemberManage extends Component{
             }
         }
     }
-    async componentWillMount(){
-        var index = [
-            'total',
-            '1',
-            '',
-            'all'
-        ]
-        const response = await axios.get(`http://15.164.160.236:8080/users/membermanage/${index}`)
-        this.setState({
-            userListResponse:response.data.userList,
-            pagingResponse:response.data.paging
-        })
-    }
     // 검색
     async handleSearch() {
         let userSearch = document.getElementById('userSearch').value
@@ -77,7 +79,7 @@ class TotalMemberManage extends Component{
             return false;
         }
         var index = [
-            'total',
+            'enable',
             '1',
             searchOption,
             userSearch
@@ -96,30 +98,6 @@ class TotalMemberManage extends Component{
     async handleEnterKey(e) {
         if(e.keyCode ===13) {
             this.handleSearch(this)
-        }
-    }
-    // 활동가능 버튼
-    async handleEnable() {
-        var userNoList=[]
-        var size = document.getElementsByClassName('adminUserCheck').length
-        var checked = false
-        for(var i =0; i< size; i++) {
-            if(document.getElementsByClassName('adminUserCheck')[i].checked===true){
-                userNoList.push(this.state.userListResponse[i].userNo)
-                checked = true
-            }
-        }
-        if(!checked) {
-            alert("회원을 선택해주세요.")
-            return false;
-        }
-        userNoList.push("enable")
-        const response = await axios.put(`http://15.164.160.236:8080/users/userEnDisable`, userNoList)
-        if(response.status ===200) {
-            alert("활동가능하게 되었습니다.")
-            this.props.history.push('/EnableMemberManage')
-        } else {
-            alert("실패하였습니다.")
         }
     }
     // 활동정지 버튼
@@ -183,7 +161,7 @@ class TotalMemberManage extends Component{
                 userListResponse:response.data.userList,
                 pagingResponse:response.data.paging
             })
-            
+
         } else {
             const response = await axios.get(`http://15.164.160.236:8080/users/membermanage/${index}`)
             if(response.status ===200) {
@@ -200,7 +178,7 @@ class TotalMemberManage extends Component{
     async pagingMove(page) {
         const userSearch = document.getElementById('userSearch').value
         var index = [
-            'total',
+            'enable',
             page,
             document.getElementById('searchOption').value,
             document.getElementById('userSearch').value
@@ -227,7 +205,7 @@ class TotalMemberManage extends Component{
     async pagingNext() {
         const userSearch = document.getElementById('userSearch').value
         var index = [
-            'total',
+            'enable',
             parseInt(this.state.pagingResponse.endPage)+1,
             document.getElementById('searchOption').value,
             document.getElementById('userSearch').value
@@ -238,6 +216,7 @@ class TotalMemberManage extends Component{
                 userListResponse:response.data.userList,
                 pagingResponse:response.data.paging
             })
+
         } else {
             const response = await axios.get(`http://15.164.160.236:8080/users/membermanage/${index}`)
             if(response.status ===200) {
@@ -250,7 +229,6 @@ class TotalMemberManage extends Component{
             }
         }
     }
-    
     render(){
         const {userListResponse, pagingResponse} = this.state;
         const thisState = this
@@ -335,8 +313,8 @@ class TotalMemberManage extends Component{
                     </div>
                     <div className="adminLnb-sub">
                         <div className="adminContainer">
-                            <Link to="/TotalMemberManage" className="adminActive">전체 회원관리</Link>
-                            <Link to="/EnableMemberManage">활동 회원관리</Link>
+                            <Link to="/TotalMemberManage">전체 회원관리</Link>
+                            <Link to="/EnableMemberManage" className="adminActive">활동 회원관리</Link>
                             <Link to="/DisableMemberManage">정지 회원관리</Link>
                             {/* <Link to="/StepManage">스탭 관리</Link> */}
                         </div>
@@ -344,12 +322,12 @@ class TotalMemberManage extends Component{
                 </div>
                 <div className="adminContainer adminBody-footer">
                     <div className="adminRow">
-                        <h2>전체 회원 관리</h2>
+                        <h2>활동 회원 관리</h2>
                     </div>
                     <hr />
                     <div className="adminRow">
                         <div>
-                            <div className="adminCol-md-2 adminText-center" style={{width:'auto'}}>
+                            <div className="adminCol-md-1 adminText-center">
                                 <select id="searchOption"className="adminForm-control">
                                     <option defaultValue="" hidden>회원검색</option>
                                     <option defaultValue="0">아이디</option>
@@ -373,17 +351,15 @@ class TotalMemberManage extends Component{
                         </div>
                         <div className="adminCol-md-11">
                             <p>
-                                <button type="button" className="adminBtn adminBtn-primary" onClick={this.handleEnable.bind(this)}>활동가능</button>
                                 <button type="button" className="adminBtn adminBtn-warning" onClick={this.handleDisable.bind(this)}>활동정지</button>
                             </p>
                         </div>
                         <div className="adminCol-md-1">
                             <p><button type="button" className="adminBtn adminBtn-info" onClick={this.handleSort.bind(this)}>가입일순</button></p>
                         </div>
-                        
                         <div className="adminTable adminText-center">
                             <div className="adminCheckbox">
-                                <label className="adminCol-md-12 adminThead">
+                            <label className="adminCol-md-12 adminThead">
                                     <div className="adminCol-md-1">
                                         <input type="checkbox" id="allCheck" onChange={this.handleAllCheck.bind(this)} /><label htmlFor="allCheck" title="전체선택"></label>
                                     </div>
@@ -411,4 +387,4 @@ class TotalMemberManage extends Component{
     }
 }
 
-export default TotalMemberManage
+export default DisableMemberManage

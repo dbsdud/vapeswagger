@@ -182,4 +182,66 @@
 			noticeContent = #{noticeContent}
 		where noticeNo = #{noticeNo}
 	</update>
+	<!-- 게시판별 게시글 리스트 -->
+	<select id="getBoardList" parameterType="map" resultType="NoticeDTO">
+		<!-- SELECT 
+			${boardType}.noticeNo,
+			${boardType}.noticeRegdate,
+			${boardType}.noticeTitle,
+			ifnull(${boardType}comment.count,0) + ifnull(${boardType}recomment.count,0) as noticeCommentCount,
+			${boardType}.noticeWriter,
+			${boardType}.noticeStatus
+		FROM
+			${boardType}
+				LEFT JOIN
+			(SELECT 
+				${boardType}comment.noticeNo, COUNT(0) AS count
+			FROM
+				${boardType}comment
+		GROUP BY noticeNo) ${boardType}comment ON ${boardType}.noticeNo = ${boardType}comment.noticeNo
+				LEFT JOIN
+			(SELECT 
+				noticeNo, COUNT(0) AS count
+			FROM
+				${boardType}recomment
+			GROUP BY noticeNo) ${boardType}recomment ON ${boardType}comment.noticeNo = ${boardType}recomment.noticeNo
+		ORDER BY noticeNo desc
+		LIMIT #{pagenum},#{contentnum} -->
+		SELECT 
+			${boardType}.noticeNo,
+			${boardType}.noticeRegdate,
+			${boardType}.noticeTitle,
+			ifnull(comment.count,0) + ifnull(recomment.count,0) as noticeCommentCount,
+			${boardType}.noticeWriter,
+			${boardType}.noticeStatus
+		FROM
+			notice
+				LEFT JOIN
+			(SELECT 
+				comment.noticeNo, COUNT(0) AS count
+			FROM
+				comment
+		GROUP BY noticeNo) comment ON notice.noticeNo = comment.noticeNo
+				LEFT JOIN
+			(SELECT 
+				noticeNo, COUNT(0) AS count
+			FROM
+				recomment
+			GROUP BY noticeNo) recomment ON comment.noticeNo = recomment.noticeNo
+		WHERE noticeTitle LIKE CONCAT('%',#{noticeTitle},'%')
+		and noticeWriter LIKE CONCAT('%',#{noticeWriter},'%')
+		ORDER BY noticeNo desc
+		LIMIT #{pagenum},#{contentnum}
+	</select>
+	<!-- 게시글 활성화/비활성화 -->
+	<update id="noticeEnDisable" parameterType="map">
+		UPDATE ${boardType} SET
+			noticeStatus = #{noticeStatus}
+		WHERE noticeNo = #{noticeNo}
+	</update>
+	<select id="boardTotalCount" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM ${noticeSelect}
+		WHERE noticeTitle LIKE CONCAT('%',#{noticeTitle},'%')
+		and noticeWriter LIKE CONCAT('%',#{noticeWriter},'%')
+	</select>
 </mapper>

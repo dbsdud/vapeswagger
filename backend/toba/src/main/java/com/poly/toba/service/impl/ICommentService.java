@@ -47,4 +47,10 @@ public interface ICommentService {
 	public int remmentUpd(RecommentDTO rDTO) throws Exception;
 
 	public String getProfileImg(String commentWriter) throws Exception;
+
+	public int commentTotalCount(HashMap<String, String> cMap) throws Exception;
+
+	public List<CommentDTO> adminCommentList(HashMap<String, Object> hMap) throws Exception;
+
+	public int commentEnDisable(HashMap<String, Object> hMap) throws Exception;
 }

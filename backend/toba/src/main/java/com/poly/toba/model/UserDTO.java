@@ -18,5 +18,7 @@ public class UserDTO {
 	private String userProfileNameOrin;
 	private String enabled;
 	private String userAuthKey;
-	
+	// 관리자
+	private String postCount;
+	private String commentCount;
 }

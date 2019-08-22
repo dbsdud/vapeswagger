@@ -16,4 +16,5 @@ public class NoticeDTO {
    private String noticeNext;
    private String noticeReadcount;
    private String noticeStatus;
+   private String noticeCommentCount;
 }

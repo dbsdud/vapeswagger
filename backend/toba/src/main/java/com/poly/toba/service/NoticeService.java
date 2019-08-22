@@ -116,6 +116,20 @@ public class NoticeService implements ICommonService<NoticeDTO>{
 		// TODO Auto-generated method stub
 		return noticeMapper.updateThumbnail(nDTO);
 	}
-	
+	@Override
+	public List<NoticeDTO> getBoardList(HashMap<String, Object> hMap) throws Exception {
+		return noticeMapper.getBoardList(hMap);
+	}
+
+	@Override
+	public int noticeEnDisable(HashMap<String, Object> hMap) throws Exception {
+		return noticeMapper.noticeEnDisable(hMap);
+	}
+
+	@Override
+	public int boardTotalCount(HashMap<String, Integer> cMap) throws Exception {
+		// TODO Auto-generated method stub
+		return noticeMapper.boardTotalCount(cMap);
+	}
 
 }

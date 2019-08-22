@@ -23,7 +23,7 @@ import AdminTop from './admin/adminMain/Top';
 import AdminBody from './admin/adminMain/Body';
 import AdminTotalMemberManage from './admin/memberManage/TotalMemberManage';
 import AdminDisableMemberManage from './admin/memberManage/DisableMemberManage';
-import AdminStepManage from './admin/memberManage/StepManage';
+import AdminEnableMemberManage from './admin/memberManage/EnableMemberManage';
 import AdminNoticeManage from './admin/noticeManage/NoticeManage';
 import AdminCommentsManage from './admin/noticeManage/CommentsManage';
 import AdminAdRegister from './admin/adManage/AdRegister';
@@ -33,6 +33,7 @@ import AdminEnableAdManage from './admin/adManage/EnableAdManage';
 import AdminDisableAdManage from './admin/adManage/DisableAdManage';
 import ImageBoardList from './mainPage/ImageBoardList';
 import ImageBoardDetail from './mainPage/ImageBoardDetail';
+import ReportDetail from './mainPage/ReportDetail'
 class Root extends Component{
     constructor(props) {
         super(props);
@@ -94,7 +95,7 @@ class Root extends Component{
                     <Route exact path="/admin" component={AdminBody}/>
                     <Route exact path="/totalmembermanage" component={AdminTotalMemberManage}/>
                     <Route exact path="/disablememberManage" component={AdminDisableMemberManage}/>
-                    <Route exact path="/stepmanage" component={AdminStepManage}/>
+                    <Route exact path="/enablemembermanage" component={AdminEnableMemberManage}/>
                     <Route exact path="/noticemanage" component={AdminNoticeManage}/>
                     <Route exact path="/commentsmanage" component={AdminCommentsManage}/>
                     <Route exact path="/adregister" component={AdminAdRegister}/>
@@ -114,6 +115,7 @@ class Root extends Component{
                         <Route exact path="/noticeDetail/:notice" component={NoticeDetail}/>
                         <Route exact path="/imageBoardList" component={ImageBoardList}/>
                         <Route exact path="/imageBoardDetail/:imageBoardNo" component={ImageBoardDetail}/>
+                        <Route exact path="/reportDetail" component={ReportDetail}/>
                         {sessionRoute}
                         <Route component ={PageError}/>
                     </Switch>

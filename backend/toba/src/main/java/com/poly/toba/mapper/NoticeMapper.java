@@ -45,4 +45,7 @@ public interface NoticeMapper {
 	public int getSearchLikeCount(HashMap<String, Object> hMap) throws Exception;
 	public int deleteNotice(String noticeNo) throws Exception;
 	public int updateThumbnail(NoticeDTO nDTO) throws Exception;
+	public List<NoticeDTO> getBoardList(HashMap<String, Object> hMap) throws Exception;
+	public int noticeEnDisable(HashMap<String, Object> hMap) throws Exception;
+	public int boardTotalCount(HashMap<String, Integer> cMap) throws Exception;
 }

@@ -128,4 +128,18 @@ public class CommentService implements ICommentService{
 	      return commentMapper.getRecomContent(reDTO);
 	   }
   
+	@Override
+	public int commentTotalCount(HashMap<String, String> cMap) throws Exception {
+		return commentMapper.commentTotalCount(cMap);
+	}
+
+	@Override
+	public List<CommentDTO> adminCommentList(HashMap<String, Object> hMap) throws Exception {
+		return commentMapper.adminCommentList(hMap);
+	}
+
+	@Override
+	public int commentEnDisable(HashMap<String, Object> hMap) throws Exception {
+		return commentMapper.commentEnDisable(hMap);
+	}
 }

@@ -13,13 +13,6 @@ body {
     min-height: calc(78vh - 18px);
 }
 
-
-a:focus, a:hover {
-    color: #254F6E;
-    font-weight: bold;
-    background-color: unset !important;
-}
-
 .adminBtn {
     margin-right: 10px;
 }
@@ -334,4 +327,13 @@ input[type="checkbox"] {
     vertical-align: baseline;
     background-color: #777;
     border-radius: 10px;
+}
+.adminNoticeCell {
+    border: 1px solid #cccccc60;
+    cursor: pointer;
+}
+.adminTextCell {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }

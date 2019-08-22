@@ -456,4 +456,77 @@ public class NoticeController {
       hMap.put("nDTO", nDTO);
       return new ResponseEntity<HashMap<String, Object>>(hMap, HttpStatus.OK);
    }
+   // 게시판 검색
+   @GetMapping("/noticeManage/{index}")
+   public ResponseEntity<HashMap<String, Object>> noticemanage(@PathVariable List<String> index) throws Exception {
+		String noticeSelect = index.get(0);
+		String searchOption = index.get(1);
+		String noticeSearch = index.get(2);
+      String pageno = index.get(3);
+      // 검색어
+      String noticeTitle ="";
+		String noticeWriter ="";
+		switch(searchOption) {
+			case "제목" :
+            noticeTitle = noticeSearch;
+				break;
+			case "작성자" :
+            noticeWriter = noticeSearch;
+				break;
+		}
+      // 페이징
+      PagingDTO paging = new PagingDTO();
+      int pagenum = Integer.parseInt(pageno);
+      int contentnum = 10;
+
+      HashMap<String, String> cMap= new HashMap<>();
+      cMap.put("noticeSelect", noticeSelect);
+      cMap.put("noticeTitle", noticeTitle);
+      cMap.put("noticeWriter", noticeWriter);
+      
+      int totalcount = noticeService.boardTotalCount(cMap);
+      paging.setTotalcount(totalcount);// 전체 게시글 지정
+      paging.setPagenum(pagenum - 1);// 현재페이지를 페이지 객체에 지정한다 -1 해야 쿼리에서 사용가능
+      paging.setContentnum(contentnum);// 한 페이지에 몇개 씩 게시글을 보여줄지 지정
+      paging.setCurrentblock(pagenum);// 현재 페이지 블록이 몇번인지 현재 페이지 번호를 통해서 지정함
+      paging.setLastblock(paging.getTotalcount());// 마지막 블록 번호를 전체 게시글 수를 통해 정함
+      paging.prevnext(pagenum); // 현재 페이지 번호로 화살표를 나타낼지 정함
+      paging.setStartPage(paging.getCurrentblock());// 시작페이지를 페이지 블록번호로 정함
+      paging.setEndPage(paging.getLastblock(), paging.getCurrentblock());// 마지막 페이지를 마지막 페이지 블록과 현재 페이지 블록번호로 정함
+
+      HashMap<String, Object> hMap = new HashMap<>();
+      
+      int i = paging.getPagenum() * 10;
+      int j = paging.getContentnum();
+      hMap.put("boardType", noticeSelect);
+      hMap.put("noticeTitle", noticeTitle);
+      hMap.put("noticeWriter", noticeWriter);
+      hMap.put("pagenum", i);
+      hMap.put("contentnum", j);
+      
+      System.out.println(noticeSelect);
+      System.out.println(pagenum);
+      System.out.println(contentnum);
+
+      List<NoticeDTO> noticeList = noticeService.getBoardList(hMap);
+
+      HashMap<String, Object> resultMap = new HashMap<>();
+      resultMap.put("noticeList", noticeList);
+      resultMap.put("paging", paging);
+      resultMap.put("boardType", searchOption);
+
+      return new ResponseEntity<HashMap<String, Object>>(resultMap, HttpStatus.OK);
+   }
+   // 게시글 활성화/비활성화
+	@CrossOrigin("*")
+	@PutMapping("/noticeEnDisable")
+	public ResponseEntity<HashMap<String,Object>> noticeEnDisable(@RequestBody List<String> noticeNoList) throws Exception {
+      HashMap<String, Object> hMap = new HashMap<>();
+      System.out.println(noticeNoList);
+      // hMap.put("noticeNo", noticeNoList.get(0));
+      // hMap.put("boardType", noticeNoList.get(1).toString());
+      // hMap.put("noticeStatus", noticeNoList.get(2));
+      // int result = noticeService.noticeEnDisable(hMap);
+		return new ResponseEntity<HashMap<String, Object>>(HttpStatus.OK);
+	}
 }

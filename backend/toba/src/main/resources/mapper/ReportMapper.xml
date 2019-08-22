@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poly.toba.mapper.ReportMapper">
+	<insert id="insertBoardReport" parameterType="ReportDTO">
+		
+		<if test="noticeNo!='' and commentNo=='' and recommentNo==''">
+		insert into 
+			boardReport(
+				reportCategory,
+				reportContent,
+				userNo,
+				noticeNo,
+				boardType
+			)
+			values (
+			#{reportCategory},
+			#{reportContent},
+			#{userNo},
+			#{noticeNo},
+			#{boardType}
+			)
+		</if>
+		<if test="noticeNo!='' and commentNo!='' and recommentNo==''">
+		insert into 
+			commentReport(
+				reportCategory,
+				reportContent,
+				userNo,
+				noticeNo,
+				commentNo,
+				boardType
+			)
+			values (
+			#{reportCategory},
+			#{reportContent},
+			#{userNo},
+			#{noticeNo},
+			#{commentNo},
+			#{boardType}
+			)
+		</if>
+		<if test="noticeNo!='' and commentNo!='' and recommentNo!=''">
+		insert into 
+			recommentReport(
+				reportCategory,
+				reportContent,
+				userNo,
+				noticeNo,
+				commentNo,
+				recommentNo,
+				boardType
+			)
+			values (
+			#{reportCategory},
+			#{reportContent},
+			#{userNo},
+			#{noticeNo},
+			#{commentNo},
+			#{recommentNo},
+			#{boardType}
+			)
+		</if>
+		
+	</insert>
+</mapper>

@@ -21,7 +21,7 @@ public interface ICommonService<T> {
 	public int noticeTotalCount() throws Exception;
 	//게시물 조회
 	public List<NoticeDTO> getNoticeList(HashMap<String, Integer> hMap) throws Exception ;
-	
+	public int boardTotalCount(HashMap<String, Integer> cMap) throws Exception;
 	//검색 후 all 게시물 개수
 	public int noticeSearchTitleTotalCount(HashMap<String, Object> hMap) throws Exception;
 	//검색 후 all  게시물 리스트
@@ -50,5 +50,9 @@ public interface ICommonService<T> {
 	public int deleteNotice(String noticeNo) throws Exception;
 
 	public int updateThumbnail(NoticeDTO nDTO) throws Exception;
+
+	public List<NoticeDTO> getBoardList(HashMap<String, Object> hMap) throws Exception;
+
+	public int noticeEnDisable(HashMap<String, Object> hMap) throws Exception;
 }
 

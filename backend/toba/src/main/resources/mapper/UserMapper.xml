@@ -85,5 +85,30 @@
 	set userProfilePath = #{userProfilePath}
 	where userNo=#{userNo}
 	</update>
+	<!-- 전체 회원 수 -->
+	<select id="userTotalCount" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM
+		user
+		WHERE enabled LIKE CONCAT('%',#{userActive},'%')
+		and userEmail LIKE CONCAT('%',#{userEmailSearch},'%')
+		and userNickName LIKE CONCAT('%',#{userNickNameSearch},'%')
+	</select>
+	<!-- 회원 리스트 -->
+	<select id="getUserList" parameterType="map" resultType="UserDTO">
+		SELECT
+		*
+		FROM
+		userlist_view
+		WHERE enabled LIKE CONCAT('%',#{userActive},'%')
+		AND userEmail LIKE CONCAT('%',#{userEmailSearch},'%')
+		AND userNickName LIKE CONCAT('%',#{userNickNameSearch},'%')
+		limit #{pagenum},#{contentnum}
+	</select>
+	<!-- 회원 활성화/비활성화 -->
+	<update id="userEnDisable" parameterType="String">
+		UPDATE user SET
+			enabled = #{enabled}
+		WHERE userNo = #{userNo}
+	</update>
 </mapper>
 

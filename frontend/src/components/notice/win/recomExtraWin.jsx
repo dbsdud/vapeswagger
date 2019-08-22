@@ -74,7 +74,22 @@ export default function SimpleMenu(thisIbProp) {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
+                       
+                        <Link to={{
+                            pathname:`/reportDetail`,
+                            query:{ 
+                                boardType:"notice",
+                                noticeNo:thisIbProp.noticeNo,
+                                commentNo:thisIbProp.commentNo,
+                                recommentNo:thisIbProp.recommentNo,
+                                recommentContent : thisIbProp.recommentContent,
+                                recommentWriter:thisIbProp.recommentWriter,
+                                recommentRegdate:thisIbProp.recommentRegdate
+                            }
+                            } 
+                            }>
                         <MenuItem onClick={handleClose}><i className="fa fa-exclamation-circle"></i> 신고</MenuItem>
+                        </Link>
                     </Menu>
                 </div>        
             )

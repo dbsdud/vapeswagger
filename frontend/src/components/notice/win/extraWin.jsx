@@ -73,7 +73,14 @@ export default function SimpleMenu(thisIbProp) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={noticeReport}><i className="fa fa-exclamation-circle"></i> 신고</MenuItem>
+            <Link to={{
+              pathname:`/reportDetail`,
+              query:{ 
+                boardType:"notice",
+                ntDetailResponse:thisIbProp.ntDetailResponse
+              }
+            } 
+            }><MenuItem><i className="fa fa-exclamation-circle"></i> 신고</MenuItem></Link>
           </Menu>
         </div>    
       )

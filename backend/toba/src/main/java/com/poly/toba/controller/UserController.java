@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.poly.toba.model.EmailDTO;
+import com.poly.toba.model.NoticeDTO;
+import com.poly.toba.model.PagingDTO;
 import com.poly.toba.model.UserDTO;
 import com.poly.toba.service.impl.IUserService;
 import com.poly.toba.util.Email;
@@ -262,4 +265,110 @@ public class UserController {
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 	// git test
+	// 회원
+	@GetMapping("/membermanage/{index}")
+	public ResponseEntity<HashMap<String, Object>> getUserList(@PathVariable List<String> index) throws Exception {
+		String userActive = index.get(0);
+		String pageno = index.get(1);
+		String searchOption = index.get(2);
+		String userSearch = index.get(3);
+		System.out.println("userActive : " + userActive);
+		System.out.println("pageno : " + pageno);
+		System.out.println("searchOption : " + searchOption);
+		System.out.println("userSearch : " + userSearch);
+		if(userSearch.equals("all")) {
+			userSearch = "";
+		}
+		switch(userActive) {
+		case "total" :
+			userActive = "";
+			break;
+		case "enable" :
+			userActive = "1";
+			break;
+		case "disable" :
+			userActive = "0";
+			break;
+		}
+		String userEmailSearch ="";
+		String userNickNameSearch ="";
+		switch(searchOption) {
+			case "아이디" :
+				userEmailSearch = userSearch;
+				break;
+			case "닉네임" :
+				userNickNameSearch = userSearch;
+				break;
+		}
+		
+		HashMap<String, String> sMap = new HashMap<>();
+		sMap.put("userActive", userActive);
+		sMap.put("userEmailSearch", userEmailSearch);
+		sMap.put("userNickNameSearch", userNickNameSearch);
+		
+		// 페이징
+	    PagingDTO paging = new PagingDTO();
+	    int pagenum = Integer.parseInt(pageno);
+	    int contentnum = 10;
+	    int totalcount = 0;
+	    
+		totalcount = userService.userTotalCount(sMap);
+		paging.setTotalcount(totalcount);// 전체 게시글 지정
+	    paging.setPagenum(pagenum - 1);// 현재페이지를 페이지 객체에 지정한다 -1 해야 쿼리에서 사용가능
+	    paging.setContentnum(contentnum);// 한 페이지에 몇개 씩 게시글을 보여줄지 지정
+	    paging.setCurrentblock(pagenum);// 현재 페이지 블록이 몇번인지 현재 페이지 번호를 통해서 지정함
+	    paging.setLastblock(paging.getTotalcount());// 마지막 블록 번호를 전체 게시글 수를 통해 정함
+	    paging.prevnext(pagenum); // 현재 페이지 번호로 화살표를 나타낼지 정함
+	    paging.setStartPage(paging.getCurrentblock());// 시작페이지를 페이지 블록번호로 정함
+	    paging.setEndPage(paging.getLastblock(), paging.getCurrentblock());// 마지막 페이지를 마지막 페이지 블록과 현재 페이지 블록번호로 정함
+
+	    HashMap<String, Object> hMap = new HashMap<>();
+	    
+	    switch(userActive) {
+		case "total" :
+			userActive = "";
+			break;
+		case "enable" :
+			userActive = "1";
+			break;
+		case "disable" :
+			userActive = "0";
+				break;
+		}
+	    int i = paging.getPagenum() * 10;
+	    int j = paging.getContentnum();
+	    hMap.put("userActive", userActive);
+		hMap.put("userEmailSearch", userEmailSearch);
+		hMap.put("userNickNameSearch", userNickNameSearch);
+	    hMap.put("pagenum", i);
+	    hMap.put("contentnum", j);
+	    
+	    List<NoticeDTO> userList = userService.getUserList(hMap);
+	    
+	    HashMap<String, Object> resultMap = new HashMap<>();
+	    resultMap.put("userList", userList);
+	    resultMap.put("paging", paging);
+	    resultMap.put("totalcount", totalcount);
+	    
+	    return new ResponseEntity<HashMap<String, Object>>(resultMap, HttpStatus.OK);
+	}
+	// 회원 활성화/비활성화
+	@CrossOrigin("*")
+	@PutMapping("/userEnDisable")
+	public ResponseEntity<HashMap<String,Object>> userEnDisable(@RequestBody List<String> userNoList) throws Exception {
+		int userNoListSize = userNoList.size()-1;
+		int result;
+		if (userNoList.get(userNoListSize).toString().equals("disable")) {
+			for (int i=0; i < userNoListSize; i++) {
+				result = userService.userEnDisable("0",userNoList.get(i).toString());
+			}
+		} else if (userNoList.get(userNoListSize).toString().equals("enable")) {
+			for (int i=0; i < userNoListSize; i++) {
+				result = userService.userEnDisable("1",userNoList.get(i).toString());
+			}
+		} else {
+			result = userService.userEnDisable(userNoList.get(0).toString(),userNoList.get(1).toString());
+		}
+		return new ResponseEntity<HashMap<String, Object>>(HttpStatus.OK);
+	}
 }

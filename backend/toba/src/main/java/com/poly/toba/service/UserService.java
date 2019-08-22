@@ -1,12 +1,14 @@
 package com.poly.toba.service;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.poly.toba.mapper.UserMapper;
 import com.poly.toba.model.EmailDTO;
+import com.poly.toba.model.NoticeDTO;
 import com.poly.toba.model.UserDTO;
 import com.poly.toba.service.impl.IUserService;
 
@@ -66,5 +68,20 @@ public class UserService implements IUserService{
 	@Override
 	public int profileUpd(UserDTO uDTO) throws Exception {
 		return userMapper.profileUpd(uDTO);
+	}
+	// 전체 회원 수
+	@Override
+	public int userTotalCount(HashMap<String, String> sMap) throws Exception {
+		return userMapper.userTotalCount(sMap);
+	}
+	// 회원 리스트
+	@Override
+	public List<NoticeDTO> getUserList(HashMap<String, Object> hMap) throws Exception {
+		return userMapper.getUserList(hMap);
+	}
+	// 회원 활성화/비활성화
+	@Override
+	public int userEnDisable(String enabled, String userNo) throws Exception {
+		return userMapper.userEnDisable(enabled, userNo);
 	}
 }

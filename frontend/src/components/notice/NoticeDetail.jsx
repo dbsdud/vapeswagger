@@ -11,11 +11,12 @@ import NoticeList from './NoticeList';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import ExtraWin from './win/extraWin';
-import ComExWin from './win/comExtraWin';
-import RecomExWin from './win/recomExtraWin';
+import ExtraWin from './win/ExtraWin';
+import ComExWin from './win/ComExtraWin';
+import RecomExWin from './win/RecomExtraWin';
 
 class NoticeDetail extends Component{
+    
     state={
         noticeTotalCount:"",
         ntDetailPrev:[
@@ -197,11 +198,6 @@ class NoticeDetail extends Component{
             adExposeList: exposeAd.data.adExposeList,
             aDTO:exposeAd.data.aDTO
         }) 
-        //document.getElementById('noticeExtraWin').style.display='none';
-        //let extraWinCount = document.getElementsByClassName('extraWin')
-        //for(let i = 0; i < extraWinCount.length; i++){
-        //    document.getElementsByClassName('extraWin')[i].style.display='none';
-        //}
         window.scrollTo(0,0)
     }
     //댓글 더보기 클릭시
@@ -386,28 +382,6 @@ class NoticeDetail extends Component{
         }
     }
    
-    // 공지사항 extra
-    noticeExtra(){
-        const extra = document.getElementById('noticeExtraWin')
-        extra.classList.add('activeWin')
-        if(extra.style.display==="none") {
-            extra.style.display="block";
-            extra.style.position="absolute";
-            extra.style.left="70vw";
-            extra.style.marginTop="3vh";
-        } else {
-            extra.classList.remove('activeWin')
-            extra.style.display='none'
-        }
-    }
-    close_win(){
-        const first = document.getElementById('noticeExtraWin')
-        console.log(first.classList)
-        if(first.classList !== null || first.classList !== ''){
-            first.classList.remove('activeWin')
-        }
-    }
-    
     //댓글 삭제
     async commentDelete(noticeNo,commentNo){
         let result = window.confirm("댓글을 삭제하시겠습니까? <댓글 및 관련 답글이 삭제됩니다.>");
@@ -520,16 +494,7 @@ class NoticeDetail extends Component{
             })
         }
     }
-    // 게시물 신고
-    async noticeReport(noticeNo) {
-        if(this.state.uDTO === null) {
-            alert("로그인 후 이용이 가능합니다")
-            return false;
-        } else {
-            alert("준비중")
-            return false;
-        }
-    }
+ 
     // 대댓글 신고
     async recommentReport(recommentNo){
         if(this.state.uDTO === null) {
@@ -698,7 +663,7 @@ class NoticeDetail extends Component{
             } else {
                 infoButton = 
                 <Fragment>
-                    <ExtraWin ntDetailResponse={ ntDetailResponse } noticeReport={ this.noticeReport.bind(this, ntDetailResponse.noticeNo) }/>
+                    <ExtraWin ntDetailResponse={ ntDetailResponse } />
                 </Fragment>
             }
         }
@@ -713,6 +678,8 @@ class NoticeDetail extends Component{
                                         commentNo={recomRow.commentNo}
                                         recommentNo={recomRow.recommentNo}
                                         recommentWriter={recomRow.recommentWriter}
+                                        recommentRegdate={recomRow.recommentRegdate}
+                                        recommentContent={recomRow.recommentContent}
                                         recomModifyWin={this.recomModifyWin.bind(this, recomRow.noticeNo,recomRow.commentNo,recomRow.recommentNo)}
                                         recommentDelete={this.recommentDelete.bind(this, recomRow.noticeNo,recomRow.commentNo,recomRow.recommentNo)} />
                         </div>
@@ -791,6 +758,8 @@ class NoticeDetail extends Component{
                             <ComExWin noticeNo={ comment.noticeNo } 
                                         commentNo={ comment.commentNo }
                                         commentWriter={ comment.commentWriter }
+                                        commentRegdate={comment.commentRegdate}
+                                        commentContent={comment.commentContent}
                                         comModifyWin={ this.comModifyWin.bind(this, comment.noticeNo, comment.commentNo) }
                                         commentDelete={ this.commentDelete.bind(this,comment.noticeNo,comment.commentNo) }/>
                         </div>
@@ -945,9 +914,9 @@ class NoticeDetail extends Component{
                             <div className="commentTableTop">
                                 댓글 {commentTotalCount}개
                             </div>
+                            {loginCommentRender}
                             {commentListRender}
                             {addCommentRender}
-                            {loginCommentRender}
                             <div className="commentTableMovePrev">
                                 {prevRender}
                             </div>

@@ -45,6 +45,7 @@ class StepManage extends Component{
                     <div className="adminLnb-sub">
                         <div className="adminContainer">
                             <Link to="/TotalMemberManage">전체 회원관리</Link>
+                            <Link to="/EnableMemberManage">활동 회원관리</Link>
                             <Link to="/DisableMemberManage">정지 회원관리</Link>
                             <Link to="/StepManage" className="adminActive">스탭 관리</Link>
                         </div>
