@@ -1257,10 +1257,3 @@
         font-size:18px
     }
 }
-
-.activeWin{
-    display:block;
-}
-:not(#noticeExtraWin .activeWin){
-    display: none;
-}

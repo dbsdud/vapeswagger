@@ -101,4 +101,19 @@ public class AdmanageService implements IAdmanageService<AdmanageDTO>{
 		// TODO Auto-generated method stub
 		admanageMapper.updateAdClick(adNo);
 	}
+
+	@Override
+	public int getCount(String adNo) throws Exception {
+		return admanageMapper.getCount(adNo);
+	}
+
+	@Override
+	public int updateActive(String adNo) throws Exception {
+		return admanageMapper.updateActive(adNo);
+	}
+
+	@Override
+	public List<AdmanageDTO> getDefault(String adNo) throws Exception {
+		return admanageMapper.getDefault(adNo);
+	}
 }

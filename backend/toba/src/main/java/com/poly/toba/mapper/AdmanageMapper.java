@@ -49,4 +49,10 @@ public interface AdmanageMapper {
 
 	//광고 클릭
 	public void updateAdClick(String adNo) throws Exception;
+
+	public int getCount(String adNo) throws Exception;
+
+	public int updateActive(String adNo) throws Exception;
+
+	public List<AdmanageDTO> getDefault(String adNo) throws Exception;
 }

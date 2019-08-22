@@ -145,7 +145,7 @@
 	SET 
 		adEnable = adEnable-1
 	WHERE 
-		adNo = #{adNo}
+		adNo = #{adNo} AND adActive = 1
 	</update>
 	<update id="updateAdClick" parameterType="string">
 	UPDATE
@@ -156,4 +156,19 @@
 	WHERE 
 		adNo = #{adNo}
 	</update>
+	<select id="getCount" parameterType="string" resultType="int">
+	SELECT adEnable
+	FROM advertisement
+	WHERE adNo = #{adNo}
+	</select>
+	<update id="updateActive" parameterType="string">
+	UPDATE advertisement
+	SET adActive = 0
+	WHERE adNo = #{adNo}
+	</update>
+	<select id="getDefault" parameterType="string" resultType="AdmanageDTO">
+	SELECT *
+	FROM advertisement
+	WHERE adNo = #{adNo}
+	</select>
 </mapper>

@@ -46,4 +46,10 @@ public interface IAdmanageService<T> {
 	//클릭시 1개씩증가 
 	public void updateAdClick(String adNo) throws Exception;
 
+	public int getCount(String adNo) throws Exception;
+
+	public int updateActive(String adNo) throws Exception;
+
+	public List<AdmanageDTO> getDefault(String adNo) throws Exception;
+
 }
