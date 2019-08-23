@@ -239,6 +239,7 @@ public class NoticeController {
          List<String> thumbFileNameList = new ArrayList<>();
          List<String> imgList = new ArrayList();
          List<String> newThumbFilelist = new ArrayList<>();
+         List<String> extensionList = new ArrayList<>();
          
          result=noticeService.noticeReg(nDTO);
          imgList = StringUtil.getImgSrc(contentBase64);
@@ -278,11 +279,12 @@ public class NoticeController {
                 newSrc.add("http://15.164.160.236:8080/imageUpload/notice/"+year+"/"+month+"/"+day+"/"+hour+"/"+nDTO.getNoticeNo()+"/thumbs/"+"THUMB_" + uid + now + i + "." + extension);
                 newFileNameList.add(newFileName);
                 thumbFileNameList.add(thumbFileName);
+                extensionList.add(extension);
              }
             String replaceContent = StringUtil.getImgSrcReplace(contentBase64, oldSrc, newSrc);
             nDTO.setNoticeContent(replaceContent);
             for(int k=0; k<thumbFileNameList.size();k++) {
-               String thumbnailPath=MakeThumbnail.makeThumbnail(path,newFileNameList.get(k), thumbFileNameList.get(k),extension,year,month,day,hour,nDTO.getNoticeNo());
+               String thumbnailPath=MakeThumbnail.makeThumbnail(path,newFileNameList.get(k), thumbFileNameList.get(k),extensionList.get(k),year,month,day,hour,nDTO.getNoticeNo());
                newThumbFilelist.add(thumbnailPath);
             }
            
@@ -350,6 +352,7 @@ public class NoticeController {
       List<String> thumbFileNameList = new ArrayList<>();
       List<String> newList = new ArrayList<>();
       List<String> newThumbFilelist = new ArrayList<>();
+      List<String> extensionList = new ArrayList<>();
       String compFile = "";
       String path = "/usr/local/tomcat/webapps/ROOT/imageUpload/notice/";
       String newFileName = "";
@@ -410,10 +413,11 @@ public class NoticeController {
                newSrc.add("http://15.164.160.236:8080/imageUpload/notice/"+year+"/"+month+"/"+day+"/"+hour+"/"+nDTO.getNoticeNo()+"/thumbs/"+"THUMB_" + uid + now + i + "." + extension);
                newFileNameList.add(newFileName);
                thumbFileNameList.add(thumbFileName);
+               extensionList.add(extension);
             }
          }
             for(int k=0; k<thumbFileNameList.size();k++) {
-               String thumbnailPath=MakeThumbnail.makeThumbnail(path,newFileNameList.get(k), thumbFileNameList.get(k),extension,year,month,day,hour,nDTO.getNoticeNo());
+               String thumbnailPath=MakeThumbnail.makeThumbnail(path,newFileNameList.get(k), thumbFileNameList.get(k),extensionList.get(k),year,month,day,hour,nDTO.getNoticeNo());
                newThumbFilelist.add(thumbnailPath);
             }
           

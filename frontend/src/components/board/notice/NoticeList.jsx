@@ -1,7 +1,7 @@
 import React, { Component,Fragment } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import newIcon from '../../images/new.gif';
+import newIcon from '../../../images/new.gif';
 function dateDiff(date1, date2) {
    var diffDate_1 = date1 instanceof Date ? date1 : new Date(date1);
    var diffDate_2 = date2 instanceof Date ? date2 : new Date(date2);

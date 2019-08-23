@@ -4,7 +4,7 @@ import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import extra from '../../../images/extra.png';
+import extra from '../../../../images/extra.png';
 
 var thisIbProp = this
 if(JSON.parse(sessionStorage.getItem('uDTO')) === null){
@@ -42,7 +42,7 @@ export default function SimpleMenu(thisIbProp) {
     );
   } else { // 2. 로그인이 되어 있을 때
     // 2-1. 로그인된 계정과 작성자가 같을 경우
-    if(userNickName === thisIbProp.ntDetailResponse.noticeWriter) {
+    if(userNickName === thisIbProp.ibDetailResponse.imageBoardWriter) {
       return (  
         <div>
           <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
@@ -55,7 +55,7 @@ export default function SimpleMenu(thisIbProp) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}><Link to={`/noticeModify/${ thisIbProp.ntDetailResponse.noticeNo }`}><i className="fa fa-edit"></i> 수정</Link></MenuItem>
+            <MenuItem onClick={handleClose}><Link to={`/noticeModify/${ thisIbProp.ibDetailResponse.imageBoardNo }`}><i className="fa fa-edit"></i> 수정</Link></MenuItem>
             <MenuItem onClick={noticeDel}><i className="fa fa-trash"></i> 삭제</MenuItem>
           </Menu>
         </div>
@@ -74,10 +74,10 @@ export default function SimpleMenu(thisIbProp) {
             onClose={handleClose}
           >
             <Link to={{
-              pathname:`/reportDetail`,
+              pathname:`/reportDetailImage`,
               query:{ 
-                boardType:"notice",
-                ntDetailResponse:thisIbProp.ntDetailResponse
+                boardType:"imageboard",
+                ibDetailResponse:thisIbProp.ibDetailResponse
               }
             } 
             }><MenuItem><i className="fa fa-exclamation-circle"></i> 신고</MenuItem></Link>

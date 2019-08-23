@@ -34,5 +34,8 @@ public interface IImageBoardService {
 
 	public int getImageBoardCommentCount(ImageBoardDTO nextDTO) throws Exception;
 
+	public int noticeReg(ImageBoardDTO nDTO) throws Exception;
+
+	public int updateThumbnail(ImageBoardDTO nDTO) throws Exception;
 
 }

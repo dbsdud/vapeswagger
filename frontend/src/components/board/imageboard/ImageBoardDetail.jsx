@@ -2,11 +2,13 @@ import React,{ Component,Fragment } from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import ImageGallery from 'react-image-gallery';
-import extra from '../../images/extra.png';
 import ReactQuill from 'react-quill';
 import "react-quill/dist/quill.bubble.css";
-import defaultUser from '../../images/default-user.png';
-import ImageBoardList from "../mainPage/ImageBoardList"
+import defaultUser from '../../../images/default-user.png';
+import ImageBoardList from "./ImageBoardList"
+import ExtraWin from './win/ExtraWin';
+import ComExWin from './win/ComExtraWin';
+import RecomExWin from './win/RecomExtraWin';
 class ImageBoardDetail extends Component{
     state={
         showIndex: false,
@@ -111,7 +113,8 @@ class ImageBoardDetail extends Component{
         recommentTitleInsert:"",
         likeCommentCount:"",
         recommentUpd:"",
-        commentUpd:""
+        commentUpd:"",
+        editorHtml:"",
     }
     async componentDidMount(){
         const response = await axios.get(`http://15.164.160.236:8080/imageBoards/detail/${this.state.ibDetailResponse.imageBoardNo}`)
@@ -119,6 +122,7 @@ class ImageBoardDetail extends Component{
         const exposeAd = await axios.get('http://15.164.160.236:8080/admanage/exposeAd')
         this.setState({
             ibDetailResponse:response.data.ibDTO,
+            editorHtml: response.data.ibDTO.imageBoardContent,
             paging:response2.data.paging,
             imageBoardCommentCount:response.data.imageBoardCommentCount,
             imageBoardLikeCountList:response.data.imageBoardLikeCountList,
@@ -158,13 +162,7 @@ class ImageBoardDetail extends Component{
             editorHtml: response.data.ibDTO.imageBoardContent,
             adExposeList: exposeAd.data.adExposeList,
             aDTO:exposeAd.data.aDTO
-        }) 
-       
-        document.getElementById('noticeExtraWin').style.display='none';
-        let extraWinCount = document.getElementsByClassName('extraWin')
-        for(let i = 0; i < extraWinCount.length; i++){
-            document.getElementsByClassName('extraWin')[i].style.display='none';
-        }
+        })
          window.scrollTo(0,0)
     }
     //////////////////////////////////////////////////////////////////////////
@@ -363,36 +361,6 @@ class ImageBoardDetail extends Component{
         }
         
     }
-    //댓글더보기 extra
-    addMoreSel(imageBoardNo, commentNo){
-        const extra = document.querySelector(`.extraWin${imageBoardNo+'-'+commentNo}`) 
-        if(extra.style.display==="none"){
-            extra.style.display="block";
-            extra.style.position="absolute";
-            extra.style.left="70vw";
-            extra.style.marginTop="-2vh"
-        }else if((extra.style.display!=="none")){
-            extra.style.display="none";
-        }
-    }
-    //대댓글 더보기 extra
-    addMoreReSel(imageBoardNo,commentNo,recommentNo){
-        const extraWin = document.getElementsByClassName(`extraWinRecom${imageBoardNo+'-'+commentNo+'-'+recommentNo}`);
-        for(var i = 0 ; i<extraWin.length;i++){
-            if(recommentNo===extraWin[i].getAttribute('value')){
-                if(extraWin[i].style.display==="block"){
-                    extraWin[i].style.display="none"
-                }else{
-                    extraWin[i].style.display="block"
-                    extraWin[i].style.position="absolute";
-                    extraWin[i].style.left="70vw";
-                    extraWin[i].style.marginTop="-2vh"
-                }
-            }else{
-                extraWin[i].style.display="none";
-            }
-        }
-    }
  //댓글 삭제
  async commentDelete(imageBoardNo,commentNo){
     let result = window.confirm("댓글을 삭제하시겠습니까? <댓글 및 관련 답글이 삭제됩니다.>");
@@ -484,11 +452,20 @@ async comModifyWin(imageBoardNo, commentNo){
     this.setState({
         commentUpd: result.data
     })
-    document.querySelector(`.extraWin${imageBoardNo+'-'+commentNo}`).style.display='none';
+    // 수정하려고하는 댓글의 원본
     const contentWin = document.querySelector(`.comContentWin${imageBoardNo+'-'+commentNo}`)
+    // 수정하려고하는 댓글을 제외한 원본
+    const exContentWin = document.querySelectorAll(`div[class^="comContentWin"]:not(.comContentWin${imageBoardNo+'-'+commentNo})`)
+    // 수정하려고하는 댓글의 수정
     const modifyWin = document.querySelector(`.comModifyWin${imageBoardNo+'-'+commentNo}`)
+    // 수정하려고하는 댓글을 제외한 수정
+    const exModifyWin = document.querySelectorAll(`div[class^="comModifyWin"]:not(.comModifyWin${imageBoardNo+'-'+commentNo})`)
     contentWin.style.display='none';
     modifyWin.style.display='block';
+    for(var i=0; i<exContentWin.length; i++){
+        exContentWin[i].style.display='block'
+        exModifyWin[i].style.display='none'
+    }
 }
 
 // 댓글 수정 취소
@@ -527,7 +504,7 @@ async comModifySubmit(imageBoardNo, commentNo) {
             commentTotalCount:response2.data.commentTotalCount,
             paging:response2.data.paging,
             adExposeList:exposeAd.data.adExposeList,
-            aDTO:exposeAd.data.adExposeList,
+            aDTO:exposeAd.data.aDTO,
             commentUpd:""
         })
         contentWin.style.display='block';
@@ -559,22 +536,25 @@ async recomModifySubmit(imageBoardNo, commentNo,  recomNo){
 // 대댓글 수정
 async recomModifyWin(imageBoardNo,commentNo,recommentNo) {
     console.log(imageBoardNo, commentNo, recommentNo)
-    const result = await axios.get(`http://15.164.160.236::8080/imageBoardRecomments/detail/${imageBoardNo}/${commentNo}/${recommentNo}`)
+    const result = await axios.get(`http://15.164.160.236:8080/imageBoardRecomments/detail/${imageBoardNo}/${commentNo}/${recommentNo}`)
     this.setState({
         recommentUpd: result.data
     })
-    const extraWin = document.getElementsByClassName(`extraWinRecom${imageBoardNo+'-'+commentNo+'-'+recommentNo}`)
+    // 수정하려고하는 대댓글의 원본
     const contentWin = document.getElementsByClassName(`recomContentWin${imageBoardNo+'-'+commentNo+'-'+recommentNo}`)
+    // 수정하려고하는 대댓글을 제외한 원본
+    const exContentWin = document.querySelectorAll(`div[class^="recomContentWin"]:not(.recomContentWin${imageBoardNo+'-'+commentNo+'-'+recommentNo})`)
+    // 수정하려고하는 대댓글의 수정
     const modifyWin = document.getElementsByClassName(`recomModifyWin${imageBoardNo+'-'+commentNo+'-'+recommentNo}`)
-    for(var i=0; i<extraWin.length; i++){
-        extraWin[i].style.display = 'none';
-        if(recommentNo===extraWin[i].getAttribute('value')){
-            contentWin[i].style.display='none';
-            modifyWin[i].style.display='block';
-        } else {
-            contentWin[i].style.display='block';
-            modifyWin[i].style.display='none';
-        }
+    // 수정하려고하는 대댓글을 제외한 수정
+    const exModifyWin = document.querySelectorAll(`div[class^="recomModifyWin"]:not(.recomModifyWin${imageBoardNo+'-'+commentNo+'-'+recommentNo})`)
+    for(var i=0; i<contentWin.length; i++){
+        contentWin[i].style.display='none';
+        modifyWin[i].style.display='block';
+    }
+    for(var i=0; i<exContentWin.length; i++){
+        exContentWin[i].style.display='block'
+        exModifyWin[i].style.display='none'
     }
 }
 // 대댓글 수정 취소
@@ -629,40 +609,24 @@ async noticeDel(imageBoardNo) {
         let recommentListRender = null;
         let redelDecRender = null
         recommentListRender = recommentListResponse.map(function(recomRow,index){
-            if(this.state.uDTO === null) {
-                redelDecRender =
-                <Fragment>
-                    <div onClick={ this.recommentReport.bind(this, recomRow.recommentNo) }><i className="fa fa-exclamation-circle"></i> 신고</div>
-                </Fragment>
-            } else {
-                if(this.state.uDTO.userNickName === recomRow.recommentWriter){
-                    redelDecRender =
-                    <Fragment>
-                        <div onClick={ this.recomModifyWin.bind(this,recomRow.imageBoardNo,recomRow.commentNo,recomRow.recommentNo) } style={{paddingBottom:'12px',color:'#FFFFFF'}}><i className="fa fa-edit"></i> 수정</div>
-                        <div onClick={ this.recommentDelete.bind(this,recomRow.imageBoardNo,recomRow.commentNo,recomRow.recommentNo) }><i className="fa fa-trash"></i> 삭제</div>
-                    </Fragment>
-                } else {
-                    redelDecRender =
-                    <Fragment>
-                        <div onClick={ this.recommentReport.bind(this, recomRow.recommentNo) }><i className="fa fa-exclamation-circle"></i> 신고</div>
-                    </Fragment>
-                }
-            }
             return (
                 <Fragment key={index}>
                     <div style={{border:0 , marginTop:20, paddingBottom:20, borderBottom:"1px solid #eee"}}>
                         <div className="commentTableContentTop" style={{display:"flex",justifyContent:"space-between"}}>
                             <div style={{paddingLeft:15,paddingRight:15}}><img src={recomRow.userProfilePath} className="commentWriterProfile" />&nbsp;{recomRow.recommentWriter} | {recomRow.recommentRegdate}</div>
-                            <div><img src={extra} alt='더보기' onClick={this.addMoreReSel.bind(this,recomRow.imageBoardNo,recomRow.commentNo,recomRow.recommentNo)} className='extraBtn' /></div>
+                            <RecomExWin imageBoardNo={recomRow.imageBoardNo}
+                                        commentNo={recomRow.commentNo}
+                                        recommentNo={recomRow.recommentNo}
+                                        recommentWriter={recomRow.recommentWriter}
+                                        recommentRegdate={recomRow.recommentRegdate}
+                                        recommentContent={recomRow.recommentContent}
+                                        recomModifyWin={this.recomModifyWin.bind(this, recomRow.imageBoardNo,recomRow.commentNo,recomRow.recommentNo)}
+                                        recommentDelete={this.recommentDelete.bind(this, recomRow.imageBoardNo,recomRow.commentNo,recomRow.recommentNo)}
+                                        boardType={'imageboard'}/>
                         </div>
                         <div className="commentTableContentBody" style={{display:"flex",justifyContent:"space-between"}}>
                             <div style={{display:"flex",justifyContent:"space-between"}} className={`recomContentWin${recomRow.imageBoardNo+'-'+recomRow.commentNo+'-'+recomRow.recommentNo}`} style={{width:'100%'}}>
                                 <ReactQuill theme="bubble" value={ recomRow.recommentContent } readOnly />
-                            </div>
-                            <div className={`extraWinRecom${recomRow.imageBoardNo+'-'+recomRow.commentNo+'-'+recomRow.recommentNo}`} value={recomRow.recommentNo} style={{display:'none'}}>
-                                <div className="extraWinRecom">
-                                    { redelDecRender }
-                                </div>
                             </div>
                             <div className={`recomModifyWin${recomRow.imageBoardNo+'-'+recomRow.commentNo+'-'+recomRow.recommentNo}`} style={{display:'none',width:'100%'}}>
                                 <div className="commentTableReg">
@@ -794,63 +758,42 @@ async noticeDel(imageBoardNo) {
         // 수정, 삭제 버튼 만들기
         let infoButton = null;
         if(this.state.uDTO === null) {
-        infoButton =
+            infoButton =
             <Fragment>
-                 <div><i className="fa fa-exclamation-circle"></i> 신고</div>
-                {/* <div onClick={ this.noticeReport.bind(this) }><i className="fa fa-exclamation-circle"></i> 신고</div> */}
-            </Fragment>   
+                <ExtraWin ibDetailResponse={ ibDetailResponse } boardType={'imageboard'}/>
+            </Fragment>  
         } else {
             if(this.state.uDTO.userNickName === ibDetailResponse.imageBoardWriter){
                 infoButton =
                 <Fragment>
-                    <Link to={`/imageBoardModify/${ ibDetailResponse.imageBoardNo }`}><div style={{paddingBottom:'12px',color:'#FFFFFF'}}><i className="fa fa-edit"></i> 수정</div></Link>
-                    <div><i className="fa fa-trash"></i> 삭제</div>
-                    {/* <div onClick={ this.noticeDel.bind(this, ibDetailResponse.imageBoardNo) }><i className="fa fa-trash"></i> 삭제</div> */}
+                    <ExtraWin ibDetailResponse={ ibDetailResponse } noticeDel={ this.noticeDel.bind(this, ibDetailResponse.imageBoardNo) } boardType={'imageboard'}/>
                 </Fragment>
             } else {
                 infoButton = 
                 <Fragment>
-                    <div><i className="fa fa-exclamation-circle"></i> 신고</div>
-                    {/* <div onClick={ this.noticeReport.bind(this) }><i className="fa fa-exclamation-circle"></i> 신고</div> */}
+                    <ExtraWin ibDetailResponse={ ibDetailResponse } boardType={'imageboard'}/>
                 </Fragment>
             }
         }
         let delDecRender = null
         commentListRender = commentListResponse.map(function(comment,index){
-            if(this.state.uDTO!==null){
-                if(comment.userNo===this.state.uDTO.userNo){
-                    delDecRender=
-                        <Fragment>
-                            <div onClick={ this.comModifyWin.bind(this,comment.imageBoardNo,comment.commentNo)} style={{paddingBottom:'12px',color:'#FFFFFF'}}><i className="fa fa-edit"></i> 수정</div>
-                            <div onClick={this.commentDelete.bind(this,comment.imageBoardNo,comment.commentNo)}><i className="fa fa-trash"></i> 삭제</div>
-                        </Fragment>
-                }else{
-                    delDecRender=
-                    <Fragment>
-                        <div><i className="fa fa-exclamation-circle"></i> 신고</div>
-                    </Fragment>
-                }
-            }else{
-                delDecRender=
-                    <Fragment>
-                        <div><i className="fa fa-exclamation-circle"></i> 신고</div>
-                    </Fragment>
-            }
             return(
                 <Fragment key={index}>
                     <div style={{border:0 , marginTop:20, paddingBottom:20, borderBottom:"1px solid #eee"}}>
                         <div className="commentTableContentTop">
                             <div><img src={ comment.userProfilePath } className="commentWriterProfile" />&nbsp;{comment.commentWriter} | {comment.commentRegdate.split(" ")[0]}</div>
-                            <div><img src={extra} alt='더보기' onClick={this.addMoreSel.bind(this,comment.imageBoardNo,comment.commentNo)} className='extraBtn' /></div>
+                            <ComExWin imageBoardNo={ comment.imageBoardNo } 
+                                        commentNo={ comment.commentNo }
+                                        commentWriter={ comment.commentWriter }
+                                        commentRegdate={comment.commentRegdate}
+                                        commentContent={comment.commentContent}
+                                        comModifyWin={ this.comModifyWin.bind(this, comment.imageBoardNo, comment.commentNo) }
+                                        commentDelete={ this.commentDelete.bind(this,comment.imageBoardNo,comment.commentNo) }
+                                        boardType={'imageboard'}/>
                         </div>
                         <div className="commentTableContentBody" style={{display:"flex",justifyContent:"space-between"}}>
                             <div style={{display:"flex",justifyContent:"space-between"}} className={`comContentWin${comment.imageBoardNo+'-'+comment.commentNo}`} style={{width:'100%'}}>
                                 <ReactQuill theme="bubble" value={ comment.commentContent } style={{minWidth:'100%'}} readOnly />
-                            </div>
-                            <div className={`extraWin${comment.imageBoardNo+'-'+comment.commentNo}`} style={{display:'none'}} >
-                                <div className="extraWin">
-                                    {delDecRender}
-                                </div>
                             </div>
                             <div className={`comModifyWin${comment.imageBoardNo+'-'+comment.commentNo}`} style={{display:'none',width:'100%'}}>
                                 <div className="commentTableReg">
@@ -912,10 +855,7 @@ async noticeDel(imageBoardNo) {
                             </div>
                             <div className="noticeTableTitle">
                                 {ibDetailResponse.imageBoardTitle}
-                                <div onClick={ this.noticeExtra.bind(this) } style={{fontSize:'12px',color:'#A1A1A1'}}><img src={ extra } className="extraBtn" /></div>
-                                <div id="noticeExtraWin" style={{display:'none'}}>
-                                    { infoButton }
-                                </div>
+                                { infoButton }
                             </div>
                             <div style={{display:"flex",paddingTop:10}} className="padLR">
                                 <img src={"http://placehold.it/300x200"} className="imgInstaUserImg" />
@@ -927,12 +867,12 @@ async noticeDel(imageBoardNo) {
                     </div>
                     <div className="imageGalWidth">
                     <ImageGallery
-                    items={images} 
-                    showFullscreenButton={this.state.showFullscreenButton && this.state.showGalleryFullscreenButton} 
-                    showPlayButton={this.state.showPlayButton && this.state.showGalleryPlayButton} 
-                    showThumbnails={this.state.showThumbnails}/> 
+                        items={images} 
+                        showFullscreenButton={this.state.showFullscreenButton && this.state.showGalleryFullscreenButton} 
+                        showPlayButton={this.state.showPlayButton && this.state.showGalleryPlayButton} 
+                        showThumbnails={this.state.showThumbnails}/> 
                     </div>
-                    <div style={{display:"flex",justifyContent:"space-between"}} className="padLR">
+                    <div style={{display:"flex",justifyContent:"space-between",marginTop:10,marginBottom:10}} className="padLR">
                         <img src="http://placehold.it/96x96"  style={{height:"100%"}}alt=""/>
                         <div>
                             <div><i className="fa fa-users"></i>{ibDetailResponse.imageBoardReadcount} 회</div>
@@ -944,14 +884,15 @@ async noticeDel(imageBoardNo) {
                     
                     <div className="padLR">
                         <div className="commentTable">
+                            <div className="noticeTableContent" style={{borderTop: "1px solid rgb(228 228 228)"}}>
+                                 <ReactQuill theme="bubble" value={ this.state.editorHtml } readOnly />
+                            </div>
                              <div className="commentTableTop">
                                 댓글 {commentTotalCount}개
                             </div>
-                            {/* {commentListRender}
-                             */}
+                            {loginCommentRender}
                              {commentListRender}
                              {addCommentRender}
-                            {loginCommentRender}
                             <div className="commentTableMovePrev">
                                 {prevRender}
                             </div>

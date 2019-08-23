@@ -26,8 +26,8 @@ public interface ImageBoardMapper {
 	public List<ImageBoardDTO> getImageBoardSearchTitleList(HashMap<String, Object> hMap) throws Exception;
 	//검색 게시물 총개수
 	public int imageBoardSearchTitleTotalCount(HashMap<String, Object> hMap);
-//	// 등록
-//	public int noticeReg(NoticeDTO nDTO) throws Exception;
+	// 등록
+	public int noticeReg(ImageBoardDTO nDTO) throws Exception;
 //	// 좋아요
 	
 //	public int noticeLikeCheck(BoardLikeDTO blDTO) throws Exception;
@@ -47,6 +47,8 @@ public interface ImageBoardMapper {
 	public int getImageBoardSearchCommentCount(HashMap<String, Object> hMap);
 	public int getImageBoardSearchLikeCount(HashMap<String, Object> hMap);
 //	public int deleteNotice(String noticeNo) throws Exception;
-//	public int updateThumbnail(NoticeDTO nDTO) throws Exception;	
+	public int updateThumbnail(ImageBoardDTO nDTO) throws Exception;
+	
+	
 	
 }

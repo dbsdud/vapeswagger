@@ -2,15 +2,10 @@ import React,{ Component,Fragment } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import ReactQuill from 'react-quill';
-import like from '../../images/like.png';
-import extra from '../../images/extra.png';
-import UserAdExpose from '../mainPage/UserAdExpose';
+import like from '../../../images/like.png';
 import "react-quill/dist/quill.bubble.css";
-import defaultUser from '../../images/default-user.png';
+import defaultUser from '../../../images/default-user.png';
 import NoticeList from './NoticeList';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import ExtraWin from './win/ExtraWin';
 import ComExWin from './win/ComExtraWin';
 import RecomExWin from './win/RecomExtraWin';
@@ -563,7 +558,7 @@ class NoticeDetail extends Component{
                 commentTotalCount:response2.data.commentTotalCount,
                 paging:response2.data.paging,
                 adExposeList:exposeAd.data.adExposeList,
-                aDTO:exposeAd.data.adExposeList,
+                aDTO:exposeAd.data.aDTO,
                 commentUpd:""
             })
             contentWin.style.display='block';
@@ -598,10 +593,8 @@ class NoticeDetail extends Component{
         this.setState({
             recommentUpd: result.data
         })
-        const extraWin = document.getElementsByClassName(`extraWinRecom${noticeNo+'-'+commentNo+'-'+recommentNo}`)
         // 수정하려고하는 대댓글의 원본
         const contentWin = document.getElementsByClassName(`recomContentWin${noticeNo+'-'+commentNo+'-'+recommentNo}`)
-        console.log(contentWin)
         // 수정하려고하는 대댓글을 제외한 원본
         const exContentWin = document.querySelectorAll(`div[class^="recomContentWin"]:not(.recomContentWin${noticeNo+'-'+commentNo+'-'+recommentNo})`)
         // 수정하려고하는 대댓글의 수정
@@ -652,18 +645,18 @@ class NoticeDetail extends Component{
         if(this.state.uDTO === null || this.state.uDTO === '') {
             infoButton =
             <Fragment>
-                <ExtraWin ntDetailResponse={ ntDetailResponse } />
+                <ExtraWin ntDetailResponse={ ntDetailResponse } boardType={'notice'}/>
             </Fragment>
         } else {
             if(this.state.uDTO.userNickName === ntDetailResponse.noticeWriter){
                 infoButton =
                 <Fragment>
-                    <ExtraWin ntDetailResponse={ ntDetailResponse } noticeDel={ this.noticeDel.bind(this, ntDetailResponse.noticeNo) }/>
+                    <ExtraWin ntDetailResponse={ ntDetailResponse } noticeDel={ this.noticeDel.bind(this, ntDetailResponse.noticeNo) } boardType={'notice'}/>
                 </Fragment>
             } else {
                 infoButton = 
                 <Fragment>
-                    <ExtraWin ntDetailResponse={ ntDetailResponse } />
+                    <ExtraWin ntDetailResponse={ ntDetailResponse } boardType={'notice'}/>
                 </Fragment>
             }
         }
@@ -754,14 +747,14 @@ class NoticeDetail extends Component{
                     <div style={{border:0 , marginTop:20, paddingBottom:20, borderBottom:"1px solid #eee"}}>
                         <div className="commentTableContentTop">
                             <div><img src={ comment.userProfilePath } className="commentWriterProfile" />&nbsp;{comment.commentWriter} | {comment.commentRegdate.split(" ")[0]}</div>
-                            {/* <div><img src={extra} alt='더보기' onClick={this.addMoreSel.bind(this,comment.noticeNo,comment.commentNo)} className='extraBtn' /></div> */}
                             <ComExWin noticeNo={ comment.noticeNo } 
                                         commentNo={ comment.commentNo }
                                         commentWriter={ comment.commentWriter }
                                         commentRegdate={comment.commentRegdate}
                                         commentContent={comment.commentContent}
                                         comModifyWin={ this.comModifyWin.bind(this, comment.noticeNo, comment.commentNo) }
-                                        commentDelete={ this.commentDelete.bind(this,comment.noticeNo,comment.commentNo) }/>
+                                        commentDelete={ this.commentDelete.bind(this,comment.noticeNo,comment.commentNo) }
+                                        boardType={'notice'}/>
                         </div>
                         <div className="commentTableContentBody" style={{display:"flex",justifyContent:"space-between"}}>
                             <div style={{display:"flex",justifyContent:"space-between"}} className={`comContentWin${comment.noticeNo+'-'+comment.commentNo}`} style={{width:'100%'}}>

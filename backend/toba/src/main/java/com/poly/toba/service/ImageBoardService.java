@@ -93,5 +93,13 @@ public class ImageBoardService implements IImageBoardService{
 		return imageBoardMapper.getImageBoardCommentCount(nextDTO);
 	}
 
+	@Override
+	public int noticeReg(ImageBoardDTO nDTO) throws Exception {
+		return imageBoardMapper.noticeReg(nDTO);
+	}
 
+	@Override
+	public int updateThumbnail(ImageBoardDTO nDTO) throws Exception {
+		return imageBoardMapper.updateThumbnail(nDTO);
+	}
 }

@@ -4,7 +4,7 @@ import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import extra from '../../../images/extra.png';
+import extra from '../../../../images/extra.png';
 
 var thisIbProp = this
 if(JSON.parse(sessionStorage.getItem('uDTO')) === null){
@@ -76,10 +76,10 @@ export default function SimpleMenu(thisIbProp) {
                     >
                        
                         <Link to={{
-                            pathname:`/reportDetail`,
+                            pathname:`/reportDetailImage`,
                             query:{ 
-                                boardType:"notice",
-                                noticeNo:thisIbProp.noticeNo,
+                                boardType:"imageboard",
+                                imageBoardNo:thisIbProp.imageBoardNo,
                                 commentNo:thisIbProp.commentNo,
                                 recommentNo:thisIbProp.recommentNo,
                                 recommentContent : thisIbProp.recommentContent,
@@ -95,22 +95,4 @@ export default function SimpleMenu(thisIbProp) {
             )
         }
     }
-    //return (
-    //    <div>
-    //      <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-    //          <img src={ extra } className="extraBtn" />
-    //      </Button>
-    //      <Menu
-    //        id="simple-menu"
-    //        anchorEl={anchorEl}
-    //        keepMounted
-    //        open={Boolean(anchorEl)}
-    //        onClose={handleClose}
-    //      >
-    //        <MenuItem onClick={handleClose}>Profile</MenuItem>
-    //        <MenuItem onClick={handleClose}>My account</MenuItem>
-    //        <MenuItem onClick={handleClose}>Logout</MenuItem>
-    //      </Menu>
-    //    </div>
-    //);
 }

@@ -5,7 +5,7 @@
 		
 		<if test="noticeNo!='' and commentNo=='' and recommentNo==''">
 		insert into 
-			boardReport(
+			boardreport(
 				reportCategory,
 				reportContent,
 				userNo,
@@ -22,7 +22,7 @@
 		</if>
 		<if test="noticeNo!='' and commentNo!='' and recommentNo==''">
 		insert into 
-			commentReport(
+			commentreport(
 				reportCategory,
 				reportContent,
 				userNo,
@@ -41,7 +41,7 @@
 		</if>
 		<if test="noticeNo!='' and commentNo!='' and recommentNo!=''">
 		insert into 
-			recommentReport(
+			recommentreport(
 				reportCategory,
 				reportContent,
 				userNo,

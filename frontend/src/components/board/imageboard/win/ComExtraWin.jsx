@@ -4,7 +4,7 @@ import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import extra from '../../../images/extra.png';
+import extra from '../../../../images/extra.png';
 
 var thisIbProp = this
 if(JSON.parse(sessionStorage.getItem('uDTO')) === null){
@@ -76,10 +76,10 @@ export default function SimpleMenu(thisIbProp) {
                         onClose={handleClose}
                     >
                         <Link to={{
-                            pathname:`/reportDetail`,
+                            pathname:`/reportDetailImage`,
                             query:{ 
-                                boardType:"notice",
-                                noticeNo:thisIbProp.noticeNo,
+                                boardType:"imageboard",
+                                imageBoardNo:thisIbProp.imageBoardNo,
                                 commentNo:thisIbProp.commentNo,
                                 commentContent:thisIbProp.commentContent,
                                 commentWriter:thisIbProp.commentWriter,

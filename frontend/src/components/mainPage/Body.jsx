@@ -2,7 +2,7 @@ import React,{ Component,Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import AdExposeList from '../mainPage/AdExposeList'
-import ImageBoard from '../mainPage/ImageBoard'
+import ImageBoard from '../board/imageboard/ImageBoard'
 import newIcon from '../../images/new.gif';
 function dateDiff(date1, date2) {
     var diffDate_1 = date1 instanceof Date ? date1 : new Date(date1);

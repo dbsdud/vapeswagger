@@ -6,10 +6,10 @@ import Top from './mainPage/Top';
 import Body from './mainPage/Body';
 import Footer from './mainPage/Footer';
 import PageError from './mainPage/pageError';
-import NoticeList from './notice/NoticeList';
-import NoticeDetail from './notice/NoticeDetail';
-import NoticeReg from './notice/NoticeReg';
-import NoticeModify from './notice/NoticeModify';
+import NoticeList from './board/notice/NoticeList';
+import NoticeDetail from './board/notice/NoticeDetail';
+import NoticeReg from './board/notice/NoticeReg';
+import NoticeModify from './board/notice/NoticeModify';
 import Login from './user/Login';
 import FindId from './user/FindId';
 import FindPw from './user/FindPw';
@@ -31,9 +31,11 @@ import AdminAdDetail from './admin/adManage/AdDetail';
 import AdminTotalAdManage from './admin/adManage/TotalAdManage';
 import AdminEnableAdManage from './admin/adManage/EnableAdManage';
 import AdminDisableAdManage from './admin/adManage/DisableAdManage';
-import ImageBoardList from './mainPage/ImageBoardList';
-import ImageBoardDetail from './mainPage/ImageBoardDetail';
-import ReportDetail from './mainPage/ReportDetail'
+import ImageBoardList from './board/imageboard/ImageBoardList';
+import ImageBoardDetail from './board/imageboard/ImageBoardDetail';
+import ReportDetail from './board/notice/ReportDetail';
+import ImageReportDetail from './board/imageboard/ImageReportDetail';
+import ImageReg from './board/imageboard/ImageReg';
 class Root extends Component{
     constructor(props) {
         super(props);
@@ -103,6 +105,7 @@ class Root extends Component{
                     <Route exact path="/totaladmanage" component={AdminTotalAdManage}/>
                     <Route exact path="/enableadmanage" component={AdminEnableAdManage}/>
                     <Route exact path="/disableadmanage" component={AdminDisableAdManage}/>
+                    <Route exact path="/imageBoardReg" component={ImageReg}/>
                 </Fragment>
             }
         }
@@ -116,6 +119,7 @@ class Root extends Component{
                         <Route exact path="/imageBoardList" component={ImageBoardList}/>
                         <Route exact path="/imageBoardDetail/:imageBoardNo" component={ImageBoardDetail}/>
                         <Route exact path="/reportDetail" component={ReportDetail}/>
+                        <Route exact path="/reportDetailImage" component={ImageReportDetail}/>
                         {sessionRoute}
                         <Route component ={PageError}/>
                     </Switch>

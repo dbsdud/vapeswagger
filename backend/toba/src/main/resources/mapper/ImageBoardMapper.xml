@@ -117,6 +117,28 @@
 	<select id="getImageBoardCommentCount" resultType="int">
 		select count(*) from imageboardcomment where imageBoardNo=#{imageBoardNo}
 	</select>	
+	<insert id="noticeReg" parameterType="ImageBoardDTO">
+      INSERT INTO imageboard (
+      imageBoardTitle,
+      imageBoardRegdate,
+      imageBoardWriter,
+      imageBoardReadcount
+      ) VALUES (
+      #{imageBoardTitle},
+      NOW(),
+      #{imageBoardWriter},
+      0
+      )
+      <selectKey  resultType="string" keyProperty="imageBoardNo" order="AFTER" >
+      SELECT last_insert_id() FROM DUAL;
+      </selectKey> 
+   </insert>
+   <update id="updateThumbnail" parameterType="imageBoardDTO">
+		update imageboard
+		set 
+			imageBoardContent = #{imageBoardContent}
+		where imageBoardNo = #{imageBoardNo}
+	</update> 
 	<!-- <select id="getNoticeList" parameterType="map"
 		resultType="NoticeDTO">
 		SELECT
@@ -133,22 +155,7 @@
 	
 	
 	
-	<insert id="noticeReg" parameterType="NoticeDTO">
-      INSERT INTO notice (
-      noticeTitle,
-      noticeRegdate,
-      noticeWriter,
-      noticeReadcount
-      ) VALUES (
-      #{noticeTitle},
-      NOW(),
-      #{noticeWriter},
-      0
-      )
-      <selectKey  resultType="string" keyProperty="noticeNo" order="AFTER" >
-      SELECT last_insert_id() FROM DUAL;
-      </selectKey> 
-   </insert>
+	
 	좋아요 기능
 	<select id="noticeLikeCheck" resultType="int">
 		SELECT COUNT(*)
@@ -199,10 +206,5 @@
 		set noticeStatus = 0
 		where noticeNo = #{noticeNo}
 	</update>
-	<update id="updateThumbnail" parameterType="NoticeDTO">
-		update notice
-		set 
-			noticeContent = #{noticeContent}
-		where noticeNo = #{noticeNo}
-	</update> -->
+	-->
 </mapper>

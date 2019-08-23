@@ -1,9 +1,19 @@
 package com.poly.toba.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import javax.xml.bind.DatatypeConverter;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +22,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.poly.toba.model.ImageBoardDTO;
 import com.poly.toba.model.ImageBoardLikeDTO;
 import com.poly.toba.model.PagingDTO;
+import com.poly.toba.service.impl.ICommonService;
 import com.poly.toba.service.impl.IImageBoardCommentService;
 import com.poly.toba.service.impl.IImageBoardService;
 import com.poly.toba.util.CmmUtil;
+import com.poly.toba.util.MakeThumbnail;
 import com.poly.toba.util.StringUtil;
 
 @SpringBootApplication
@@ -28,7 +42,7 @@ import com.poly.toba.util.StringUtil;
 @RestController
 @RequestMapping("/imageBoards")
 public class ImageBoardController {
-	 @Autowired
+	@Autowired
 	 private IImageBoardService imageBoardService;
 	 @Autowired
 	 private IImageBoardCommentService imageBoardCommentService;
@@ -244,4 +258,98 @@ public class ImageBoardController {
 	      
 	      return new ResponseEntity<HashMap<String, Object>>(hMap, HttpStatus.OK);
 	   }
+	   @PostMapping("/noticeSubmit")
+      public ResponseEntity<Integer> regNotice(@RequestBody ImageBoardDTO nDTO) throws Exception {
+         // 리눅스 기준으로 파일 경로를 작성 ( 루트 경로인 /으로 시작한다. )
+         // 윈도우라면 workspace의 드라이브를 파악하여 JVM이 알아서 처리해준다.
+         // 따라서 workspace가 C드라이브에 있다면 C드라이브에 upload 폴더를 생성해 놓아야 한다.
+         String path = "/usr/local/tomcat/webapps/ROOT/imageUpload/imageBoard/";
+         String newFileName = "";
+         String thumbFileName ="";
+         String extension = "";
+         UUID uid = UUID.randomUUID();
+         String now = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()); // 현재시간 나타내는 변수
+         String year = now.substring(0,4);
+        String month = now.substring(4,6);
+        String day = now.substring(6,8);
+        String hour = now.substring(8,10);
+         String contentBase64 = nDTO.getImageBoardContent();
+         int result = 0;
+         List<String> oldSrc = new ArrayList<>();
+         List<String> newSrc = new ArrayList<>();
+         List<String> newFileNameList = new ArrayList<>();
+         List<String> thumbFileNameList = new ArrayList<>();
+         List<String> imgList = new ArrayList();
+		 List<String> newThumbFilelist = new ArrayList<>();
+		 List<String> extensionList = new ArrayList<>();
+         
+         result=imageBoardService.noticeReg(nDTO);
+         imgList = StringUtil.getImgSrc(contentBase64);
+         if(imgList.size()>0) {
+            for (int i = 0; i < imgList.size(); i++) {
+                String[] strings = imgList.get(i).toString().split(",");
+                switch (strings[0]) {// 이미지 타입 체크
+                case "data:image/jpeg;base64":
+                   extension = "jpeg";
+                   break;
+                case "data:image/png;base64":
+                   extension = "png";
+                   break;
+                case "data:image/gif;base64":
+                   extension = "gif";
+                   break;
+                default:// 이미지 타입
+                   extension = "jpg";
+                   break;
+                }
+                // 변환 base64 string to binary data
+                byte[] data = DatatypeConverter.parseBase64Binary(strings[1]);
+                newFileName = path+year+"/"+month+"/"+day+"/"+hour+"/"+nDTO.getImageBoardNo()+"/"+uid + now + i + "." + extension;
+                thumbFileName = uid + now + i;
+                File filePath = new File(path+year+"/"+month+"/"+day+"/"+hour+"/"+nDTO.getImageBoardNo()+"/");
+                if (!filePath.isDirectory()) {
+                   filePath.mkdirs();
+                }
+                File file = new File(newFileName);
+                try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+                   outputStream.write(data);
+                } catch (IOException e) {
+                   e.printStackTrace();
+                }
+                //이미지 이동
+                oldSrc.add(imgList.get(i).toString());
+                newSrc.add("http://15.164.160.236:8080/imageUpload/imageBoard/"+year+"/"+month+"/"+day+"/"+hour+"/"+nDTO.getImageBoardNo()+"/thumbs/"+"THUMB_" + uid + now + i + "." + extension);
+                newFileNameList.add(newFileName);
+				thumbFileNameList.add(thumbFileName);
+				extensionList.add(extension);
+             }
+            String replaceContent = StringUtil.getImgSrcReplace(contentBase64, oldSrc, newSrc);
+            nDTO.setImageBoardContent(replaceContent);
+            for(int k=0; k<thumbFileNameList.size();k++) {
+               String thumbnailPath=MakeThumbnail.makeThumbnail(path,newFileNameList.get(k), thumbFileNameList.get(k),extensionList.get(k),year,month,day,hour,nDTO.getImageBoardNo());
+               newThumbFilelist.add(thumbnailPath);
+            }
+           
+            int result2 = imageBoardService.updateThumbnail(nDTO);
+            //원본 파일 삭제
+            if(result2 == 1) {
+               for (String imgPath : newFileNameList) {
+                  File file2 = new File(imgPath);
+                  file2.delete();
+               } 
+            }
+         }else if(imgList.size()== 0) {
+            int result2 = imageBoardService.updateThumbnail(nDTO);
+         }
+         newFileNameList=null;
+         thumbFileNameList=null;
+         oldSrc=null;
+         newSrc=null;
+         imgList=null;
+         if (result == 1) {
+            return new ResponseEntity<Integer>(result, HttpStatus.OK);
+         } else {
+            return new ResponseEntity<Integer>(result, HttpStatus.OK);
+         }
+      }
 }
