@@ -98,7 +98,7 @@ window.history.back();
       window.alert('최대 100자 까지 작성할수 있습니다.');
       return false;
     }
-   const response = axios.post("http://localhost:8080/reports/boardReport",{
+   const response = axios.post("http://15.164.160.236:8080/reports/boardReport",{
       boardType:boardType,
       reportCategory:radioVal,
       userNo:userNo,
