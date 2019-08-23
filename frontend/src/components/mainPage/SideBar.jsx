@@ -54,19 +54,36 @@ class SideBar extends Component{
                 <Link className="sideBarTopJoin" to={"/join"} onClick={this.sidebarClose.bind(this)} style={{textDecoration:"none",cursor:'pointer'}}>
                 회원가입
                 </Link>
-             
             </Fragment>
-                 
         }else if(uDTO !== null){
-            loginMyPageRender=
-            <Fragment>
-                <div className="sideBarTopLogin" onClick={this.logout.bind(this)} style={{cursor:'pointer'}}>
-                    LOGOUT
-                </div>
-                <Link className="sideBarTopJoin" onClick={this.sidebarClose.bind(this)} to={'/mypageEnter'} style={{textDecoration:"none",}} >
-                    마이페이지  
-                </Link>
-            </Fragment>
+            if(uDTO.authority === 'ROLE_ADMIN'){
+                loginMyPageRender=
+                <Fragment>
+                    <div className="sideBarTopLogin" onClick={this.logout.bind(this)} style={{cursor:'pointer'}}>
+                        LOGOUT
+                    </div>
+                    <div className="sideBarTopJoin">
+                        <Link onClick={this.sidebarClose.bind(this)} to={'/mypageEnter'} style={{textDecoration:"none",}} >
+                            마이페이지  
+                        </Link>
+                    </div>
+                    <div className="sideBarTopAdmin">
+                        <Link onClick={this.sidebarClose.bind(this)} to={'/admin'} style={{textDecoration:"none"}} >
+                            관리자
+                        </Link>
+                    </div>
+                </Fragment>
+            } else {
+                loginMyPageRender=
+                <Fragment>
+                    <div className="sideBarTopLogin" onClick={this.logout.bind(this)} style={{cursor:'pointer'}}>
+                        LOGOUT
+                    </div>
+                    <Link className="sideBarTopJoin" onClick={this.sidebarClose.bind(this)} to={'/mypageEnter'} style={{textDecoration:"none",}} >
+                        마이페이지  
+                    </Link>
+                </Fragment>
+            }
         }
         return(
             <Fragment>

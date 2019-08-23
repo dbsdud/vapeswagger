@@ -145,6 +145,7 @@ public class UserController {
 		String newPassword = securityUtil.encryptSHA256(password);
 		uDTO.setUserPassword(newPassword);
 		uDTO = userService.getUserLogin(uDTO);
+		System.out.println(uDTO);
 		if(uDTO == null) {
 			System.out.println(this.getClass() + " 로그인 실패"); 
 			return new ResponseEntity<UserDTO>(HttpStatus.BAD_REQUEST);

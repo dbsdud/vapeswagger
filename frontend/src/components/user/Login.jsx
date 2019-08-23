@@ -19,7 +19,7 @@ class Login extends Component {
       
     async login() {
         try{
-            const login = await axios.post('http://15.164.160.236:8080/users/login',{
+            const login = await axios.post('http://localhost:8080/users/login',{
                 userEmail: this.state.userEmail,
                 userPassword: this.state.userPassword
             })
