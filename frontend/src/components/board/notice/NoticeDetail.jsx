@@ -138,6 +138,7 @@ class NoticeDetail extends Component{
     }
     //초기 나오는 화면
     async componentDidMount(noticeNo){
+        window.scrollTo(0,0)
         const response = await axios.get(`http://15.164.160.236:8080/notices/detail/${this.state.ntDetailResponse[0].noticeNo}`)
         const response2 = await axios.get(`http://15.164.160.236:8080/comments/list/${this.state.ntDetailResponse[0].noticeNo}/1`)
         const exposeAd = await axios.get('http://15.164.160.236:8080/admanage/exposeAd')

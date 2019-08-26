@@ -57,6 +57,7 @@ class Body extends Component {
         thumbImgList:[],
     }
     async componentDidMount(){
+        window.scrollTo(0,0)
         const mainNoticeList = await axios.get('http://15.164.160.236:8080/mains/mainNoticeList')
         const getStaticIp = await axios.get('https://api.ipify.org?format=jsonp&callback=getIP')
         const visitorStaticIp=getStaticIp.data.split(":")[1].split("\"")[1];

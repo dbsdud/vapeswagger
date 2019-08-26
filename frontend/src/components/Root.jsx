@@ -50,7 +50,6 @@ class Root extends Component{
         })
     }
     render(){
-        
         let sessionRoute=null;
         if(this.state.uDTO===null){
             sessionRoute = 
